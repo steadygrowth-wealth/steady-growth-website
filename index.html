@@ -724,7 +724,53 @@
       width: 100%;
     }
 
+    /* Floating CTA bar */
+    .floating-cta {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(5, 8, 22, 0.97);
+      border-radius: 999px;
+      border: 1px solid rgba(240,183,107,0.45);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.8);
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 998;
+    }
     
+    .floating-cta a {
+      font-size: 0.8rem;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #f7f7f7;
+    }
+    
+    .floating-cta a.primary {
+      border-color: transparent;
+      background: radial-gradient(circle at 10% 20%, #ffe6c0 0, #f0b76b 35%, #b9782f 100%);
+      color: #1c1408;
+      font-weight: 500;
+    }
+    
+    .floating-cta .label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    
+    @media (max-width: 600px) {
+      .floating-cta {
+        width: calc(100% - 24px);
+        justify-content: space-between;
+      }
+      .floating-cta .label {
+        display: none;
+      }
+    }
+
   </style>
 </head>
 <body>
