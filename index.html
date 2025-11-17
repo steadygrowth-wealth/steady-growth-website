@@ -1096,34 +1096,42 @@
           <div class="card">
             <!-- Simple mailto-based form (front-end only).
                  Replace "youremail@example.com" with your email. -->
-            <form action="https://formsubmit.co/steadygrowth.wealth@gmail.com" method="POST">
-    
-            <!-- Required hidden fields -->
+            <form id="contactForm" action="https://formsubmit.co/steadygrowth.wealth@gmail.com" method="POST" novalidate>
+
+            <!-- hidden config -->
             <input type="hidden" name="_subject" value="New Lead Submission - Steady Growth">
             <input type="hidden" name="_captcha" value="false">
             <input type="hidden" name="_template" value="box">
             <input type="hidden" name="_next" value="https://steady-growth-website.vercel.app/thankyou.html">
-
-        
+            <input type="hidden" name="_autoresponse" value="Thank you for contacting Steady Growth. We will get back to you soon.">
+            <input type="hidden" name="_webhook" value="https://hook.eu1.make.com/ptmiuujzg1uj8tbwd73qfl9iuix8br4d">
+          
+            <!-- Honeypot (Spam Bot Trap) -->
+            <div style="display:none;">
+                <label>Leave this field empty</label>
+                <input type="text" name="_honey">
+            </div>
+          
             <!-- Full Name -->
             <div class="field-group">
               <label for="name">Full Name*</label>
               <input type="text" id="name" name="name" placeholder="Your name" required>
             </div>
-        
+          
             <!-- Mobile -->
             <div class="field-group">
               <label for="phone">Mobile Number*</label>
-              <input type="tel" id="phone" name="mobile" placeholder="+91-XXXXXXXXXX" required>
+              <input type="tel" id="phone" name="mobile" placeholder="+91-XXXXXXXXXX" pattern="^[0-9]{10}$" required>
+              <small class="error-msg" style="color:#ff6b6b; display:none;">Enter valid 10-digit mobile number</small>
             </div>
-        
+          
             <!-- Email -->
             <div class="field-group">
               <label for="email">Email (optional)</label>
               <input type="email" id="email" name="email" placeholder="you@example.com">
             </div>
-        
-            <!-- Profession (Optional) -->
+          
+            <!-- Profession -->
             <div class="field-group">
               <label for="profession">Profession (optional)</label>
               <select id="profession" name="profession">
@@ -1137,8 +1145,8 @@
                 <option>Other</option>
               </select>
             </div>
-        
-            <!-- Financial Goal -->
+          
+            <!-- Goal -->
             <div class="field-group">
               <label for="goal">Primary Financial Goal*</label>
               <select id="goal" name="goal" required>
@@ -1150,8 +1158,22 @@
                 <option>Other / Not sure</option>
               </select>
             </div>
-        
-            <!-- Lead Source (Optional) -->
+
+
+            <!-- Preferred Contact Time (Optional) -->
+            <div class="field-group">
+              <label for="contact_time">Preferred time to contact (optional)</label>
+              <select id="contact_time" name="contact_time">
+                <option value="">Select (optional)</option>
+                <option>09:00 AM – 12:00 PM</option>
+                <option>12:00 PM – 03:00 PM</option>
+                <option>03:00 PM – 06:00 PM</option>
+                <option>06:00 PM – 09:00 PM</option>
+              </select>
+            </div>
+
+          
+            <!-- Lead Source -->
             <div class="field-group">
               <label for="lead_source">How did you hear about us? (optional)</label>
               <select id="lead_source" name="lead_source">
@@ -1165,47 +1187,55 @@
                 <option>Other</option>
               </select>
             </div>
-        
-            <!-- Additional Message -->
+          
+            <!-- Message -->
             <div class="field-group">
               <label for="message">Anything specific you’d like to share?</label>
-              <textarea id="message" name="message" placeholder="Example: I want to start a SIP of ₹5,000 per month for 10+ years."></textarea>
+              <textarea id="message" name="message" placeholder="Example: I want to start SIP of ₹5,000 per month for 10+ years."></textarea>
             </div>
-        
+          
+            <!-- Loader -->
+            <div id="loader" style="display:none; color:#f0b76b; font-size:0.85rem;">
+              ⏳ Submitting… please wait
+            </div>
+          
             <!-- Submit -->
-            <button type="submit" class="btn btn-primary">Submit Details</button>
-        
+            <button type="submit" class="btn btn-primary" id="submitBtn">Submit Details</button>
             <p class="form-note">Your information will be kept confidential.</p>
+          
+          </form>
 
-            <input type="hidden" name="_autoresponse" value="Thank you for contacting Steady Growth. We will get back to you soon.">
-            <input type="hidden" name="_webhook" value="https://hook.eu1.make.com/ptmiuujzg1uj8tbwd73qfl9iuix8br4d">
+        <script>
+        const form = document.getElementById('contactForm');
+        const loader = document.getElementById('loader');
+        const submitBtn = document.getElementById('submitBtn');
+        const phoneInput = document.getElementById('phone');
+        const phoneError = phoneInput.nextElementSibling;
+        
+        form.addEventListener('submit', function(e) {
+          // validate phone number
+          if(!phoneInput.value.match(/^[0-9]{10}$/)) {
+            e.preventDefault();
+            phoneError.style.display = "block";
+            phoneInput.focus();
+            return;
+          }
+        
+          // hide error if valid
+          phoneError.style.display = "none";
+        
+          // show loader, disable button
+          loader.style.display = "block";
+          submitBtn.disabled = true;
+          submitBtn.style.opacity = "0.6";
+        });
+        </script>
 
-        </form>
         
         <!-- Status Message -->
         <div id="result" style="margin-top:10px; font-size:0.85rem;"></div>
         
-        <script>
-        const form = document.getElementById('contactForm');
-        const result = document.getElementById('result');
         
-        form.addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const formData = new FormData(form);
-            const response = await fetch(form.action, {
-                method: form.method,
-                body: formData,
-                headers: { 'Accept': 'application/json' }
-            });
-        
-            if (response.ok) {
-                result.innerHTML = "<span style='color:#4caf50;'>Thank you! Your details have been submitted.</span>";
-                form.reset();
-            } else {
-                result.innerHTML = "<span style='color:#ff6b6b;'>Something went wrong. Please try again or contact on WhatsApp.</span>";
-            }
-        });
-        </script>
 
               <p class="form-note">
                 By submitting this form, you authorise me to contact you for Mutual Fund related information and services.
