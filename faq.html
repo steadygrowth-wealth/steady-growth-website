@@ -1,209 +1,360 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>FAQs – Steady Growth | Mutual Fund Investing Help</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<section class="faq-page container">
 
-  <!-- Same fonts to match your main site -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <h1 class="section-title" style="text-align:center; margin-bottom:8px;">
+    Frequently Asked Questions
+  </h1>
+  <p class="section-subtitle" style="text-align:center; max-width:700px; margin:0 auto 25px;">
+    Here are some of the most commonly asked questions related to mutual funds, investing,
+    documentation, regulations, taxation, and onboarding. If you still have questions, feel
+    free to contact me anytime.
+  </p>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: "Poppins", sans-serif;
-      background: radial-gradient(circle at top, #141b35 0, #050816 55%);
-      color: #ffffff;
-    }
+  <!-- =============== CATEGORY 1: GETTING STARTED =============== -->
+  <h2 class="faq-category-title" style="margin-top:35px;">Getting Started</h2>
 
-    .container {
-      width: min(1100px, 92vw);
-      margin: 0 auto;
-      padding: 30px 0 40px;
-    }
+  <div class="faq-list">
 
-    /* Page Heading */
-    .page-title {
-      font-family: "Playfair Display", serif;
-      font-size: 1.9rem;
-      margin-bottom: 8px;
-      text-align: center;
-    }
+    <details>
+      <summary>1. What exactly does a Mutual Fund Distributor do?</summary>
+      <p>A Mutual Fund Distributor helps investors select suitable mutual fund schemes by
+      understanding their goals, risk profile, and investment timeline. They also assist with
+      onboarding, paperwork, KYC, transaction execution, portfolio review & continued guidance
+      without providing stock tips or guaranteed returns.</p>
+    </details>
 
-    .page-subtitle {
-      font-size: 0.9rem;
-      color: #a7afc7;
-      text-align: center;
-      margin-bottom: 24px;
-    }
+    <details>
+      <summary>2. Who can invest in mutual funds?</summary>
+      <p>Almost anyone—salaried professionals, entrepreneurs, homemakers, students above 18,
+      NRIs, HUFs, trusts and companies can invest, provided they meet KYC and compliance norms.
+      Minors can also invest under guardian mode.</p>
+    </details>
 
-    /* Category Tabs */
-    .faq-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      margin: 16px 0 24px;
-    }
+    <details>
+      <summary>3. Do I need a demat account to invest?</summary>
+      <p>No, a demat account is not mandatory. Units can be held in statement mode through
+      NJ Wealth or respective AMCs. However, investors may choose demat mode if they prefer all
+      assets consolidated under one demat account.</p>
+    </details>
 
-    .faq-tab {
-      padding: 7px 16px;
-      border-radius: 999px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      border: 1px solid rgba(240,183,107,0.35);
-      background: rgba(6,10,28,0.7);
-      color: #f7f7f7;
-      transition: all 0.2s ease-out;
-    }
+    <details>
+      <summary>4. Can I start investing with small amounts?</summary>
+      <p>Yes. Systematic Investment Plans (SIPs) can start from as low as ₹500 per month in many
+      mutual fund schemes, making it suitable for first-time and young investors.</p>
+    </details>
 
-    .faq-tab.active {
-      background: radial-gradient(circle at 10% 20%, #ffe6c0 0, #f0b76b 35%, #b9782f 100%);
-      color: #1b1406;
-      font-weight: 500;
-    }
+    <details>
+      <summary>5. I’m completely new to investing. Is this suitable for beginners?</summary>
+      <p>Absolutely. Mutual funds are professionally managed and designed for long-term wealth
+      creation. Beginners often find them simpler than trading or direct equity, as risks are
+      diversified and decisions are guided by SEBI-regulated fund managers.</p>
+    </details>
 
-    /* Accordion */
-    .faq-group { display: none; }
-    .faq-group.active { display: block; }
+    <details>
+      <summary>6. Can I pause or stop my SIP anytime?</summary>
+      <p>Yes, SIPs are flexible. You can modify, pause or stop them whenever required without
+      penalty, subject to AMC terms.</p>
+    </details>
 
-    .faq-item {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+    <details>
+      <summary>7. Will mutual fund investments protect me from market losses?</summary>
+      <p>No investment offering market-linked returns is risk-free. However, proper asset
+      allocation, diversification, and long-term holding greatly reduce volatility-related
+      risks.</p>
+    </details>
 
-    .faq-item:hover {
-      border-color: rgba(240,183,107,0.35);
-    }
+    <details>
+      <summary>8. How long should I stay invested?</summary>
+      <p>There is no fixed duration. Ideally, equity investments require a 5–10+ year horizon
+      for meaningful wealth creation, whereas debt funds may suit short-term goals.</p>
+    </details>
 
-    .faq-q {
-      font-size: 0.95rem;
-      font-weight: 500;
-    }
+    <details>
+      <summary>9. Can I invest jointly with a family member?</summary>
+      <p>Yes, joint holding is allowed with up to three holders based on nomination, mode,
+      and compliance rules.</p>
+    </details>
 
-    .faq-a {
-      font-size: 0.85rem;
-      color: #a7afc7;
-      margin-top: 6px;
-      line-height: 1.55;
-      display: none;
-    }
+    <details>
+      <summary>10. Will you help me decide which scheme to invest in?</summary>
+      <p>Yes. Scheme suitability is assessed after analyzing your goals, risk level, horizon,
+      liquidity requirements and existing portfolio to avoid overlap and excessive risk.</p>
+    </details>
+  </div>
 
-    .faq-item.open .faq-a { display: block; }
 
-    /* CTA Footer */
-    .cta-box {
-      text-align: center;
-      margin-top: 28px;
-      padding: 18px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(6, 10, 28, 0.6);
-    }
 
-    .cta-box a {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 8px 18px;
-      border-radius: 999px;
-      border: 1px solid rgba(240,183,107,0.45);
-      font-size: 0.85rem;
-      background: radial-gradient(circle at 10% 20%, #ffe6c0 0, #f0b76b 35%, #b9782f 100%);
-      color: #1b1406;
-      text-decoration: none;
-      font-weight: 500;
-    }
+  <!-- =============== CATEGORY 2: PROCESS & DOCUMENTS =============== -->
+  <h2 class="faq-category-title" style="margin-top:35px;">Process & Documents</h2>
 
-  </style>
-</head>
-<body>
+  <div class="faq-list">
 
-  <div class="container">
+    <details>
+      <summary>1. What documents are required to start investing?</summary>
+      <p>PAN, Aadhar, passport-size photo, bank proof (cheque/cancelled cheque) and signature
+      image. Additional documents apply for NRIs, corporates, trusts and minors.</p>
+    </details>
 
-    <h1 class="page-title">Frequently Asked Questions</h1>
-    <p class="page-subtitle">Clear answers to common questions about investing, safety, process & expectations.</p>
+    <details>
+      <summary>2. What is CKYC and why is it mandatory?</summary>
+      <p>Central KYC is a government-regulated identity verification system that eliminates
+      repeated KYC submissions across financial institutions. It ensures compliance & prevents
+      identity misuse.</p>
+    </details>
 
-    <!-- Category Tabs -->
-    <div class="faq-tabs">
-      <div class="faq-tab active" data-target="start">Getting Started</div>
-      <div class="faq-tab" data-target="process">Process & Documents</div>
-      <div class="faq-tab" data-target="risk">Risk & Returns</div>
-      <div class="faq-tab" data-target="nri">NRI & Overseas</div>
-      <div class="faq-tab" data-target="fees">Fees & Plans</div>
-    </div>
+    <details>
+      <summary>3. How long does the onboarding process take?</summary>
+      <p>If all documents are correct, most investors are onboarded digitally within 10–30
+      minutes. Manual verification may take up to 24–48 hours.</p>
+    </details>
 
-    <!-- FAQ GROUP: Getting Started -->
-    <div class="faq-group active" id="start">
-      <div class="faq-item"><div class="faq-q">Who can invest through Steady Growth?</div><div class="faq-a">Any resident or NRI/OCI adult with valid KYC can invest. I work best with people focused on long-term goals — not short-term speculation or stock tips.</div></div>
+    <details>
+      <summary>4. Can I invest fully online?</summary>
+      <p>Yes. From KYC to SIP setup, every step is paperless and can be completed via mobile,
+      laptop or tablet through the NJ Wealth platform.</p>
+    </details>
 
-      <div class="faq-item"><div class="faq-q">Is there a minimum investment required?</div><div class="faq-a">There is no fixed minimum. SIPs can start as low as ₹500, but most long-term structured plans typically begin from ₹2,000–₹10,000+ monthly based on goals.</div></div>
-      
-      <div class="faq-item"><div class="faq-q">Do you offer stock tips or trading calls?</div><div class="faq-a">No. I strictly follow a goal-based, suitability-driven investing approach — not trading, speculation or timing the market.</div></div>
-    </div>
+    <details>
+      <summary>5. How are transactions tracked?</summary>
+      <p>All transactions are reflected in NJ Wealth as well as AMC portals. You also receive
+      email + SMS confirmations and consolidated account statements.</p>
+    </details>
 
-    <!-- FAQ GROUP: Process -->
-    <div class="faq-group" id="process">
-      <div class="faq-item"><div class="faq-q">What is the onboarding process?</div><div class="faq-a">You share your details → short discussion → risk profile & goals → suitable strategy → digital onboarding via NJ Wealth platform.</div></div>
+    <details>
+      <summary>6. Can I start SIP from multiple bank accounts?</summary>
+      <p>Yes, you may register multiple bank mandates. SIPs can be linked to specific bank
+      accounts depending on your preference.</p>
+    </details>
 
-      <div class="faq-item"><div class="faq-q">What documents are required?</div><div class="faq-a">PAN, Aadhaar, bank details, photo & signature. For NRIs: passport, visa details, FATCA & NRE/NRO account.</div></div>
-    </div>
+    <details>
+      <summary>7. Can I transfer my existing MF portfolio to your advice?</summary>
+      <p>Yes, if they are in regular plans, units can be transferred under ARN change request.
+      Direct-plan units cannot be converted to regular schemes.</p>
+    </details>
 
-    <!-- FAQ GROUP: Risk -->
-    <div class="faq-group" id="risk">
-      <div class="faq-item"><div class="faq-q">Are mutual funds guaranteed?</div><div class="faq-a">No. Mutual funds are market-linked. Returns depend on time horizon, fund choice & discipline — not predictions.</div></div>
-      
-      <div class="faq-item"><div class="faq-q">How do you manage portfolio risk?</div><div class="faq-a">Goal matching, asset allocation, SIP approach, suitable categories, and periodic review. Safety is prioritised over excitement.</div></div>
-    </div>
+    <details>
+      <summary>8. What if my CKYC is rejected or pending?</summary>
+      <p>We assist you with corrections such as signature mismatch, address update, name change
+      etc. Re-KYC may be required if old KYC is non-compliant.</p>
+    </details>
 
-    <!-- FAQ GROUP: NRI -->
-    <div class="faq-group" id="nri">
-      <div class="faq-item"><div class="faq-q">Can NRIs invest through you?</div><div class="faq-a">Yes — most NRIs can invest using NRE/NRO accounts depending on their country. Some country restrictions apply due to FATCA rules.</div></div>
+    <details>
+      <summary>9. Can minors invest?</summary>
+      <p>Yes, via a guardian until age 18. When attaining majority, KYC & bank change is required.</p>
+    </details>
 
-      <div class="faq-item"><div class="faq-q">How are withdrawals handled?</div><div class="faq-a">Withdrawals go to the linked NRE/NRO bank account as per the scheme. Repatriation rules apply for NRE-based investments.</div></div>
-    </div>
+    <details>
+      <summary>10. How will I receive reports?</summary>
+      <p>Portfolio statements, capital gains reports, SIP transaction logs and goal-reports are
+      shared periodically or on request.</p>
+    </details>
+  </div>
 
-    <!-- FAQ GROUP: Fees -->
-    <div class="faq-group" id="fees">
-      <div class="faq-item"><div class="faq-q">Do you charge advisory fees?</div><div class="faq-a">I operate as a Mutual Fund Distributor and receive standard regulated commissions from AMCs. No hidden fees are charged to clients.</div></div>
-      
-      <div class="faq-item"><div class="faq-q">Direct plan vs regular plan?</div><div class="faq-a">Direct plans have no distributor commission, while regular plans include service-based commissions. Clients choose what suits them best.</div></div>
-    </div>
 
-    <!-- Footer CTA -->
-    <div class="cta-box">
-      Still have a question?
-      <br/>
-      <a href="https://api.whatsapp.com/send?phone=919211310914&text=Hi,+I+have+a+query+related+to+investing.">Message on WhatsApp</a>
-    </div>
+
+  <!-- =============== CATEGORY 3: RISK & RETURNS =============== -->
+  <h2 class="faq-category-title" style="margin-top:35px;">Risk & Returns</h2>
+
+  <div class="faq-list">
+
+    <details>
+      <summary>1. Are mutual funds safe?</summary>
+      <p>There are low-risk, medium-risk and high-risk funds. Safety depends on fund category,
+      market conditions and holding period, not just brand or AMC size.</p>
+    </details>
+
+    <details>
+      <summary>2. What returns should I expect?</summary>
+      <p>No guaranteed returns. Historically, equity funds have delivered 10–15% CAGR over
+      long periods, while debt and hybrid funds deliver lower but stable returns.</p>
+    </details>
+
+    <details>
+      <summary>3. Why does NAV fluctuate?</summary>
+      <p>NAV reflects the real-time market value of the fund’s underlying securities such as
+      stocks, bonds and cash holdings — hence it moves daily.</p>
+    </details>
+
+    <details>
+      <summary>4. What if the market crashes?</summary>
+      <p>A market fall is temporary in most economic cycles. The key is portfolio allocation
+      and discipline, not timing. Down cycles often become favourable entry points.</p>
+    </details>
+
+    <details>
+      <summary>5. Can I lose money permanently?</summary>
+      <p>Permanent loss generally happens only if you exit in panic or choose unsuitable
+      schemes. Staying invested long term with proper allocation reduces such risks.</p>
+    </details>
+
+    <details>
+      <summary>6. Are mutual funds better than FDs?</summary>
+      <p>FDs offer capital safety and fixed return, while mutual funds offer potentially higher
+      inflation-beating returns with market risk. Most investors need a mix, not either/or.</p>
+    </details>
+
+    <details>
+      <summary>7. Should I withdraw profits regularly?</summary>
+      <p>Profit booking too frequently may affect long-term compounding. Withdraw only if
+      goal-based or based on rebalancing decisions.</p>
+    </details>
+
+    <details>
+      <summary>8. Which funds are safest?</summary>
+      <p>Ultra-short, liquid and certain debt funds have low volatility, but even they are not
+      100% risk-free. Category choice must match goal timeline.</p>
+    </details>
+
+    <details>
+      <summary>9. What is exit load?</summary>
+      <p>A small fee charged if you withdraw before the minimum holding period as defined by the
+      scheme. It encourages investment discipline.</p>
+    </details>
+
+    <details>
+      <summary>10. How do I control risk?</summary>
+      <p>Diversification, appropriate allocation, review frequency, long holding period,
+      and avoiding emotional decisions.</p>
+    </details>
+  </div>
+
+
+
+  <!-- =============== CATEGORY 4: NRI & OVERSEAS =============== -->
+  <h2 class="faq-category-title" style="margin-top:35px;">NRI & Overseas Investors</h2>
+
+  <div class="faq-list">
+
+    <details>
+      <summary>1. Can NRIs invest in Indian mutual funds?</summary>
+      <p>Yes, NRIs can invest from most countries subject to FEMA & FATCA rules. Some AMCs may
+      restrict investments from the USA/Canada.</p>
+    </details>
+
+    <details>
+      <summary>2. Is NRE or NRO account required?</summary>
+      <p>Yes. For NRIs, investments must be routed via NRE or NRO bank accounts depending on
+      repatriation status.</p>
+    </details>
+
+    <details>
+      <summary>3. What is FATCA?</summary>
+      <p>Foreign Account Tax Compliance Act is mandatory for global tax reporting and must be
+      submitted digitally before transactions.</p>
+    </details>
+
+    <details>
+      <summary>4. How does taxation work for NRIs?</summary>
+      <p>Capital gains tax applies based on holding period and fund category. TDS is deducted
+      at source as per Indian tax laws.</p>
+    </details>
+
+    <details>
+      <summary>5. Can NRIs repatriate funds?</summary>
+      <p>Yes, if invested from NRE accounts and subject to FEMA guidelines. For NRO accounts,
+      repatriation is capped annually.</p>
+    </details>
+
+    <details>
+      <summary>6. Can NRIs invest jointly?</summary>
+      <p>Yes, subject to KYC, residency proof and bank account status of all holders.</p>
+    </details>
+
+    <details>
+      <summary>7. Can NRIs continue investing after returning to India?</summary>
+      <p>Yes. Re-KYC with updated resident status and domestic bank account needs to be updated.</p>
+    </details>
+
+    <details>
+      <summary>8. Do NRIs need to come to India for KYC?</summary>
+      <p>No, digital onboarding is allowed via video-KYC in many cases.</p>
+    </details>
+
+    <details>
+      <summary>9. Can NRIs invest using foreign currency?</summary>
+      <p>No, funds must be routed through Indian NRE/NRO accounts in INR.</p>
+    </details>
+
+    <details>
+      <summary>10. Are there restrictions for US/Canada-based NRIs?</summary>
+      <p>Some AMCs allow investments with extra compliance; others restrict. Allowed fund list
+      will be shared case-to-case.</p>
+    </details>
+  </div>
+
+
+
+  <!-- =============== CATEGORY 5: FEES & PLANS =============== -->
+  <h2 class="faq-category-title" style="margin-top:35px;">Fees & Plans</h2>
+
+  <div class="faq-list">
+
+    <details>
+      <summary>1. Do I have to pay you advisory fees?</summary>
+      <p>No separate advisory fee is charged. The distributor earns commission from the AMCs
+      under regular plan model as per SEBI guidelines.</p>
+    </details>
+
+    <details>
+      <summary>2. What is the difference between Direct & Regular plans?</summary>
+      <p>Direct plans have slightly lower expense ratio but require self-managed decisions.
+      Regular plans include distributor-supported services, monitoring and guidance.</p>
+    </details>
+
+    <details>
+      <summary>3. Is there any hidden cost?</summary>
+      <p>No. Expense ratio is disclosed by AMCs. Commission rates are transparent and uniform
+      as per SEBI norms.</p>
+    </details>
+
+    <details>
+      <summary>4. Do I have to pay platform charges?</summary>
+      <p>No, onboarding and transactions via NJ Wealth are free for investors.</p>
+    </details>
+
+    <details>
+      <summary>5. Will you assist in reviewing & rebalancing without extra cost?</summary>
+      <p>Yes. Portfolio review is a key part of long-term wealth management and is included.</p>
+    </details>
+
+    <details>
+      <summary>6. What is the exit load?</summary>
+      <p>Exit load varies by scheme category, usually applicable within 6–12 months for equity
+      schemes. Details are shown before completing transactions.</p>
+    </details>
+
+    <details>
+      <summary>7. How do SIP cancellation charges work?</summary>
+      <p>There are no penalty charges for cancellation. However, bank mandates remain active
+      until revoked.</p>
+    </details>
+
+    <details>
+      <summary>8. What happens if I miss SIP due to insufficient balance?</summary>
+      <p>It will retry or skip depending on mode. Multiple failures may cancel the SIP
+      automatically.</p>
+    </details>
+
+    <details>
+      <summary>9. Do you guarantee profits if I invest for many years?</summary>
+      <p>No. While long durations improve outcome probability, returns depend on market
+      performance, fund category and discipline.</p>
+    </details>
+
+    <details>
+      <summary>10. Which plan should I choose—Direct or Regular?</summary>
+      <p>If you can research and manage your portfolio independently, direct plans are suitable.
+      If you prefer personalised guidance, risk alignment and review support, regular plans
+      offer value.</p>
+    </details>
 
   </div>
 
-<script>
-  // Tab switching
-  const tabs = document.querySelectorAll('.faq-tab');
-  const groups = document.querySelectorAll('.faq-group');
+</section>
 
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      groups.forEach(g => g.classList.remove('active'));
-      tab.classList.add('active');
-      document.getElementById(tab.dataset.target).classList.add('active');
-    });
-  });
 
-  // Accordion
-  document.querySelectorAll('.faq-item').forEach(item => {
-    item.addEventListener('click', () => {
-      item.classList.toggle('open');
-    });
-  });
-</script>
-
-</body>
-</html>
+<!-- CTA SECTION -->
+<div style="margin-top:50px; text-align:center;">
+  <a href="index.html#contact" class="btn btn-primary" style="padding:12px 22px;">
+    Still have questions? Contact me →
+  </a>
+</div>
