@@ -1309,17 +1309,42 @@
     // Mobile nav toggle
     const nav = document.querySelector('.nav');
     const navToggle = document.getElementById('navToggle');
-
+    
     navToggle.addEventListener('click', () => {
       nav.classList.toggle('open');
     });
-
-    // Close mobile nav on link click
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', () => {
-        nav.classList.remove('open');
+    
+    // Tabbed sections: Overview / About / Services / Process / FAQs / Contact
+    const tabTriggers = document.querySelectorAll('[data-tab]');
+    const tabSections = document.querySelectorAll('.tab-section');
+    
+    function activateTab(name) {
+      tabTriggers.forEach(el => {
+        el.classList.toggle('active', el.dataset.tab === name);
+      });
+      tabSections.forEach(sec => {
+        if (sec.id === name) {
+          sec.classList.add('active');
+        } else {
+          sec.classList.remove('active');
+        }
+      });
+    }
+    
+    // Click on nav / any element with data-tab
+    tabTriggers.forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = el.dataset.tab;
+        if (!target) return;
+        activateTab(target);
+        nav.classList.remove('open'); // Close mobile nav
       });
     });
+    
+    // Initial state
+    activateTab('overview');
+
 
     // Year in footer
     document.getElementById('year').textContent = new Date().getFullYear();
