@@ -700,6 +700,33 @@
     .footer-bottom span {
       opacity: 0.9;
     }
+
+    /* -------------------------------------------------------------
+       Prevent headings from going under sticky navbar on scroll or tab change
+    --------------------------------------------------------------*/
+    
+    /* Applies safe scroll offset for desktop & mobile */
+    .tab-section, section {
+      scroll-margin-top: calc(var(--nav-height) + 18px);
+    }
+    
+    /* Adds smooth premium scrolling behavior */
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--nav-height) + 18px);
+    }
+    
+    /* Optional: minor animation polish for section transitions */
+    .tab-section {
+      will-change: opacity, transform;
+    }
+    
+    /* Prevent extra scroll jump in some mobile browsers */
+    body {
+      overscroll-behavior-y: none;
+    }
+
+    
   </style>
 </head>
 <body>
