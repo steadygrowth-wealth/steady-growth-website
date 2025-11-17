@@ -1096,7 +1096,7 @@
           <div class="card">
             <!-- Simple mailto-based form (front-end only).
                  Replace "youremail@example.com" with your email. -->
-            <form id="contactForm" action="https://formsubmit.co/steadygrowth.wealth@gmail.com" method="POST" novalidate>
+            <form id="contactForm" action="https://script.google.com/macros/s/AKfycbwEcCOcMxezlGTw4xH8ip8SdpNtjV0f5Rhon8aoWhQunijGV0rx3SAzDGQh8ChN0-chtA/exec" method="POST" novalidate>
 
             <!-- hidden config -->
             <input type="hidden" name="_subject" value="New Lead Submission - Steady Growth">
@@ -1206,30 +1206,40 @@
           </form>
 
         <script>
-        const form = document.getElementById('contactForm');
-        const loader = document.getElementById('loader');
-        const submitBtn = document.getElementById('submitBtn');
-        const phoneInput = document.getElementById('phone');
-        const phoneError = phoneInput.nextElementSibling;
+        document.getElementById("contactForm").addEventListener("submit", async function(e) {
+          e.preventDefault();
         
-        form.addEventListener('submit', function(e) {
-          // validate phone number
-          if(!phoneInput.value.match(/^[0-9]{10}$/)) {
-            e.preventDefault();
-            phoneError.style.display = "block";
-            phoneInput.focus();
-            return;
-          }
+          const form = e.target;
         
-          // hide error if valid
-          phoneError.style.display = "none";
-        
-          // show loader, disable button
-          loader.style.display = "block";
+          // Disable button and show lighter UI
+          const submitBtn = form.querySelector("button[type=submit]");
+          const originalText = submitBtn.textContent;
           submitBtn.disabled = true;
-          submitBtn.style.opacity = "0.6";
+          submitBtn.textContent = "Submitting...";
+        
+          const formData = Object.fromEntries(new FormData(form).entries());
+        
+          try {
+            const response = await fetch(form.action, {
+              method: "POST",
+              mode: "no-cors", // Required for Apps Script
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(formData)
+            });
+        
+            // redirect after submit
+            window.location.href = "https://steady-growth-website.vercel.app/thankyou.html";
+        
+          } catch (err) {
+            alert("Something went wrong. Please contact via WhatsApp.");
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+          }
         });
         </script>
+
 
         
         <!-- Status Message -->
