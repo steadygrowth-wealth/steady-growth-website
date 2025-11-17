@@ -700,6 +700,31 @@
     .footer-bottom span {
       opacity: 0.9;
     }
+
+      /* Tabbed layout */
+    .tab-section {
+      display: none;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.28s ease-out, transform 0.28s ease-out;
+    }
+    
+    .tab-section.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* Active tab styling */
+    .nav-links a.active {
+      color: #ffffff;
+    }
+    
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    
   </style>
 </head>
 <body>
