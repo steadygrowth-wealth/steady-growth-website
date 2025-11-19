@@ -926,6 +926,27 @@ function getScoreMessage(score) {
   return "Strong foundation, discipline and clarity — you are SIP-ready.";
 }
 
+
+
+  /* -----------------------------------------------------
+     WHY TOGGLE COLLAPSE
+  -----------------------------------------------------*/
+  document.querySelectorAll(".why-toggle").forEach(toggle => {
+    toggle.addEventListener("click", () => {
+      const box = toggle.nextElementSibling;
+      if (!box) return;
+  
+      if (box.style.display === "block") {
+        box.style.display = "none";
+        toggle.textContent = "Why it matters ▼";
+      } else {
+        box.style.display = "block";
+        toggle.textContent = "Why it matters ▲";
+      }
+    });
+  });
+
+
 </script>
 </body>
 </html>
