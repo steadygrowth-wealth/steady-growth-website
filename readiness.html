@@ -846,6 +846,57 @@ function renderScore(score) {
     msgEl.textContent = "Strong foundation, discipline and clarity — you are SIP-ready.";
   }
 }
+
+  const leadForm = document.getElementById("leadForm");
+const statusEl = document.getElementById("leadStatus");
+
+leadForm?.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById("name").value;
+  const mobile = document.getElementById("mobile").value;
+  const email = document.getElementById("email").value;
+  const score = localStorage.getItem("readiness_score");
+
+  // TODO: Send to Google Sheets / API here
+  statusEl.textContent = "Thank you! Calculating your score...";
+
+  setTimeout(() => {
+    showFinalScore(score);
+  }, 800);
+});
+
+function showFinalScore(score) {
+  const page = document.querySelector('[data-page="6"]');
+
+  page.innerHTML = `
+    <h1>Your SIP Readiness Score</h1>
+    <div class="summary-box">
+      <div class="score">${score}</div>
+      <div class="score-label">${getScoreLabel(score)}</div>
+      <div class="note">${getScoreMessage(score)}</div>
+    </div>
+    <div class="nav-row" style="flex-direction:column; gap:12px;">
+      <a class="btn btn-primary" href="funnel.html">Proceed to Stage 2</a>
+      <a class="btn btn-ghost" href="index.html">← Back to Website</a>
+    </div>
+  `;
+}
+
+function getScoreLabel(score) {
+  if (score <= 8) return "Not Ready";
+  if (score <= 15) return "Medium Risk Zone";
+  if (score <= 21) return "Almost Ready";
+  return "Fully Ready";
+}
+
+function getScoreMessage(score) {
+  if (score <= 8) return "Your financial base and behaviour patterns need strengthening.";
+  if (score <= 15) return "Some readiness exists, but key areas need improvement.";
+  if (score <= 21) return "You’re close! A little more discipline and clarity will help.";
+  return "Strong foundation, discipline and clarity — you are SIP-ready.";
+}
+
 </script>
 </body>
 </html>
