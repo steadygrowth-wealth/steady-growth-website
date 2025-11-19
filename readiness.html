@@ -766,6 +766,11 @@ document.querySelectorAll(".q-box").forEach(qbox => {
         window.scrollBy({ top: 80, behavior: "smooth" });
       }, 80);
       checkSectionCompletion();
+      checkFinishReady();
+
+      setTimeout(() => {
+      window.scrollBy({ top: 80, behavior: "smooth" });
+    }, 80);
     });
   });
 });
