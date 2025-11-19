@@ -244,6 +244,11 @@
   </div>
 
   <script>
+    // Reset funnel ONLY if user had already completed it
+      if (localStorage.getItem("funnelStep") == "10") {
+          localStorage.removeItem("funnelStep");
+      }
+
     (function(){
       const steps = Array.from(document.querySelectorAll('.step'));
       const totalSteps = steps.length - 1; // last is thank-you
