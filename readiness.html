@@ -79,6 +79,7 @@
       padding: 14px 16px;
       margin-bottom: 14px;
       background: rgba(255,255,255,0.02);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .q-title {
@@ -91,6 +92,12 @@
       font-size: 0.85rem;
       color: var(--muted);
       margin-bottom: 10px;
+    }
+
+    /* Highlight missing question */
+    .q-box.attention {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(240,183,107,0.45);
     }
 
     /* Collapsible WHY */
@@ -128,6 +135,7 @@
       color: var(--muted);
       text-align: center;
       transition: all 0.2s ease;
+      font-size: 0.9rem;
     }
 
     .yn-btn:hover {
@@ -149,6 +157,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     .btn {
@@ -158,6 +168,7 @@
       cursor: pointer;
       font-size: 0.9rem;
       font-weight: 600;
+      text-align: center;
     }
 
     .btn-primary {
@@ -177,7 +188,7 @@
       color: #fff;
     }
 
-    /* Summary */
+    /* Summary / boxes */
     .summary-box {
       background: rgba(255,255,255,0.03);
       border: 1px solid var(--border-soft);
@@ -205,6 +216,12 @@
       font-size: 0.85rem;
       color: var(--muted);
       text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 20px 16px;
+      }
     }
   </style>
 </head>
@@ -660,7 +677,6 @@
 
     </div>
   </div>
-
 <script>
 /* -----------------------------------------------------
    INITIAL SETUP & LOCAL STORAGE
@@ -670,6 +686,9 @@ let currentPage = 0;
 let answers = JSON.parse(localStorage.getItem("readiness_answers") || "{}");
 let storedPage = parseInt(localStorage.getItem("readiness_page") || "0");
 
+// We'll track progress for pages 1–6
+const TOTAL_PROGRESS_PAGES = 6;
+
 // Reset ONLY on next visit AFTER completion
 if (storedPage >= 6) {
   localStorage.removeItem("readiness_answers");
@@ -678,7 +697,31 @@ if (storedPage >= 6) {
 }
 
 currentPage = storedPage;
-showPage(currentPage);
+
+
+/* -----------------------------------------------------
+   PROGRESS BAR (FIXED TOP)
+-----------------------------------------------------*/
+const progressBar = document.createElement("div");
+progressBar.style.position = "fixed";
+progressBar.style.top = "0";
+progressBar.style.left = "0";
+progressBar.style.height = "5px";
+progressBar.style.width = "0%";
+progressBar.style.zIndex = "9999";
+progressBar.style.background = "linear-gradient(90deg,#ffe5ba,#f0b76b,#b9782f)";
+progressBar.style.transition = "width 0.3s ease";
+document.body.appendChild(progressBar);
+
+function updateProgress() {
+  if (currentPage === 0) {
+    progressBar.style.width = "0%";
+    return;
+  }
+  let percent = (currentPage / TOTAL_PROGRESS_PAGES) * 100;
+  if (percent > 100) percent = 100;
+  progressBar.style.width = percent + "%";
+}
 
 
 /* -----------------------------------------------------
@@ -699,8 +742,13 @@ function showPage(n) {
     }, 150);
   }
 
+  updateProgress();
   checkSectionCompletion();
 }
+
+// Initial page render
+showPage(currentPage);
+
 
 // Start
 const startBtn = document.getElementById("startBtn");
@@ -708,20 +756,17 @@ if (startBtn) startBtn.addEventListener("click", () => showPage(1));
 
 
 /* -----------------------------------------------------
-   NEXT BUTTON HANDLING WITH VALIDATION + SCROLL
+   NEXT BUTTON HANDLING WITH VALIDATION
 -----------------------------------------------------*/
 document.querySelectorAll(".next-btn").forEach(btn => {
   btn.addEventListener("click", () => {
-    
     const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
     const qboxes = section.querySelectorAll(".q-box");
     const unanswered = [...qboxes].filter(q => !answers[q.dataset.key]);
 
     if (unanswered.length > 0) {
-      // highlight first missing answer
       unanswered[0].classList.add("attention");
       unanswered[0].scrollIntoView({ behavior: "smooth", block: "center" });
-
       setTimeout(() => unanswered[0].classList.remove("attention"), 800);
       return;
     }
@@ -730,9 +775,16 @@ document.querySelectorAll(".next-btn").forEach(btn => {
   });
 });
 
-  
+
+/* -----------------------------------------------------
+   PREVIOUS BUTTON HANDLING
+-----------------------------------------------------*/
 document.querySelectorAll(".prev-btn").forEach(btn => {
-  btn.addEventListener("click", () => showPage(currentPage - 1));
+  btn.addEventListener("click", () => {
+    if (currentPage > 0) {
+      showPage(currentPage - 1);
+    }
+  });
 });
 
 
@@ -752,8 +804,6 @@ document.querySelectorAll(".q-box").forEach(qbox => {
 
   buttons.forEach(btn => {
     btn.addEventListener("click", () => {
-
-      // Save answer
       answers[key] = btn.dataset.val;
       localStorage.setItem("readiness_answers", JSON.stringify(answers));
 
@@ -761,7 +811,7 @@ document.querySelectorAll(".q-box").forEach(qbox => {
       buttons.forEach(b => b.classList.remove("selected"));
       btn.classList.add("selected");
 
-      // Intelligent Scroll: move only to next question
+      // Intelligent Scroll: move only to next question (mobile)
       if (window.innerWidth <= 900) {
         setTimeout(() => {
           const next = qbox.nextElementSibling?.closest(".q-box");
@@ -771,33 +821,29 @@ document.querySelectorAll(".q-box").forEach(qbox => {
         }, 120);
       }
 
-
       checkSectionCompletion();
     });
   });
 });
 
 
-  
 /* -----------------------------------------------------
    SHOW/HIDE NEXT OR FINISH BUTTON BASED ON COMPLETION
 -----------------------------------------------------*/
 function checkSectionCompletion() {
   const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
-  const qboxes = section.querySelectorAll(".q-box");
+  if (!section) return;
 
+  const qboxes = section.querySelectorAll(".q-box");
   const nextBtn = section.querySelector(".next-btn");
   const finishBtn = document.getElementById("finishBtn");
 
   const unanswered = [...qboxes].filter(q => !answers[q.dataset.key]);
 
-  // For normal sections
   if (nextBtn) {
     nextBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
   }
-
-  // For final section
-  if (finishBtn) {
+  if (finishBtn && currentPage === 5) {
     finishBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
   }
 }
@@ -812,8 +858,6 @@ if (finishBtn) {
     const total = calculateScore();
     localStorage.setItem("readiness_score", total);
     showPage(6); // navigate to lead page
-
-    // Mark completed but reset only on next visit
     localStorage.setItem("readiness_page", "6");
   });
 }
@@ -826,109 +870,65 @@ function calculateScore() {
   return score;
 }
 
-function renderScore(score) {
-  const scoreEl = document.getElementById("scoreDisplay");
-  const labelEl = document.getElementById("scoreLabel");
-  const msgEl = document.getElementById("scoreMessage");
 
-  scoreEl.textContent = score;
+/* -----------------------------------------------------
+   LEAD FORM SUBMISSION (Google Sheet + Show Score)
+-----------------------------------------------------*/
+const leadForm = document.getElementById("leadForm");
+const statusEl = document.getElementById("leadStatus");
 
-  if (score <= 8) {
-    labelEl.textContent = "Not Ready";
-    msgEl.textContent = "Your financial base and behaviour patterns need strengthening.";
-  } else if (score <= 15) {
-    labelEl.textContent = "Medium Risk Zone";
-    msgEl.textContent = "Some readiness exists, but key areas need improvement.";
-  } else if (score <= 21) {
-    labelEl.textContent = "Almost Ready";
-    msgEl.textContent = "You’re close! A little more discipline and clarity will help.";
-  } else {
-    labelEl.textContent = "Fully Ready";
-    msgEl.textContent = "Strong foundation, discipline and clarity — you are SIP-ready.";
-  }
-}
-
-  const leadForm = document.getElementById("leadForm");
-  const statusEl = document.getElementById("leadStatus");
-  
-  leadForm?.addEventListener("submit", (e) => {
+if (leadForm) {
+  leadForm.addEventListener("submit", (e) => {
     e.preventDefault();
-  
-    const name = document.getElementById("name").value;
-    const mobile = document.getElementById("mobile").value;
-    const email = document.getElementById("email").value;
-    const score = localStorage.getItem("readiness_score");
-    const source = "sip_readiness";
-  
-    // 'answers' is the global object that stores q1..q25
+
+    const nameInput = document.getElementById("name");
+    const mobileInput = document.getElementById("mobile");
+    const emailInput = document.getElementById("email");
+
+    let score = localStorage.getItem("readiness_score") || "0";
+    score = Number(score);
+
     const payload = {
-      name,
-      mobile,
-      email,
+      name: nameInput?.value || "",
+      mobile: mobileInput?.value || "",
+      email: emailInput?.value || "",
       score,
       answers,
-      source,
+      source: "sip_readiness",
     };
-  
-    // 🔗 Your Web App URL from Apps Script (step 2)
+
     const webhook = "https://script.google.com/macros/s/AKfycbw-belwpkcLadQvVzgq0cwq_-HD2KBk0vZFyvqHQF3GrYVgpsU8_30Z6jOS2wwzM-ot/exec";
-  
-    // Fire-and-forget POST (no CORS errors, we don't read response)
+
+    // Fire-and-forget POST (no CORS blocking)
     fetch(webhook, {
       method: "POST",
-      mode: "no-cors", // <- IMPORTANT: stops browser from blocking on CORS
+      mode: "no-cors",
       headers: {
-        "Content-Type": "text/plain;charset=utf-8", // simple request, no preflight
+        "Content-Type": "text/plain;charset=utf-8",
       },
       body: JSON.stringify(payload),
     }).catch((err) => {
       console.error("Lead submit error:", err);
-      // Even if this errors at network level, user still sees the score.
     });
-  
-    statusEl.textContent = "Thank you! Calculating your score...";
-  
+
+    if (statusEl) {
+      statusEl.textContent = "Thank you! Generating your SIP Readiness Report...";
+    }
+
     setTimeout(() => {
+      showPage(6);       // Ensure we are on page 6
       showFinalScore(score);
     }, 800);
   });
+}
 
 
-
-// function showFinalScore(score) {
-//   const page = document.querySelector('[data-page="6"]');
-
-//   page.innerHTML = `
-//     <h1>Your SIP Readiness Score</h1>
-//     <div class="summary-box">
-//       <div class="score">${score}</div>
-//       <div class="score-label">${getScoreLabel(score)}</div>
-//       <div class="note">${getScoreMessage(score)}</div>
-//     </div>
-//     <div class="nav-row" style="flex-direction:column; gap:12px;">
-//       <a class="btn btn-primary" href="funnel.html">Proceed to Stage 2</a>
-//       <a class="btn btn-ghost" href="index.html">← Back to Website</a>
-//     </div>
-//   `;
-// }
-
-// function getScoreLabel(score) {
-//   if (score <= 8) return "Not Ready";
-//   if (score <= 15) return "Medium Risk Zone";
-//   if (score <= 21) return "Almost Ready";
-//   return "Fully Ready";
-// }
-
-// function getScoreMessage(score) {
-//   if (score <= 8) return "Your financial base and behaviour patterns need strengthening.";
-//   if (score <= 15) return "Some readiness exists, but key areas need improvement.";
-//   if (score <= 21) return "You’re close! A little more discipline and clarity will help.";
-//   return "Strong foundation, discipline and clarity — you are SIP-ready.";
-// }
-
-
-  function showFinalScore(score) {
+/* -----------------------------------------------------
+   SCORE REPORT RENDERING
+-----------------------------------------------------*/
+function showFinalScore(score) {
   const page = document.querySelector('[data-page="6"]');
+  if (!page) return;
 
   const label = getScoreLabel(score);
   const message = getScoreMessage(score);
@@ -949,8 +949,8 @@ function renderScore(score) {
     </div>
 
     <div class="summary-box" style="margin-top:20px;">
-      <h3 style="margin-bottom:8px; font-size:1.1rem; color:#ffe5ba;">How to read this score</h3>
-      <ul style="line-height:1.7; color:#bbc2da; font-size:0.95rem;">
+      <h3 style="margin-bottom:8px; font-size:1.05rem; color:#ffe5ba;">How to read this score</h3>
+      <ul style="line-height:1.7; color:#bbc2da; font-size:0.95rem; padding-left:18px; margin:0;">
         <li><b>0–8</b> → Not yet ready. Focus on building emergency funds, clearing high-interest debt and clarifying goals first.</li>
         <li><b>9–15</b> → Medium risk zone. Work with an adviser to strengthen your foundation before committing large SIPs.</li>
         <li><b>16–21</b> → Almost ready. A few gaps exist; correct them with guidance before increasing risk or amount.</li>
@@ -959,10 +959,11 @@ function renderScore(score) {
     </div>
 
     <div class="summary-box" style="margin-top:20px;">
-      <h3 style="margin-bottom:8px; font-size:1.1rem; color:#ffe5ba;">What this means</h3>
-      <p style="line-height:1.6; color:#bbc2da;">
-        This score reflects your preparedness across 5 pillars — foundation, clarity, behaviour, product understanding, and discipline. 
-        Higher scores suggest stronger long-term consistency & clarity, essential for wealth creation through SIP.
+      <h3 style="margin-bottom:8px; font-size:1.05rem; color:#ffe5ba;">What this means for you</h3>
+      <p style="line-height:1.6; color:#bbc2da; font-size:0.94rem; margin:0;">
+        This score reflects your preparedness across <b>5 pillars</b> — foundation, clarity, behaviour, product understanding, and discipline.
+        Higher scores suggest stronger alignment with long-term wealth creation through SIPs. Lower scores simply indicate areas where
+        a structured plan and guidance can add a lot of value.
       </p>
     </div>
 
@@ -973,27 +974,46 @@ function renderScore(score) {
   `;
 }
 
+function getScoreLabel(score) {
+  if (score <= 8) return "Not Ready";
+  if (score <= 15) return "Medium Risk Zone";
+  if (score <= 21) return "Almost Ready";
+  return "Fully Ready";
+}
+
+function getScoreMessage(score) {
+  if (score <= 8) {
+    return "Your financial base and behaviour patterns need strengthening before you commit to meaningful SIPs.";
+  }
+  if (score <= 15) {
+    return "You have some readiness, but there are important gaps. With a bit of guidance, you can move to a more confident position.";
+  }
+  if (score <= 21) {
+    return "You’re close to being SIP-ready. A few refinements in discipline, clarity or product choice can make a big difference.";
+  }
+  return "You have a strong foundation, clarity and discipline. You are well-positioned to benefit from long-term SIP investing.";
+}
 
 
-  /* -----------------------------------------------------
-     WHY TOGGLE COLLAPSE
-  -----------------------------------------------------*/
-  document.querySelectorAll(".why-toggle").forEach(toggle => {
-    toggle.addEventListener("click", () => {
-      const box = toggle.nextElementSibling;
-      if (!box) return;
-  
-      if (box.style.display === "block") {
-        box.style.display = "none";
-        toggle.textContent = "Why it matters ▼";
-      } else {
-        box.style.display = "block";
-        toggle.textContent = "Why it matters ▲";
-      }
-    });
+/* -----------------------------------------------------
+   WHY TOGGLE COLLAPSE
+-----------------------------------------------------*/
+document.querySelectorAll(".why-toggle").forEach(toggle => {
+  toggle.addEventListener("click", () => {
+    const box = toggle.nextElementSibling;
+    if (!box) return;
+
+    if (box.style.display === "block") {
+      box.style.display = "none";
+      toggle.textContent = "Why it matters ▼";
+    } else {
+      box.style.display = "block";
+      toggle.textContent = "Why it matters ▲";
+    }
   });
-
+});
 
 </script>
+
 </body>
 </html>
