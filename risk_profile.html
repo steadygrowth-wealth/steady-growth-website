@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Investor Risk Profile — Steady Growth</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: radial-gradient(circle at top, #141b35 0, #050816 55%);
+      --card: rgba(6,10,28,0.94);
+      --muted: #a7afc7;
+      --accent: #f0b76b;
+      --accent-dark: #b9782f;
+      --fg: #ffffff;
+      --radius: 16px;
+      --border-soft: rgba(255,255,255,0.06);
+      --error: #ff6b6b;
+      --success: #4caf50;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: "Poppins", sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 24px 14px;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 840px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius);
+      padding: 26px;
+      box-shadow: 0 18px 36px rgba(0,0,0,0.65);
+    }
+
+    h1, h2 {
+      font-family: "Playfair Display", serif;
+      margin: 0 0 6px 0;
+      color: #ffe5ba;
+    }
+
+    .subtitle {
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    /* Section container */
+    .section-page {
+      display: none;
+      animation: fadeIn 0.25s ease forwards;
+    }
+    .section-page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Question layout */
+    .q-box {
+      border: 1px solid var(--border-soft);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      background: rgba(255,255,255,0.02);
+      transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .q-title {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .q-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .opt-row {
+      display: grid;
+      gap: 8px;
+    }
+
+    .opt-btn {
+      border-radius: 10px;
+      border: 1px solid var(--border-soft);
+      background: rgba(255,255,255,0.02);
+      padding: 9px 11px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.18s ease;
+    }
+
+    .opt-btn:hover {
+      border-color: rgba(240,183,107,0.35);
+      transform: translateY(-1px);
+      color: #fff;
+    }
+
+    .opt-btn.selected {
+      background: linear-gradient(90deg, rgba(240,183,107,0.20), rgba(240,183,107,0.06));
+      border-color: var(--accent);
+      color: #1b1406;
+      font-weight: 600;
+    }
+
+    /* Attention highlight */
+    .attention {
+      border-color: var(--error) !important;
+      box-shadow: 0 0 12px rgba(255,107,107,0.5);
+      transform: translateY(-1px);
+    }
+
+    /* Navigation */
+    .nav-row {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 10px 20px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .btn-primary {
+      background: radial-gradient(circle at 10% 20%, #ffe6c0 0, #f0b76b 35%, #b9782f 100%);
+      color: #1b1406;
+      border-color: rgba(240,183,107,0.45);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--muted);
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(255,255,255,0.45);
+      color: #fff;
+    }
+
+    /* Summary */
+    .summary-box {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-soft);
+      padding: 16px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+    }
+
+    .profile-label {
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+
+    .profile-tagline {
+      font-size: 0.92rem;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .profile-detail {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .badge-inline {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(240,183,107,0.4);
+      color: var(--accent);
+      background: rgba(240,183,107,0.08);
+      margin-bottom: 8px;
+    }
+
+    /* Lead capture form */
+    .lead-form {
+      margin-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 14px;
+    }
+
+    .field-group {
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 3px;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"] {
+      width: 100%;
+      padding: 9px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(6,10,28,0.85);
+      color: #fff;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    input::placeholder {
+      color: rgba(167,175,199,0.7);
+    }
+
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(240,183,107,0.4);
+      background: rgba(6,10,28,0.95);
+    }
+
+    .small-note {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .status-msg {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      display: none;
+    }
+
+    .status-ok {
+      color: var(--success);
+    }
+
+    .status-err {
+      color: var(--error);
+    }
+
+    @media (max-width: 640px) {
+      .card {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card" id="mainCard">
+
+      <!-- ========== SECTION 0 — INTRO ========== -->
+      <div class="section-page active" data-page="0">
+        <h1>Investor Risk Profile</h1>
+        <p class="subtitle">
+          This short assessment helps understand your comfort with risk, behaviour during market ups & downs,
+          and ability to handle volatility — so that your mutual fund plan matches <strong>who you truly are</strong> as an investor.
+        </p>
+
+        <p class="subtitle" style="font-size:0.84rem;">
+          There are 20 questions across 6 sections. Answer honestly — there are no right or wrong answers, only what fits you.
+        </p>
+
+        <div style="margin-top:22px; text-align:center;">
+          <button class="btn btn-primary" id="startBtn">Start Risk Profile</button>
+        </div>
+      </div>
+
+      <!-- ========== SECTION 1 — OBJECTIVE & MOTIVATION ========== -->
+      <div class="section-page" data-page="1">
+        <h2>1. Investment Objective & Motivation</h2>
+        <p class="subtitle">Why you invest and what you expect from your money.</p>
+
+        <!-- Q1 -->
+        <div class="q-box" data-qid="q1">
+          <div class="q-title">Primary purpose of investing</div>
+          <div class="q-desc">Choose the option that best reflects your main intention.</div>
+          <div class="opt-row">
+            <div class="opt-btn" data-score="1">Preserve capital with low risk</div>
+            <div class="opt-btn" data-score="2">Earn moderate returns with stability</div>
+            <div class="opt-btn" data-score="3">Balance growth & safety</div>
+            <div class="opt-btn" data-score="4">Long-term wealth creation with higher growth</div>
+            <div class="opt-btn" data-score="5">Maximise returns aggressively</div>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="q-box" data-qid="q2">
+          <div class="q-title">Which statement best matches your investing mindset?</div>
+          <div class="opt-row">
+            <div class="opt-btn" data-score="1">I cannot tolerate loss; capital protection matters most</div>
+            <div class="opt-btn" data-score="2">I want stability but some growth</div>
+            <div class="opt-btn" data-score="3">I’m okay with moderate growth and moderate risk</div>
+            <div class="opt-btn" data-score="4">I want strong growth even if returns fluctuate</div>
+            <div class="opt-btn" data-score="5">I’m willing to take high risks for superior growth</div>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="q-box" data-qid="q3">
+          <div class="q-title">What kind of returns would satisfy you over the long term?</div>
+          <div class="opt-row">
+            <div class="opt-btn" data-score="1">4–6% per year (FD-like)</div>
+            <div class="opt-btn" data-score="2">6–9% per year</div>
+            <div class="opt-btn" data-score="3">9–12% per year</div>
+            <div class="opt-btn" data-score="4">12–15% per year</div>
+            <div class="opt-btn" data-score="5">15%+ per year</div>
+          </div>
+        </div>
+
+        <div class="nav-row">
+          <button class="btn btn-ghost" disabled>Back</button>
+          <button class="btn btn-primary next-btn" style="display:none;">Next</button>
+        </div>
+      </div>
+
+      <!-- ========== SECTION 2 — RETURN EXPECTATION & GROWTH ORIENTATION ========== -->
+      <div class="section-page" data-page="2">
+        <h2>2. Return Expectation & Growth Orientation</h2>
+        <p class="subtitle">Your balance between stability and long-term growth.</p>
+
+        <!-- Q4 -->
+        <div class="q-box" data-qid="q4">
+          <div class="q-title">What matters more to you?</div>
+          <div class="opt-row">
+            <div class="opt-btn" data-score="1">Stability with minimal fluctuation</div>
+            <div class="opt-btn" data-score="2">Low fluctuation but decent returns</div>
+            <div class="opt-btn" data-score="3">Balanced returns and risk</div>
+            <div class="opt-btn" data-score="4">Higher returns even if temporary dips occur</div>
+            <div class="opt-btn" data-score="5">Maximum long-term growth</div>
+          </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="q-box" data-qid="q5">
+          <div class="q-title">Would you choose a fund with higher volatility if long-term return potential is high?</div>
+          <div class="opt-row">
+            <div class="opt-btn" data-score="1">Definitely not</div>
+            <div class="opt-btn" data-score="2">Probably not</div>
+            <div class="opt-btn" data-score="3">Not sure / depends</div>
+            <div class="opt-btn" data-score="4">Likely yes</div>
+            <div class="opt-btn" data-score="5">Definitely yes</div>
+          </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="q-box" data-qid="q6">
+          <div class="q-title">What do you believe about equity markets?</div>
+          <div class="opt-row">
+            <div class="opt-btn" data-score="1">Too risky, should be avoided</div>
+            <div class="opt-btn" data-score="2">Useful but only for limited exposure</div>
+            <div class="opt-btn" data-score="3">Suitable for long-term wealth creation</div>
+            <div class="opt-btn" data-score="4">Essential for growth if goal is long term</div>
+            <div class="opt-btn" data-score="5">Best route to fast wealth creation</div>
+          </div>
+        </div>
+
+        <div class="nav-row">
+          <button class="btn btn-ghost prev-btn">Back</button>
+          <button class="btn btn-primary next-btn" style="display:none;">Next</button>
+        </div>
+      </div>
+
+      <!-- ========== SECTION 3 — RISK TOLERANCE (PSYCHOLOGICAL COMFORT) ========== -->
+      <div class="section-page" data-page="3">
+        <h2>3. Risk Tolerance & Comfort with Volatility</h2>
+        <p class="subtitle">How you feel and behave when markets move.</p>
+
+        <!-- Q7 -->
+        <div class="q-box" data-qid="q7">
+          <div class="q-title">If your portfolio drops 10% in a month, how do you feel?</div>
+          <div class="opt-row">
+            <div class="opt-btn" data-score="1">Extremely stressed, want to exit</div>
+            <div class="opt-btn" data-score="2">Uncomfortable but may reduce allocation</div>
+            <div class="opt-btn" data-score="3">Neutral — I understand volatility happens</div>
+            <div class="opt-btn" data-score="4">Comfortable — I will continue investing</div>
+            <div class="opt-btn" data-score="5">Excited to invest more at lower prices</div>
+          </div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="q-box" data-qid="q8">
+          <div class="q-title">If a fund underperforms for 1–2 years, what will you do?</div>
+          <div class="opt-row">
+            <div class="opt-btn" data-score="1">Exit quickly</div>
+            <div class="opt-btn" data-score="2">Consider shifting to safer funds</div>
+            <div class="opt-btn" data-score="3">Review and hold for some time</div>
+            <div class="opt-btn" data-score="4">Continue SIP as planned</div>
+            <div class="opt-btn" data-score="5">Increase exposure if long-term thesis is intact</div>
+          </div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="q-box" data-qid="q9">
+          <div class="q-title">How often do you check your portfolio?</div>
+          <div class="opt-row">
+            <div class="opt-btn" data-score="1">Daily</div>
+            <div class="opt-btn" data-score="2">Weekly</div>
+            <div class="opt-btn" data-score="3">Monthly</div>
+            <div class="opt-btn" data-score="4">Quarterly</div>
+            <div class="opt-btn" data-score="5">Yearly / rarely</div>
+          </div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="q-box" data-qid="q10">
+          <div class="q-title">How would you describe your personality financially?</div>
+          <div class="opt-row">
+            <div class="opt-btn" data-score="1">Very cautious</div>
+            <div class="opt-btn" data-score="2">Cautious</div>
+            <div class="opt-btn" data-score="3">Balanced</div>
+            <div class="opt-btn" data-score="4">Opportunistic</div>
+            <div class="opt-btn" data-score="5">High-risk taker</div>
+          </div>
+        </div>
+
+        <div class="nav-row">
+          <button class="btn btn-ghost prev-btn">Back</button>
+          <button class="btn btn-primary next-btn" style="display:none;">Next</button>
+        </div>
+      </div>
+
+      <!-- ========== SECTION 4 — LOSS BEHAVIOUR & REACTIONS ========== -->
+      <div class="section-page" data-page="4">
+        <h2>4. Loss Behaviour & Market Reactions</h2>
+        <p class="subtitle">How you respond when others panic or markets move sharply.</p>
+
+        <!-- Q11 -->
+        <div class="q-box" data-qid="q11">
+          <div class="q-title">If markets fall 25%, what is most likely?</div>
+          <div class="opt-row">
+            <div class="opt-btn" data-score="1">Stop SIP and withdraw investments</div>
+            <div class="opt-btn" data-score="2">Pause and wait without investing more</div>
+            <div class="opt-btn" data-score="3">Continue normally</div>
+            <div class="opt-btn" data-score="4">Continue and invest more gradually</div>
+            <div class="opt-btn" data-score="5">Invest aggressively to take advantage of lower prices</div>
+          </div>
+        </div>
+
+        <!-- Q12 -->
+        <div class="q-box" data-qid="q12">
+          <div class="q-title">Have you ever panicked & exited an investment at a loss?</div>
+          <div class="opt-row">
+            <div class="opt-btn" data-score="1">Yes, multiple times</div>
+            <div class="opt-btn" data-score="2">Yes, once</div>
+            <div class="opt-btn" data-score="3">Maybe / not sure</div>
+            <div class="opt-btn" data-score="4">No, rarely</div>
+            <div class="opt-btn" data-score="5">Never</div>
+          </div>
+        </div>
+
+        <!-- Q13 -->
+        <div class="q-box" data-qid="q13">
+          <div class="q-title">When seeing others gain more in markets, do you feel pressure to chase returns?</div>
+          <div class="opt-row">
+            <div class="opt-btn" data-score="1">Very strongly</div>
+            <div class="opt-btn" data-score="2">Somewhat</div>
+            <div class="opt-btn" data-score="3">A little</div>
+            <div class="opt-btn" data-score="4">Rarely</div>
+            <div class="opt-btn" data-score="5">Not at all</div>
+          </div>
+        </div>
+
+        <!-- Q14 -->
+        <div class="q-box" data-qid="q14">
+          <div class="q-title">If a new trending fund rises sharply, what do you do?</div>
+          <div class="opt-row">
+            <div class="opt-btn" data-score="1">Want to switch immediately</div>
+            <div class="opt-btn" data-score="2">Consider switching partially</div>
+            <div class="opt-btn" data-score="3">Analyse but usually stay with plan</div>
+            <div class="opt-btn" data-score="4">Continue my plan confidently</div>
+            <div class="opt-btn" data-score="5">I prefer entering after corrections, not at peaks</div>
+          </div>
+        </div>
+
+        <div class="nav-row">
+          <button class="btn btn-ghost prev-btn">Back</button>
+          <button class="btn btn-primary next-btn" style="display:none;">Next</button>
+        </div>
+      </div>
+
+      <!-- ========== SECTION 5 — RISK CAPACITY (FINANCIAL ABILITY) ========== -->
+      <div class="section-page" data-page="5">
+        <h2>5. Risk Capacity & Financial Cushion</h2>
+        <p class="subtitle">Your ability to handle risk based on income and buffers.</p>
+
+        <!-- Q15 -->
+        <div class="q-box" data-qid="q15">
+          <div class="q-title">How stable is your income?</div>
+          <div class="opt-row">
+            <div class="opt-btn" data-score="1">Very unstable</div>
+            <div class="opt-btn" data-score="2">Somewhat unstable</div>
+            <div class="opt-btn" data-score="3">Moderately stable</div>
+            <div class="opt-btn" data-score="4">Stable</div>
+            <div class="opt-btn" data-score="5">Very stable and predictable</div>
+          </div>
+        </div>
+
+        <!-- Q16 -->
+        <div class="q-box" data-qid="q16">
+          <div class="q-title">Do you have emergency savings?</div>
+          <div class="opt-row">
+            <div class="opt-btn" data-score="1">No savings</div>
+            <div class="opt-btn" data-score="2">Less than 1 month of expenses</div>
+            <div class="opt-btn" data-score="3">1–3 months of expenses</div>
+            <div class="opt-btn" data-score="4">3–6 months of expenses</div>
+            <div class="opt-btn" data-score="5">More than 6 months of expenses</div>
+          </div>
+        </div>
+
+        <!-- Q17 -->
+        <div class="q-box" data-qid="q17">
+          <div class="q-title">If you lose your income temporarily, how long can you continue SIP comfortably?</div>
+          <div class="opt-row">
+            <div class="opt-btn" data-score="1">Less than 1 month</div>
+            <div class="opt-btn" data-score="2">1–3 months</div>
+            <div class="opt-btn" data-score="3">3–6 months</div>
+            <div class="opt-btn" data-score="4">6–12 months</div>
+            <div class="opt-btn" data-score="5">More than 12 months</div>
+          </div>
+        </div>
+
+        <div class="nav-row">
+          <button class="btn btn-ghost prev-btn">Back</button>
+          <button class="btn btn-primary next-btn" style="display:none;">Next</button>
+        </div>
+      </div>
+
+      <!-- ========== SECTION 6 — LIQUIDITY NEEDS & TIME HORIZON ========== -->
+      <div class="section-page" data-page="6">
+        <h2>6. Liquidity Needs & Time Horizon</h2>
+        <p class="subtitle">How long you can stay invested and how urgently you need funds.</p>
+
+        <!-- Q18 -->
+        <div class="q-box" data-qid="q18">
+          <div class="q-title">How soon do you expect to need this invested money?</div>
+          <div class="opt-row">
+            <div class="opt-btn" data-score="1">Within 1 year</div>
+            <div class="opt-btn" data-score="2">1–3 years</div>
+            <div class="opt-btn" data-score="3">3–5 years</div>
+            <div class="opt-btn" data-score="4">5–10 years</div>
+            <div class="opt-btn" data-score="5">More than 10 years</div>
+          </div>
+        </div>
+
+        <!-- Q19 -->
+        <div class="q-box" data-qid="q19">
+          <div class="q-title">If your goal maturity comes during a market crash, what will you do?</div>
+          <div class="opt-row">
+            <div class="opt-btn" data-score="1">Withdraw everything immediately</div>
+            <div class="opt-btn" data-score="2">Redeem gradually even if values are low</div>
+            <div class="opt-btn" data-score="3">Decide based on advice at that time</div>
+            <div class="opt-btn" data-score="4">Likely continue until markets recover</div>
+            <div class="opt-btn" data-score="5">Definitely continue and withdraw when valuations improve</div>
+          </div>
+        </div>
+
+        <!-- Q20 -->
+        <div class="q-box" data-qid="q20">
+          <div class="q-title">How long are you comfortable staying invested to achieve your major goals?</div>
+          <div class="opt-row">
+            <div class="opt-btn" data-score="1">Short-term (less than 3 years)</div>
+            <div class="opt-btn" data-score="2">Medium term (3–5 years)</div>
+            <div class="opt-btn" data-score="3">5–7 years</div>
+            <div class="opt-btn" data-score="4">10+ years</div>
+            <div class="opt-btn" data-score="5">As long as required for long-term wealth creation</div>
+          </div>
+        </div>
+
+        <div class="nav-row">
+          <button class="btn btn-ghost prev-btn">Back</button>
+          <button class="btn btn-primary" id="finishBtn" style="display:none;">View My Investor Profile</button>
+        </div>
+      </div>
+
+      <!-- ========== SECTION 7 — SUMMARY & LEAD CAPTURE ========== -->
+      <div class="section-page" data-page="7">
+        <h1>Your Investor Profile</h1>
+        <p class="subtitle">
+          Based on your responses, here is an approximate view of your investing personality.
+          This is not a label for life, but a starting point to align your mutual fund strategy with your behaviour and comfort level.
+        </p>
+
+        <div class="summary-box">
+          <div class="badge-inline" id="profileBadge">Profile</div>
+          <div class="profile-label" id="profileLabel">Profile not evaluated</div>
+          <div class="profile-tagline" id="profileTagline"></div>
+
+          <div class="profile-detail" id="profileDetail"></div>
+          <div class="small-note">
+            This profile helps decide an appropriate mix between equity, debt and hybrid funds — not which exact scheme to pick.
+          </div>
+        </div>
+
+        <div class="lead-form">
+          <p class="subtitle" style="margin-bottom:10px;">
+            If you’d like, I can translate this profile into a <strong>simple, personalised mutual fund plan</strong>
+            tailored to your goals and current comfort with risk.
+          </p>
+
+          <form id="leadForm" novalidate>
+            <div class="field-group">
+              <label for="leadName">Full Name*</label>
+              <input type="text" id="leadName" placeholder="Your name" required />
+            </div>
+
+            <div class="field-group">
+              <label for="leadPhone">Mobile Number*</label>
+              <input type="tel" id="leadPhone" placeholder="10-digit mobile number" required />
+            </div>
+
+            <div class="field-group">
+              <label for="leadEmail">Email (optional)</label>
+              <input type="email" id="leadEmail" placeholder="you@example.com" />
+            </div>
+
+            <p class="small-note">
+              By submitting, you authorise me to contact you for mutual fund related information and services.
+            </p>
+
+            <button type="submit" class="btn btn-primary" id="leadSubmitBtn">Share My Details</button>
+            <div id="leadStatus" class="status-msg"></div>
+          </form>
+
+          <div class="nav-row" style="margin-top:18px; flex-direction:column; align-items:flex-start; gap:8px;">
+            <a class="btn btn-primary"
+               href="https://api.whatsapp.com/send?phone=919211310914&text=Hi,+I+completed+the+Risk+Profile+assessment+and+would+like+to+discuss+a+plan."
+               target="_blank">
+               Message on WhatsApp
+            </a>
+            <a class="btn btn-ghost" href="index.html">← Back to Website</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<script>
+/* ---------------------------------------
+   INITIAL SETUP & LOCAL STORAGE
+----------------------------------------*/
+const pages = document.querySelectorAll(".section-page");
+let currentPage = 0;
+let rpAnswers = JSON.parse(localStorage.getItem("rp_answers") || "{}");
+let storedPage = parseInt(localStorage.getItem("rp_page") || "0");
+
+// If previously completed (page 7), reset on next visit
+if (storedPage >= 7) {
+  localStorage.removeItem("rp_answers");
+  localStorage.removeItem("rp_page");
+  storedPage = 0;
+}
+
+currentPage = storedPage;
+showPage(currentPage);
+
+/* ---------------------------------------
+   NAVIGATION
+----------------------------------------*/
+function showPage(n) {
+  pages.forEach(p => p.classList.remove("active"));
+  const page = pages[n];
+  if (page) {
+    page.classList.add("active");
+    currentPage = n;
+    localStorage.setItem("rp_page", String(n));
+
+    // Smooth scroll to section top on mobile
+    if (window.innerWidth <= 900) {
+      setTimeout(() => {
+        page.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 120);
+    }
+
+    checkSectionCompletion();  // update Next/Finish visibility
+  }
+}
+
+const startBtn = document.getElementById("startBtn");
+if (startBtn) {
+  startBtn.addEventListener("click", () => showPage(1));
+}
+
+// Next with validation
+document.querySelectorAll(".next-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
+    if (!section) return;
+    const qboxes = section.querySelectorAll(".q-box");
+    const unanswered = [...qboxes].filter(q => !rpAnswers[q.dataset.qid]);
+
+    if (unanswered.length > 0) {
+      const first = unanswered[0];
+      first.classList.add("attention");
+      first.scrollIntoView({ behavior: "smooth", block: "center" });
+      setTimeout(() => first.classList.remove("attention"), 800);
+      return;
+    }
+
+    showPage(currentPage + 1);
+  });
+});
+
+// Back
+document.querySelectorAll(".prev-btn").forEach(btn => {
+  btn.addEventListener("click", () => showPage(currentPage - 1));
+});
+
+/* ---------------------------------------
+   OPTION SELECTION LOGIC
+----------------------------------------*/
+document.querySelectorAll(".q-box").forEach(qbox => {
+  const qid = qbox.dataset.qid;
+  const optButtons = qbox.querySelectorAll(".opt-btn");
+
+  // Restore previous answer
+  if (rpAnswers[qid]) {
+    optButtons.forEach(b => {
+      if (Number(b.dataset.score) === rpAnswers[qid]) {
+        b.classList.add("selected");
+      }
+    });
+  }
+
+  optButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const score = Number(btn.dataset.score) || 0;
+      rpAnswers[qid] = score;
+      localStorage.setItem("rp_answers", JSON.stringify(rpAnswers));
+
+      // visual state
+      optButtons.forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+
+      // Scroll to next question (mobile)
+      if (window.innerWidth <= 900) {
+        setTimeout(() => {
+          const nextQ = qbox.nextElementSibling && qbox.nextElementSibling.classList.contains("q-box")
+            ? qbox.nextElementSibling
+            : null;
+          if (nextQ) {
+            nextQ.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }, 100);
+      }
+
+      checkSectionCompletion();
+    });
+  });
+});
+
+/* ---------------------------------------
+   SHOW/HIDE NEXT OR FINISH
+----------------------------------------*/
+function checkSectionCompletion() {
+  const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
+  if (!section) return;
+
+  const qboxes = section.querySelectorAll(".q-box");
+  const unanswered = [...qboxes].filter(q => !rpAnswers[q.dataset.qid]);
+
+  const nextBtn = section.querySelector(".next-btn");
+  const finishBtn = document.getElementById("finishBtn");
+
+  if (nextBtn) {
+    nextBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
+  }
+
+  if (finishBtn && section.contains(finishBtn)) {
+    finishBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
+  }
+}
+
+/* ---------------------------------------
+   FINISH → CALCULATE PROFILE
+----------------------------------------*/
+const finishBtn = document.getElementById("finishBtn");
+if (finishBtn) {
+  finishBtn.addEventListener("click", () => {
+    const total = calcScore();
+    const profile = classifyProfile(total);
+
+    renderProfile(profile);
+    showPage(7);
+
+    // Mark as completed — next visit will reset at load
+    localStorage.setItem("rp_page", "7");
+  });
+}
+
+function calcScore() {
+  let score = 0;
+  for (let i = 1; i <= 20; i++) {
+    const key = "q" + i;
+    score += Number(rpAnswers[key] || 0);
+  }
+  return score;
+}
+
+function classifyProfile(score) {
+  // Range: 20–100
+  let category = "";
+  let tagline = "";
+  let detail = "";
+
+  if (score <= 39) {
+    category = "Conservative";
+    tagline = "Capital protection and stability matter more than chasing high returns.";
+    detail =
+      "You prefer lower volatility and steady growth. A portfolio tilted towards high-quality debt and conservative hybrid funds " +
+      "is usually more suitable than very aggressive equity-heavy strategies.";
+  } else if (score <= 59) {
+    category = "Moderately Conservative";
+    tagline = "You are open to some risk, but prefer visible stability and comfort.";
+    detail =
+      "You can accept limited volatility for better returns, but capital safety still matters a lot. A mix with larger allocation to " +
+      "debt and balanced or conservative hybrid funds may be appropriate, with controlled equity exposure.";
+  } else if (score <= 74) {
+    category = "Balanced";
+    tagline = "You are comfortable with a healthy balance between growth and stability.";
+    detail =
+      "You can handle reasonable fluctuations in pursuit of better long-term returns. A balanced allocation across equity, hybrid " +
+      "and debt funds — aligned to your goals and time horizon — typically suits this profile.";
+  } else if (score <= 89) {
+    category = "Moderately Aggressive";
+    tagline = "You are comfortable with volatility in exchange for stronger long-term growth.";
+    detail =
+      "You understand that markets move in cycles and are willing to stay invested through them. A portfolio with higher equity " +
+      "allocation, supported by some stabilising debt/hybrid portion, may suit your profile.";
+  } else {
+    category = "Aggressive";
+    tagline = "You are willing to take meaningful risk and stay invested for long-term wealth creation.";
+    detail =
+      "You are comfortable with significant short-term fluctuations in pursuit of superior growth. Higher equity allocation across " +
+      "diversified equity funds may be suitable, provided your financial base and time horizon support this stance.";
+  }
+
+  return { score, category, tagline, detail };
+}
+
+function renderProfile(p) {
+  const badge = document.getElementById("profileBadge");
+  const label = document.getElementById("profileLabel");
+  const tagline = document.getElementById("profileTagline");
+  const detail = document.getElementById("profileDetail");
+
+  if (badge) badge.textContent = "Investor Profile";
+  if (label) label.textContent = p.category;
+  if (tagline) tagline.textContent = p.tagline;
+  if (detail) detail.textContent = p.detail;
+}
+
+/* ---------------------------------------
+   LEAD FORM → GOOGLE SHEET (APPS SCRIPT)
+----------------------------------------*/
+const leadForm = document.getElementById("leadForm");
+const leadStatus = document.getElementById("leadStatus");
+const leadSubmitBtn = document.getElementById("leadSubmitBtn");
+
+if (leadForm) {
+  leadForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("leadName").value.trim();
+    const phone = document.getElementById("leadPhone").value.trim();
+    const email = document.getElementById("leadEmail").value.trim();
+
+    if (!name) {
+      showLeadStatus("Please enter your name.", true);
+      return;
+    }
+    if (!/^[0-9]{10}$/.test(phone)) {
+      showLeadStatus("Please enter a valid 10-digit mobile number.", true);
+      return;
+    }
+
+    const finalScore = calcScore();
+    const profile = classifyProfile(finalScore);
+
+    const payload = {
+      type: "risk_profile",
+      name,
+      phone,
+      email,
+      score: finalScore,
+      category: profile.category,
+      answers: rpAnswers,
+      timestamp: new Date().toISOString(),
+      arn: "ARN-285834"
+    };
+
+    if (leadSubmitBtn) {
+      leadSubmitBtn.disabled = true;
+      leadSubmitBtn.textContent = "Submitting…";
+    }
+    showLeadStatus("Submitting your details…", false);
+
+    try {
+      await fetch("https://script.google.com/macros/s/AKfycbwEcCOcMxezlGTw4xH8ip8SdpNtjV0f5Rhon8aoWhQunijGV0rx3SAzDGQh8ChN0-chtA/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      showLeadStatus("Thank you. Your profile has been recorded — I will review it personally and get in touch with a suggested plan.", false, true);
+    } catch (err) {
+      showLeadStatus("Something went wrong. Please try again or message me on WhatsApp.", true);
+    } finally {
+      if (leadSubmitBtn) {
+        leadSubmitBtn.disabled = false;
+        leadSubmitBtn.textContent = "Share My Details";
+      }
+    }
+  });
+}
+
+function showLeadStatus(msg, isError = false, isSuccess = false) {
+  if (!leadStatus) return;
+  leadStatus.style.display = "block";
+  leadStatus.textContent = msg;
+  leadStatus.classList.remove("status-ok", "status-err");
+  if (isError) leadStatus.classList.add("status-err");
+  else if (isSuccess) leadStatus.classList.add("status-ok");
+}
+</script>
+</body>
+</html>
