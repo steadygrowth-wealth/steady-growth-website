@@ -612,7 +612,7 @@
 
       </div>
 
-      <!-- ========== SECTION 6 — SUMMARY PAGE ========== -->
+      <!-- <!-- ========== SECTION 6 — SUMMARY PAGE ========== -->
       <div class="section-page" data-page="6">
         <h1>Your SIP Readiness Score</h1>
 
@@ -630,7 +630,34 @@
           </a>
           <a class="btn btn-ghost" href="index.html">← Back to Website</a>
         </div>
+      </div> -->
+      <!-- ========== SECTION 6 — LEAD CAPTURE PAGE ========== -->
+      <div class="section-page" data-page="6">
+        <h1>Your SIP Readiness Score is Ready!</h1>
+        <p class="subtitle" style="text-align:center;">
+          Enter your details to view your personalised SIP Readiness Score.
+        </p>
+      
+        <div class="summary-box" style="max-width:520px; margin: auto;">
+          <form id="leadForm">
+            <input type="text" id="name" placeholder="Full Name" required
+                   style="width:100%; padding:10px; border-radius:10px; margin-bottom:10px; border:1px solid #333;">
+      
+            <input type="tel" id="mobile" placeholder="Mobile Number" required
+                   style="width:100%; padding:10px; border-radius:10px; margin-bottom:10px; border:1px solid #333;">
+      
+            <input type="email" id="email" placeholder="Email Address" required
+                   style="width:100%; padding:10px; border-radius:10px; margin-bottom:14px; border:1px solid #333;">
+      
+            <button type="submit" class="btn btn-primary" style="width:100%;">
+              View My Score
+            </button>
+          </form>
+        </div>
+      
+        <p id="leadStatus" style="text-align:center; margin-top:10px; font-size:0.9rem; color:var(--accent);"></p>
       </div>
+
 
     </div>
   </div>
