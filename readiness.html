@@ -677,6 +677,20 @@ if (startBtn) startBtn.addEventListener("click", () => showPage(1));
 /* Navigation handling */
 document.querySelectorAll(".next-btn").forEach(btn => {
   btn.addEventListener("click", () => {
+
+    // Get all questions in current section
+    const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
+    const qboxes = section.querySelectorAll(".q-box");
+
+    // Find unanswered questions
+    const unanswered = [...qboxes].filter(q => !answers[q.dataset.key]);
+
+    if (unanswered.length > 0) {
+      alert("Please answer all questions before moving ahead.");
+      return; // STOP navigation
+    }
+
+    // If all answered → move forward
     showPage(currentPage + 1);
   });
 });
