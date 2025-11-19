@@ -666,6 +666,8 @@ function showPage(n) {
 
   currentPage = n;
   localStorage.setItem("readiness_page", String(n));
+
+  checkSectionCompletion(); // required for resume logic
 }
 
 
