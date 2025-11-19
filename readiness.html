@@ -895,35 +895,82 @@ function renderScore(score) {
 
 
 
-function showFinalScore(score) {
+// function showFinalScore(score) {
+//   const page = document.querySelector('[data-page="6"]');
+
+//   page.innerHTML = `
+//     <h1>Your SIP Readiness Score</h1>
+//     <div class="summary-box">
+//       <div class="score">${score}</div>
+//       <div class="score-label">${getScoreLabel(score)}</div>
+//       <div class="note">${getScoreMessage(score)}</div>
+//     </div>
+//     <div class="nav-row" style="flex-direction:column; gap:12px;">
+//       <a class="btn btn-primary" href="funnel.html">Proceed to Stage 2</a>
+//       <a class="btn btn-ghost" href="index.html">← Back to Website</a>
+//     </div>
+//   `;
+// }
+
+// function getScoreLabel(score) {
+//   if (score <= 8) return "Not Ready";
+//   if (score <= 15) return "Medium Risk Zone";
+//   if (score <= 21) return "Almost Ready";
+//   return "Fully Ready";
+// }
+
+// function getScoreMessage(score) {
+//   if (score <= 8) return "Your financial base and behaviour patterns need strengthening.";
+//   if (score <= 15) return "Some readiness exists, but key areas need improvement.";
+//   if (score <= 21) return "You’re close! A little more discipline and clarity will help.";
+//   return "Strong foundation, discipline and clarity — you are SIP-ready.";
+// }
+
+
+  function showFinalScore(score) {
   const page = document.querySelector('[data-page="6"]');
 
+  const label = getScoreLabel(score);
+  const message = getScoreMessage(score);
+
   page.innerHTML = `
-    <h1>Your SIP Readiness Score</h1>
-    <div class="summary-box">
-      <div class="score">${score}</div>
-      <div class="score-label">${getScoreLabel(score)}</div>
-      <div class="note">${getScoreMessage(score)}</div>
+    <h1>Your SIP Readiness Report</h1>
+
+    <div class="summary-box" style="text-align:center;">
+      <div style="font-size:3rem; font-weight:700; color:var(--accent); margin-bottom:6px;">
+        ${score} / 25
+      </div>
+      <div style="font-size:1.4rem; font-weight:600; margin-bottom:10px;">
+        ${label}
+      </div>
+      <p style="font-size:1rem; color:#d4d7e9; line-height:1.6;">
+        ${message}
+      </p>
     </div>
-    <div class="nav-row" style="flex-direction:column; gap:12px;">
-      <a class="btn btn-primary" href="funnel.html">Proceed to Stage 2</a>
+
+    <div class="summary-box" style="margin-top:20px;">
+      <h3 style="margin-bottom:8px; font-size:1.1rem; color:#ffe5ba;">How to read this score</h3>
+      <ul style="line-height:1.7; color:#bbc2da; font-size:0.95rem;">
+        <li><b>0–8</b> → Not yet ready. Focus on building emergency funds, clearing high-interest debt and clarifying goals first.</li>
+        <li><b>9–15</b> → Medium risk zone. Work with an adviser to strengthen your foundation before committing large SIPs.</li>
+        <li><b>16–21</b> → Almost ready. A few gaps exist; correct them with guidance before increasing risk or amount.</li>
+        <li><b>22–25</b> → Fully ready. You have the right base, mindset and process to start or continue a disciplined long-term SIP.</li>
+      </ul>
+    </div>
+
+    <div class="summary-box" style="margin-top:20px;">
+      <h3 style="margin-bottom:8px; font-size:1.1rem; color:#ffe5ba;">What this means</h3>
+      <p style="line-height:1.6; color:#bbc2da;">
+        This score reflects your preparedness across 5 pillars — foundation, clarity, behaviour, product understanding, and discipline. 
+        Higher scores suggest stronger long-term consistency & clarity, essential for wealth creation through SIP.
+      </p>
+    </div>
+
+    <div class="nav-row" style="flex-direction:column; gap:12px; margin-top:25px;">
+      <a class="btn btn-primary" href="funnel.html">Get Personal Investment Plan →</a>
       <a class="btn btn-ghost" href="index.html">← Back to Website</a>
     </div>
   `;
-}
-
-function getScoreLabel(score) {
-  if (score <= 8) return "Not Ready";
-  if (score <= 15) return "Medium Risk Zone";
-  if (score <= 21) return "Almost Ready";
-  return "Fully Ready";
-}
-
-function getScoreMessage(score) {
-  if (score <= 8) return "Your financial base and behaviour patterns need strengthening.";
-  if (score <= 15) return "Some readiness exists, but key areas need improvement.";
-  if (score <= 21) return "You’re close! A little more discipline and clarity will help.";
-  return "Strong foundation, discipline and clarity — you are SIP-ready.";
 }
 
 
