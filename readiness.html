@@ -734,19 +734,16 @@ document.querySelectorAll(".q-box").forEach(qbox => {
       buttons.forEach(b => b.classList.remove("selected"));
       btn.classList.add("selected");
 
-      // Intelligent Scroll: next question OR top of section
+      // Intelligent Scroll: move only to next question
       if (window.innerWidth <= 900) {
         setTimeout(() => {
           const next = qbox.nextElementSibling?.closest(".q-box");
           if (next) {
             next.scrollIntoView({ behavior: "smooth", block: "center" });
-          } else {
-            // End of section
-            const section = qbox.closest(".section-page");
-            section.scrollIntoView({ behavior: "smooth", block: "start" });
           }
         }, 120);
       }
+
 
       checkSectionCompletion();
     });
