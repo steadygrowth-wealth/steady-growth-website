@@ -783,6 +783,23 @@ document.querySelectorAll(".q-box").forEach(qbox => {
 }
 
 
+  function checkFinishReady() {
+  const finishBtn = document.getElementById("finishBtn");
+  if (!finishBtn) return;
+
+  let allAnswered = true;
+  for (let i = 1; i <= 25; i++) {
+    if (!answers["q" + i]) {
+      allAnswered = false;
+      break;
+    }
+  }
+
+  finishBtn.style.display = allAnswered ? "inline-block" : "none";
+}
+
+
+
 
 /* ------------------------------
         SCORING ENGINE
