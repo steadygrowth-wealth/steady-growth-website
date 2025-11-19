@@ -763,17 +763,18 @@ document.querySelectorAll(".q-box").forEach(qbox => {
 
       // Auto-scroll lightly for mobile UX
       setTimeout(() => {
-        window.scrollBy({ top: 80, behavior: "smooth" });
-      }, 80);
-      checkSectionCompletion();
-      checkFinishReady();
-
-      setTimeout(() => {
-        const next = qbox.nextElementSibling?.closest(".q-box");
-        if (next) {
-          next.scrollIntoView({ behavior: "smooth", block: "center" });
+        // Find next question
+        const nextQ = qbox.nextElementSibling?.closest(".q-box");
+      
+        if (nextQ) {
+          nextQ.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else {
+          // If no next question → scroll to the section header
+          const section = qbox.closest(".section-page");
+          section.scrollIntoView({ behavior: "smooth", block: "start" });
         }
       }, 120);
+
     });
   });
 });
