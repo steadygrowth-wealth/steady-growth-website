@@ -809,8 +809,8 @@ const finishBtn = document.getElementById("finishBtn");
 if (finishBtn) {
   finishBtn.addEventListener("click", () => {
     const total = calculateScore();
-    renderScore(total);
-    showPage(6);
+    localStorage.setItem("readiness_score", total);
+    showPage(6); // navigate to lead page
 
     // Mark completed but reset only on next visit
     localStorage.setItem("readiness_page", "6");
