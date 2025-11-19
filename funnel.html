@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Investment Readiness Quiz — Steady Growth</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="One-question-per-screen SIP readiness & risk assessment quiz by Steady Growth." />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: radial-gradient(circle at top, #141b35 0, #050816 55%);
+      --card: rgba(6,10,28,0.94);
+      --muted: #a7afc7;
+      --accent: #f0b76b;
+      --accent-dark:#b9782f;
+      --fg: #ffffff;
+      --radius: 14px;
+    }
+    html,body{height:100%;margin:0;font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+    body{background:var(--bg);color:var(--fg);display:flex;align-items:center;justify-content:center;padding:22px;}
+    /* full-screen centered card */
+    .tf-wrap{width:100%;max-width:720px;}
+    .tf-card{
+      background:var(--card);
+      border-radius:18px;
+      padding:28px;
+      box-shadow:0 30px 60px rgba(0,0,0,0.6);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .head{display:flex;gap:14px;align-items:center;}
+    .badge{width:56px;height:56px;border-radius:12px;background:radial-gradient(circle at 25% 20%, #ffe2b6, #f0b76b 45%, #b9782f 100%);display:flex;align-items:center;justify-content:center;color:#1b1205;font-weight:700;font-size:18px;}
+    h1{font-family:"Playfair Display",serif;margin:0;font-size:1.2rem;color:#ffe3b4;}
+    .sub{color:var(--muted);font-size:0.92rem;margin-top:6px;}
+    .progress{height:8px;background:rgba(255,255,255,0.04);border-radius:999px;margin:18px 0;overflow:hidden}
+    .progress > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),#ffe5ba);transition:width 300ms ease}
+    .step{display:none}
+    .step.active{display:block;animation:scaleIn .26s ease}
+    @keyframes scaleIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .question{font-size:1.02rem;color:var(--fg);margin-bottom:12px}
+    .opts{display:grid;gap:10px}
+    button.opt{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:12px 14px;border-radius:12px;color:var(--muted);text-align:left;cursor:pointer;font-size:0.95rem}
+    button.opt:hover{transform:translateY(-2px);border-color:rgba(240,183,107,0.18);color:var(--fg)}
+    button.opt.selected{background:linear-gradient(90deg,rgba(240,183,107,0.12),rgba(240,183,107,0.04));border:1px solid rgba(240,183,107,0.28);color:#1b1205}
+    .controls{display:flex;gap:10px;margin-top:16px;align-items:center}
+    .btn{border-radius:999px;padding:9px 16px;font-weight:600;cursor:pointer;border:1px solid transparent}
+    .btn-ghost{background:transparent;border-color:rgba(255,255,255,0.08);color:var(--muted)}
+    .btn-primary{background:radial-gradient(circle at 10% 20%, #ffe6c0 0, #f0b76b 35%, #b9782f 100%);color:#1b1406;border:1px solid rgba(240,183,107,0.35)}
+    .small{font-size:0.86rem;color:var(--muted);margin-top:8px}
+    input[type="text"], input[type="tel"], input[type="email"]{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:rgba(6,10,28,0.75);color:var(--fg);outline:none}
+    input::placeholder{color:rgba(167,175,199,0.6)}
+    .summary{background:rgba(255,255,255,0.02);padding:12px;border-radius:10px;color:var(--muted);font-size:0.92rem}
+    .footer-row{display:flex;justify-content:space-between;align-items:center;margin-top:18px;gap:10px;flex-wrap:wrap}
+    .muted{color:var(--muted)}
+    .center{text-align:center}
+    /* full-screen subtle background dim when card visible (already dark) */
+    @media (max-width:560px){
+      .tf-card{padding:18px}
+      .badge{width:48px;height:48px}
+    }
+  </style>
+</head>
+<body>
+  <div class="tf-wrap" role="application" aria-labelledby="quizTitle">
+    <div class="tf-card" id="tfCard">
+      <div class="head">
+        <div class="badge">SG</div>
+        <div>
+          <h1 id="quizTitle">Investment Readiness Quiz</h1>
+          <div class="sub">One-question-per-screen. Takes about 60 seconds. I use your responses to prepare a simple personalised SIP plan.</div>
+        </div>
+      </div>
+
+      <div class="progress" aria-hidden="true"><i id="progressBar" style="width:0%"></i></div>
+
+      <!-- Steps container -->
+      <div id="stepsWrap">
+
+        <!-- Step 0: Welcome -->
+        <div class="step active" data-step="0">
+          <div class="question">Welcome — would you like a short readiness check?</div>
+          <div class="opts">
+            <button class="opt" data-key="start" data-val="yes">Yes, start the quiz</button>
+          </div>
+          <div class="controls">
+            <div style="flex:1"></div>
+            <button class="btn btn-primary" id="startBtn">Start</button>
+          </div>
+        </div>
+
+        <!-- Step 1: Knowledge -->
+        <div class="step" data-step="1" data-key="knowledge">
+          <div class="question">What best describes your knowledge of mutual funds?</div>
+          <div class="opts">
+            <button class="opt" data-key="knowledge" data-val="Beginner">Beginner</button>
+            <button class="opt" data-key="knowledge" data-val="Intermediate">Intermediate</button>
+            <button class="opt" data-key="knowledge" data-val="Experienced">Experienced</button>
+          </div>
+          <div class="controls">
+            <button class="btn btn-ghost" data-action="back">Back</button>
+            <button class="btn btn-primary" data-action="next" data-require="knowledge">Next</button>
+          </div>
+        </div>
+
+        <!-- Step 2: SIP familiarity -->
+        <div class="step" data-step="2" data-key="sip">
+          <div class="question">Have you used SIPs before?</div>
+          <div class="opts">
+            <button class="opt" data-key="sip" data-val="Yes">Yes</button>
+            <button class="opt" data-key="sip" data-val="A little">A little</button>
+            <button class="opt" data-key="sip" data-val="Not really">Not really</button>
+          </div>
+          <div class="controls">
+            <button class="btn btn-ghost" data-action="back">Back</button>
+            <button class="btn btn-primary" data-action="next" data-require="sip">Next</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Intent -->
+        <div class="step" data-step="3" data-key="intent">
+          <div class="question">Why are you exploring investing today?</div>
+          <div class="opts">
+            <button class="opt" data-key="intent" data-val="Wealth creation">Build long-term wealth</button>
+            <button class="opt" data-key="intent" data-val="Education">Children's education</button>
+            <button class="opt" data-key="intent" data-val="Retirement">Retirement planning</button>
+            <button class="opt" data-key="intent" data-val="Other">Other / Unsure</button>
+          </div>
+          <div class="controls">
+            <button class="btn btn-ghost" data-action="back">Back</button>
+            <button class="btn btn-primary" data-action="next" data-require="intent">Next</button>
+          </div>
+        </div>
+
+        <!-- Step 4: Monthly amount -->
+        <div class="step" data-step="4" data-key="amount">
+          <div class="question">How much can you comfortably invest monthly?</div>
+          <div class="opts">
+            <button class="opt" data-key="amount" data-val="<1000">&lt; ₹1,000</button>
+            <button class="opt" data-key="amount" data-val="1000-5000">₹1,000 – ₹5,000</button>
+            <button class="opt" data-key="amount" data-val="5000-10000">₹5,000 – ₹10,000</button>
+            <button class="opt" data-key="amount" data-val="10000-25000">₹10,000 – ₹25,000</button>
+            <button class="opt" data-key="amount" data-val=">25000">&gt; ₹25,000</button>
+          </div>
+          <div class="controls">
+            <button class="btn btn-ghost" data-action="back">Back</button>
+            <button class="btn btn-primary" data-action="next" data-require="amount">Next</button>
+          </div>
+        </div>
+
+        <!-- Step 5: Risk reaction -->
+        <div class="step" data-step="5" data-key="risk">
+          <div class="question">If your investments drop 10% in a month, what would you do?</div>
+          <div class="opts">
+            <button class="opt" data-key="risk" data-val="Stop investing">Stop investing</button>
+            <button class="opt" data-key="risk" data-val="Pause & think">Pause & think</button>
+            <button class="opt" data-key="risk" data-val="Continue SIP">Continue SIP</button>
+            <button class="opt" data-key="risk" data-val="Invest more">Invest more</button>
+          </div>
+          <div class="controls">
+            <button class="btn btn-ghost" data-action="back">Back</button>
+            <button class="btn btn-primary" data-action="next" data-require="risk">Next</button>
+          </div>
+        </div>
+
+        <!-- Step 6: Horizon -->
+        <div class="step" data-step="6" data-key="horizon">
+          <div class="question">When do you expect to use this money?</div>
+          <div class="opts">
+            <button class="opt" data-key="horizon" data-val="<3">Less than 3 years</button>
+            <button class="opt" data-key="horizon" data-val="3-5">3–5 years</button>
+            <button class="opt" data-key="horizon" data-val="5-10">5–10 years</button>
+            <button class="opt" data-key="horizon" data-val="10+">10+ years</button>
+          </div>
+          <div class="controls">
+            <button class="btn btn-ghost" data-action="back">Back</button>
+            <button class="btn btn-primary" data-action="next" data-require="horizon">Next</button>
+          </div>
+        </div>
+
+        <!-- Step 7: Stability vs Growth -->
+        <div class="step" data-step="7" data-key="growth">
+          <div class="question">Stability vs Growth — which matters more to you?</div>
+          <input type="range" id="growthRange" min="0" max="100" value="50" style="width:100%;margin-bottom:8px" />
+          <div class="small">Left = Stability, Right = Growth. Current: <span id="growthVal">50</span></div>
+          <div class="controls">
+            <button class="btn btn-ghost" data-action="back">Back</button>
+            <button class="btn btn-primary" data-action="next">Next</button>
+          </div>
+        </div>
+
+        <!-- Step 8: Want plan -->
+        <div class="step" data-step="8" data-key="plan">
+          <div class="question">Would you like a personalised SIP plan recommended?</div>
+          <div class="opts">
+            <button class="opt" data-key="plan" data-val="Yes">Yes</button>
+            <button class="opt" data-key="plan" data-val="Yes, need guidance">Yes, need guidance</button>
+            <button class="opt" data-key="plan" data-val="Not sure">Not sure</button>
+          </div>
+          <div class="controls">
+            <button class="btn btn-ghost" data-action="back">Back</button>
+            <button class="btn btn-primary" data-action="next" data-require="plan">Next</button>
+          </div>
+        </div>
+
+        <!-- Step 9: Summary + Capture -->
+        <div class="step" data-step="9">
+          <div class="question">Summary of your responses — where should I send your personalised plan?</div>
+          <div class="summary" id="summaryBox" style="margin-bottom:12px"><em>No responses yet — please answer the questions.</em></div>
+
+          <div style="margin-top:8px">
+            <input id="leadName" type="text" placeholder="Full name (required)" required style="margin-bottom:8px" />
+            <input id="leadPhone" type="tel" placeholder="Mobile number (10 digits) *" required style="margin-bottom:8px" />
+            <input id="leadEmail" type="email" placeholder="Email (optional)" />
+            <div class="small">By submitting you authorise us to contact you about mutual fund related information and services.</div>
+          </div>
+
+          <div class="controls">
+            <button class="btn btn-ghost" data-action="back">Back</button>
+            <button class="btn btn-primary" id="submitBtn">Send my plan</button>
+          </div>
+        </div>
+
+        <!-- Step 10: Thank you + CTA (T3) -->
+        <div class="step" data-step="10">
+          <div class="question">Thank you — your request has been received</div>
+          <div class="small">I will prepare a simple plan and contact you shortly. For faster help, message me on WhatsApp or verify my registration below.</div>
+
+          <div class="footer-row" style="margin-top:14px">
+            <a class="btn btn-primary" href="https://api.whatsapp.com/send?phone=919211310914&text=Hi,+I+submitted+the+quiz+and+would+like+faster+help." target="_blank">Message on WhatsApp</a>
+            <div style="display:flex;gap:10px;align-items:center">
+              <div class="muted" style="font-size:0.86rem;margin-right:8px"><strong>ARN:</strong> ARN-285834</div>
+              <a class="btn btn-ghost" href="verification.html" target="_blank">Verify ARN</a>
+            </div>
+          </div>
+        </div>
+
+      </div> <!-- /stepsWrap -->
+
+    </div> <!-- /tf-card -->
+  </div>
+
+  <script>
+    (function(){
+      const steps = Array.from(document.querySelectorAll('.step'));
+      const totalSteps = steps.length - 1; // last is thank-you
+      const progressBar = document.getElementById('progressBar');
+      let idx = 0;
+      const answers = {}; // keyed by data-key (e.g., 'knowledge')
+      const storageKey = 'sg_funnel_v1';
+
+      // load saved state if any
+      const saved = (() => {
+        try { return JSON.parse(localStorage.getItem(storageKey) || 'null'); } catch(e){ return null; }
+      })();
+      if (saved && saved.answers) {
+        Object.assign(answers, saved.answers);
+      }
+      if (saved && typeof saved.idx === 'number') idx = saved.idx;
+
+      // Utility: show step
+      function show(i){
+        steps.forEach(s => s.classList.remove('active'));
+        const toShow = steps[i] || steps[steps.length-1];
+        toShow.classList.add('active');
+        idx = i;
+        updateProgress(i);
+        focusFirstInteractive(toShow);
+        saveState();
+        renderSummary();
+      }
+
+      function updateProgress(i){
+        const pct = Math.round((i / (totalSteps)) * 100);
+        progressBar.style.width = pct + '%';
+      }
+
+      function focusFirstInteractive(el){
+        const btn = el.querySelector('button.opt, input, textarea');
+        if (btn) btn.focus();
+      }
+
+      // Option click handler
+      document.querySelectorAll('button.opt').forEach(b => {
+        b.addEventListener('click', () => {
+          const key = b.dataset.key;
+          const val = b.dataset.val;
+          if (key) answers[key] = val;
+          // mark selected visually within that container
+          const siblingOpts = b.closest('.opts').querySelectorAll('.opt');
+          siblingOpts.forEach(o=>o.classList.remove('selected'));
+          b.classList.add('selected');
+          saveState();
+        });
+      });
+
+      // Start button
+      const startBtn = document.getElementById('startBtn');
+      if (startBtn) startBtn.addEventListener('click', ()=> show(1));
+
+      // Back / Next controls
+      document.querySelectorAll('[data-action]').forEach(btn => {
+        btn.addEventListener('click', (e)=>{
+          const action = btn.dataset.action;
+          if (action === 'back') {
+            show(Math.max(0, idx-1));
+            return;
+          }
+          if (action === 'next') {
+            const requireKey = btn.dataset.require;
+            if (requireKey && !answers[requireKey]) {
+              // visual pulse on required question
+              const container = document.querySelector(`[data-key="${requireKey}"]`) || document.getElementById(requireKey);
+              if (container) {
+                container.animate([{transform:'translateY(0)'},{transform:'translateY(-6px)'},{transform:'translateY(0)'}],{duration:240});
+              }
+              return;
+            }
+            show(Math.min(idx+1, steps.length-1));
+            return;
+          }
+        });
+      });
+
+      // Range handler
+      const growthRange = document.getElementById('growthRange');
+      const growthVal = document.getElementById('growthVal');
+      if (growthRange) {
+        growthRange.addEventListener('input', () => {
+          answers['growth'] = growthRange.value;
+          growthVal.textContent = growthRange.value;
+          saveState();
+        });
+        if (answers['growth']) {
+          growthRange.value = answers['growth'];
+          growthVal.textContent = answers['growth'];
+        }
+      }
+
+      // Summary render
+      function renderSummary(){
+        const box = document.getElementById('summaryBox');
+        if (!box) return;
+        const map = {
+          'knowledge':'Knowledge',
+          'sip':'SIP familiarity',
+          'intent':'Goal',
+          'amount':'Monthly comfort',
+          'risk':'Reaction to loss',
+          'horizon':'Time horizon',
+          'growth':'Stability vs Growth',
+          'plan':'Want plan'
+        };
+        let html = '';
+        Object.keys(map).forEach(k => {
+          if (answers[k]) {
+            let v = answers[k];
+            if (k === 'growth') v = `${v} (0 stability → 100 growth)`;
+            html += `<div style="margin-bottom:6px"><strong>${map[k]}:</strong> ${v}</div>`;
+          }
+        });
+        box.innerHTML = html || '<em>No responses yet. Please complete the quiz.</em>';
+      }
+
+      // Form submit
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.addEventListener('click', async (e)=>{
+        e.preventDefault();
+        const name = document.getElementById('leadName').value.trim();
+        const phone = document.getElementById('leadPhone').value.trim();
+        const email = document.getElementById('leadEmail').value.trim();
+        if (!name) { alert('Please enter your name'); return; }
+        if (!/^[0-9]{10}$/.test(phone)) { alert('Please enter a valid 10-digit mobile number'); return; }
+
+        // prepare payload
+        const payload = {
+          name, phone, email,
+          timestamp: new Date().toISOString(),
+          arn: 'ARN-285834',
+          funnel_answers: answers
+        };
+
+        // UI changes
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+
+        try {
+          // POST to your Apps Script endpoint (no-cors to allow Apps Script to accept)
+          await fetch('https://script.google.com/macros/s/AKfycbwEcCOcMxezlGTw4xH8ip8SdpNtjV0f5Rhon8aoWhQunijGV0rx3SAzDGQh8ChN0-chtA/exec', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+        } catch (err) {
+          // ignore fetch errors under no-cors; Apps Script should still receive POST
+          console.warn('send failed (no-cors environment) — continuing to thank-you screen');
+        } finally {
+          // clear saved state
+          try { localStorage.removeItem(storageKey); } catch(e){}
+          // show thank you
+          show(10);
+        }
+      });
+
+      // Save state
+      function saveState(){
+        try {
+          localStorage.setItem(storageKey, JSON.stringify({ idx, answers }));
+        } catch(e){}
+      }
+
+      // Restore visual selected states on load
+      function restoreSelections(){
+        Object.keys(answers).forEach(k => {
+          const val = answers[k];
+          if (!val) return;
+          const btn = document.querySelector(`.opt[data-key="${k}"][data-val="${val}"]`);
+          if (btn) btn.classList.add('selected');
+        });
+        renderSummary();
+      }
+      restoreSelections();
+
+      // Start at saved idx or 0
+      show(Math.min(Math.max(0, idx), steps.length-1));
+
+      // Accessibility: Enter to proceed if appropriate
+      document.addEventListener('keydown', (e)=>{
+        if (e.key === 'Enter') {
+          const cur = steps[idx];
+          const nextBtn = cur.querySelector('[data-action="next"], #startBtn');
+          if (nextBtn) nextBtn.click();
+        }
+      });
+
+      // If user closes/reopens, resume at saved step (handled via saved idx)
+    })();
+  </script>
+</body>
+</html>
