@@ -713,6 +713,10 @@ finishBtn.addEventListener("click", () => {
 
   // Mark as completed → next visit resets
   localStorage.setItem("readiness_page", "6");
+
+  // RESET stored answers for next visit
+  localStorage.removeItem("readiness_answers");
+  localStorage.removeItem("readiness_page");
 });
 
 
