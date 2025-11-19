@@ -636,29 +636,28 @@
   </div>
 
 <script>
-/* ------------------------------
+/* -----------------------------------------------------
    INITIAL SETUP & LOCAL STORAGE
---------------------------------*/
+-----------------------------------------------------*/
 const pages = document.querySelectorAll(".section-page");
 let currentPage = 0;
 let answers = JSON.parse(localStorage.getItem("readiness_answers") || "{}");
 let storedPage = parseInt(localStorage.getItem("readiness_page") || "0");
 
-// If user had previously completed (page 6), reset to start
+// Reset ONLY on next visit AFTER completion
 if (storedPage >= 6) {
   localStorage.removeItem("readiness_answers");
   localStorage.removeItem("readiness_page");
   storedPage = 0;
 }
 
-// Resume if not completed
 currentPage = storedPage;
 showPage(currentPage);
 
 
-/* ------------------------------
-        PAGE NAVIGATION
---------------------------------*/
+/* -----------------------------------------------------
+   PAGE NAVIGATION
+-----------------------------------------------------*/
 function showPage(n) {
   pages.forEach(p => p.classList.remove("active"));
   const page = pages[n];
@@ -667,84 +666,57 @@ function showPage(n) {
   currentPage = n;
   localStorage.setItem("readiness_page", String(n));
 
-  checkSectionCompletion(); // required for resume logic
+  // Scroll to top of section (only on mobile)
+  if (window.innerWidth <= 900) {
+    setTimeout(() => {
+      page.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 150);
+  }
+
+  checkSectionCompletion();
 }
 
-
-/* Start Button */
+// Start
 const startBtn = document.getElementById("startBtn");
 if (startBtn) startBtn.addEventListener("click", () => showPage(1));
 
 
-/* Navigation handling */
+/* -----------------------------------------------------
+   NEXT BUTTON HANDLING WITH VALIDATION + SCROLL
+-----------------------------------------------------*/
 document.querySelectorAll(".next-btn").forEach(btn => {
   btn.addEventListener("click", () => {
-
-    // Get all questions in current section
+    
     const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
     const qboxes = section.querySelectorAll(".q-box");
-
-    // Find unanswered questions
     const unanswered = [...qboxes].filter(q => !answers[q.dataset.key]);
 
     if (unanswered.length > 0) {
-      alert("Please answer all questions before moving ahead.");
-      return; // STOP navigation
+      // highlight first missing answer
+      unanswered[0].classList.add("attention");
+      unanswered[0].scrollIntoView({ behavior: "smooth", block: "center" });
+
+      setTimeout(() => unanswered[0].classList.remove("attention"), 800);
+      return;
     }
 
-    // If all answered → move forward
     showPage(currentPage + 1);
   });
 });
 
 document.querySelectorAll(".prev-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    showPage(currentPage - 1);
-  });
+  btn.addEventListener("click", () => showPage(currentPage - 1));
 });
 
 
-/* Finish Button → Calculate Score */
-const finishBtn = document.getElementById("finishBtn");
-finishBtn.addEventListener("click", () => {
-  const total = calculateScore();
-  renderScore(total);
-  showPage(6);
-
-  // Mark as completed → next visit resets
-  localStorage.setItem("readiness_page", "6");
-
-  // RESET stored answers for next visit
-  localStorage.removeItem("readiness_answers");
-  localStorage.removeItem("readiness_page");
-});
-
-
-/* ------------------------------
-        COLLAPSIBLE WHY BOX
---------------------------------*/
-document.querySelectorAll(".why-toggle").forEach(toggle => {
-  toggle.addEventListener("click", () => {
-    const box = toggle.nextElementSibling;
-    if (box.style.display === "block") {
-      box.style.display = "none";
-      toggle.textContent = "Why it matters ▼";
-    } else {
-      box.style.display = "block";
-      toggle.textContent = "Why it matters ▲";
-    }
-  });
-});
-
-
-/* ------------------------------
-        YES / NO SELECTION
---------------------------------*/
+/* -----------------------------------------------------
+   CLICK HANDLER FOR YES/NO QUESTIONS
+-----------------------------------------------------*/
 document.querySelectorAll(".q-box").forEach(qbox => {
   const key = qbox.dataset.key;
   const buttons = qbox.querySelectorAll(".yn-btn");
 
-  // Restore previous answer
+  // Restore previous value visually
   if (answers[key]) {
     buttons.forEach(btn => {
       if (btn.dataset.val === answers[key]) btn.classList.add("selected");
@@ -753,79 +725,82 @@ document.querySelectorAll(".q-box").forEach(qbox => {
 
   buttons.forEach(btn => {
     btn.addEventListener("click", () => {
-      // Save
+
+      // Save answer
       answers[key] = btn.dataset.val;
       localStorage.setItem("readiness_answers", JSON.stringify(answers));
 
-      // Highlight
+      // Visual selection
       buttons.forEach(b => b.classList.remove("selected"));
       btn.classList.add("selected");
 
-      // Auto-scroll lightly for mobile UX
-      setTimeout(() => {
-        // Find next question
-        const nextQ = qbox.nextElementSibling?.closest(".q-box");
-      
-        if (nextQ) {
-          nextQ.scrollIntoView({ behavior: "smooth", block: "center" });
-        } else {
-          // If no next question → scroll to the section header
-          const section = qbox.closest(".section-page");
-          section.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      }, 120);
+      // Intelligent Scroll: next question OR top of section
+      if (window.innerWidth <= 900) {
+        setTimeout(() => {
+          const next = qbox.nextElementSibling?.closest(".q-box");
+          if (next) {
+            next.scrollIntoView({ behavior: "smooth", block: "center" });
+          } else {
+            // End of section
+            const section = qbox.closest(".section-page");
+            section.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }, 120);
+      }
 
+      checkSectionCompletion();
     });
   });
 });
 
 
-  function checkSectionCompletion() {
+/* -----------------------------------------------------
+   SHOW/HIDE NEXT OR FINISH BUTTON BASED ON COMPLETION
+-----------------------------------------------------*/
+function checkSectionCompletion() {
   const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
-  const nextBtn = section.querySelector(".next-btn");
-  if (!nextBtn) return;
-
   const qboxes = section.querySelectorAll(".q-box");
+
+  const nextBtn = section.querySelector(".next-btn");
+  const finishBtn = document.getElementById("finishBtn");
+
   const unanswered = [...qboxes].filter(q => !answers[q.dataset.key]);
 
-  nextBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
-}
-
-
-  function checkFinishReady() {
-  const finishBtn = document.getElementById("finishBtn");
-  if (!finishBtn) return;
-
-  let allAnswered = true;
-  for (let i = 1; i <= 25; i++) {
-    if (!answers["q" + i]) {
-      allAnswered = false;
-      break;
-    }
+  // For normal sections
+  if (nextBtn) {
+    nextBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
   }
 
-  finishBtn.style.display = allAnswered ? "inline-block" : "none";
+  // For final section
+  if (finishBtn) {
+    finishBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
+  }
 }
 
 
+/* -----------------------------------------------------
+   SUMMARY SCORING
+-----------------------------------------------------*/
+const finishBtn = document.getElementById("finishBtn");
+if (finishBtn) {
+  finishBtn.addEventListener("click", () => {
+    const total = calculateScore();
+    renderScore(total);
+    showPage(6);
 
+    // Mark completed but reset only on next visit
+    localStorage.setItem("readiness_page", "6");
+  });
+}
 
-/* ------------------------------
-        SCORING ENGINE
---------------------------------*/
 function calculateScore() {
   let score = 0;
   for (let i = 1; i <= 25; i++) {
-    const key = "q" + i;
-    if (answers[key] === "yes") score += 1;
+    if (answers["q" + i] === "yes") score++;
   }
   return score;
 }
 
-
-/* ------------------------------
-        SUMMARY RENDERING
---------------------------------*/
 function renderScore(score) {
   const scoreEl = document.getElementById("scoreDisplay");
   const labelEl = document.getElementById("scoreLabel");
@@ -833,25 +808,19 @@ function renderScore(score) {
 
   scoreEl.textContent = score;
 
-  let label = "";
-  let msg = "";
-
   if (score <= 8) {
-    label = "Not Ready";
-    msg = "Your financial base and behaviour patterns need strengthening before starting a disciplined SIP journey.";
+    labelEl.textContent = "Not Ready";
+    msgEl.textContent = "Your financial base and behaviour patterns need strengthening.";
   } else if (score <= 15) {
-    label = "Medium Risk Zone";
-    msg = "You have some readiness, but a few important areas must be addressed to avoid problems later.";
+    labelEl.textContent = "Medium Risk Zone";
+    msgEl.textContent = "Some readiness exists, but key areas need improvement.";
   } else if (score <= 21) {
-    label = "Almost Ready";
-    msg = "You are close to being SIP-ready. With a little more clarity and discipline, you’ll be fully prepared.";
+    labelEl.textContent = "Almost Ready";
+    msgEl.textContent = "You’re close! A little more discipline and clarity will help.";
   } else {
-    label = "Fully Ready";
-    msg = "You have the financial foundation, clarity, behaviour and discipline required to start a strong SIP journey.";
+    labelEl.textContent = "Fully Ready";
+    msgEl.textContent = "Strong foundation, discipline and clarity — you are SIP-ready.";
   }
-
-  labelEl.textContent = label;
-  msgEl.textContent = msg;
 }
 </script>
 </body>
