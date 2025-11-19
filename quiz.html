@@ -333,11 +333,17 @@
           const key = btn.dataset.key;
           const val = btn.dataset.val;
           if (key) answers[key] = val;
-          // mark selected
+      
           const parent = btn.closest('.opts');
           if (parent) parent.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
           btn.classList.add('selected');
           saveState();
+      
+          // Auto-advance (except for slider step 7)
+          const currentStep = parseInt(btn.closest('.step').dataset.step);
+          if (currentStep !== 7) {
+            setTimeout(() => show(currentStep + 1), 220);
+          }
         });
       });
 
