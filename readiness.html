@@ -841,31 +841,41 @@ function renderScore(score) {
     const mobile = document.getElementById("mobile").value;
     const email = document.getElementById("email").value;
     const score = localStorage.getItem("readiness_score");
+    const source = "sip_readiness";
   
+    // 'answers' is the global object that stores q1..q25
+    const payload = {
+      name,
+      mobile,
+      email,
+      score,
+      answers,
+      source,
+    };
+  
+    // 🔗 Your Web App URL from Apps Script (step 2)
     const webhook = "https://script.google.com/macros/s/AKfycbw-belwpkcLadQvVzgq0cwq_-HD2KBk0vZFyvqHQF3GrYVgpsU8_30Z6jOS2wwzM-ot/exec";
   
+    // Fire-and-forget POST (no CORS errors, we don't read response)
     fetch(webhook, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ 
-        name,
-        mobile,
-        email,
-        score,
-        answers,     // FULL JSON
-        source: "sip_readiness"
-      }),
-    })
-    .then(r => r.json())
-    .then(data => {
-      statusEl.textContent = "Thank you! Calculating your score...";
-      setTimeout(() => showFinalScore(score), 800);
-    })
-    .catch(err => {
-      statusEl.textContent = "Error submitting data. Try again.";
-      console.error(err);
+      mode: "no-cors", // <- IMPORTANT: stops browser from blocking on CORS
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8", // simple request, no preflight
+      },
+      body: JSON.stringify(payload),
+    }).catch((err) => {
+      console.error("Lead submit error:", err);
+      // Even if this errors at network level, user still sees the score.
     });
+  
+    statusEl.textContent = "Thank you! Calculating your score...";
+  
+    setTimeout(() => {
+      showFinalScore(score);
+    }, 800);
   });
+
 
 
 function showFinalScore(score) {
