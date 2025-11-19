@@ -841,6 +841,42 @@ leadForm?.addEventListener("submit", (e) => {
   const score = localStorage.getItem("readiness_score");
 
   // TODO: Send to Google Sheets / API here
+        leadForm?.addEventListener("submit", (e) => {
+        e.preventDefault();
+      
+        const name = document.getElementById("name").value;
+        const mobile = document.getElementById("mobile").value;
+        const email = document.getElementById("email").value;
+        const score = localStorage.getItem("readiness_score");
+      
+        const webhook = "https://script.google.com/macros/s/AKfycbwY5Jlxvf_-P0HooVyW8MjiubVo3CQKoodamt-utaWu8NDCcs0X-Q73bIcY2AGbIIud1w/exec";
+      
+        fetch(webhook, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+            name,
+            mobile,
+            email,
+            score,
+            answers,               // <-- sending full summary
+            source: "sip_readiness"
+          }),
+        })
+        .then(r => r.json())
+        .then(data => {
+          statusEl.textContent = "Thank you! Calculating your score...";
+          setTimeout(() => showFinalScore(score), 800);
+        })
+        .catch(err => {
+          statusEl.textContent = "Error submitting data. Try again.";
+          console.error(err);
+        });
+      });
+
+
+
+  
   statusEl.textContent = "Thank you! Calculating your score...";
 
   setTimeout(() => {
