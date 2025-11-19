@@ -764,6 +764,19 @@ document.querySelectorAll(".q-box").forEach(qbox => {
 });
 
 
+  function checkSectionCompletion() {
+  const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
+  const nextBtn = section.querySelector(".next-btn");
+  if (!nextBtn) return;
+
+  const qboxes = section.querySelectorAll(".q-box");
+  const unanswered = [...qboxes].filter(q => !answers[q.dataset.key]);
+
+  nextBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
+}
+
+
+
 /* ------------------------------
         SCORING ENGINE
 --------------------------------*/
