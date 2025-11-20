@@ -10,9 +10,133 @@
 
   <!-- Global Styles -->
   <link rel="stylesheet" href="/styles/style.css">
+
+  <style>
+    /* --- FAQ PAGE CUSTOM STYLING --- */
+
+    .faq-tabs-wrapper {
+      position: sticky;
+      top: 70px; /* sits under header */
+      z-index: 20;
+      background: white;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+      transition: all 0.25s ease;
+    }
+
+    /* collapsed mode */
+    .faq-tabs-wrapper.collapsed {
+      padding: 6px 0;
+      background: #fffffff5;
+      backdrop-filter: blur(6px);
+    }
+
+    .faq-tabs {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .faq-tab {
+      padding: 8px 16px;
+      border-radius: 50px;
+      border: 1px solid #d6d6d6;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: 0.2s;
+      background: #fafafa;
+    }
+
+    .faq-tab.active {
+      background: #1d3a6a;
+      color: white;
+      border-color: #1d3a6a;
+      font-weight: 600;
+    }
+
+    .faq-group {
+      display: none;
+      margin-top: 28px;
+    }
+
+    .faq-group.active {
+      display: block;
+    }
+
+    .faq-item {
+      border: 1px solid #e8e8e8;
+      padding: 14px 18px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      background: white;
+      cursor: pointer;
+      transition: 0.25s ease;
+    }
+
+    .faq-item:hover {
+      border-color: #1d3a6a;
+    }
+
+    .faq-q {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .faq-a {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: #555;
+      line-height: 1.55;
+      display: none;
+    }
+
+    .faq-item.open .faq-a {
+      display: block;
+    }
+
+    /* Collapsed dropdown bar (mobile & scroll) */
+    .faq-mobile-bar {
+      display: none;
+      position: sticky;
+      top: 70px;
+      background: white;
+      padding: 10px 16px;
+      border-bottom: 1px solid #ddd;
+      font-size: 0.9rem;
+      cursor: pointer;
+      z-index: 30;
+    }
+
+    .faq-tabs-wrapper.collapsed .faq-tabs {
+      display: none;
+    }
+
+    .faq-tabs-wrapper.collapsed .faq-mobile-bar {
+      display: block;
+    }
+
+    .faq-mobile-dropdown {
+      display: none;
+      background: #ffffff;
+      border-top: 1px solid #ddd;
+      padding: 10px;
+    }
+
+    .faq-mobile-dropdown.open {
+      display: block;
+    }
+
+    .faq-mobile-dropdown .faq-tab {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+  </style>
 </head>
 
-<body class="page faq-page">
+<body>
 
 <!-- HEADER -->
 <header>
@@ -41,29 +165,26 @@
       <a href="/readiness.html" class="btn btn-primary">Check Readiness</a>
     </div>
 
-    <div class="nav-toggle" id="navToggle">
-      <span></span><span></span><span></span>
-    </div>
+    <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
   </div>
 </header>
 
 
 <!-- HERO -->
-<section class="hero faq-hero">
+<section class="hero">
   <div class="container" style="max-width:820px; text-align:center;">
     <h1 class="hero-title">Frequently Asked Questions</h1>
     <p class="hero-subtitle">
-      Clear answers to common questions about investing, safety, documentation, discipline, planning & expectations.
+      Clear answers to common questions about investing, documentation, discipline, expectations & safety.
     </p>
   </div>
 </section>
 
 
-<!-- MAIN CONTENT -->
-<main>
-<section class="container faq-container">
+<!-- TABS SECTION (Sticky) -->
+<div class="faq-tabs-wrapper">
+  <div class="faq-mobile-bar" id="faqMobileBar">Getting Started ▾</div>
 
-  <!-- TABS -->
   <div class="faq-tabs">
     <div class="faq-tab active" data-target="start">Getting Started</div>
     <div class="faq-tab" data-target="process">Process & Documents</div>
@@ -72,140 +193,64 @@
     <div class="faq-tab" data-target="fees">Fees & Plans</div>
   </div>
 
-  
-    <!-- ========================= GETTING STARTED ========================= -->
-    <div class="faq-group active" id="start">
-
-      <div class="faq-item"><div class="faq-q">1. Who can invest through Steady Growth?</div><div class="faq-a">Any Indian or NRI adult with valid KYC who wants long-term financial stability, personalised guidance, and disciplined investing. I especially work with professionals, business owners, NRIs, and families seeking structured wealth creation.</div></div>
-
-      <div class="faq-item"><div class="faq-q">2. Is there a minimum investment requirement?</div><div class="faq-a">No fixed minimum. SIPs may start from ₹500, but I recommend investments aligned to meaningful goals (commonly ₹2,000–₹20,000/month based on profile and ambition).</div></div>
-
-      <div class="faq-item"><div class="faq-q">3. I have never invested before — am I eligible?</div><div class="faq-a">Absolutely — beginners are most welcome. My role is to simplify, guide, and support you through every step, without using complex jargon.</div></div>
-
-      <div class="faq-item"><div class="faq-q">4. Do you offer stock tips, trading calls, or guaranteed profits?</div><div class="faq-a">No. I strictly follow a disciplined, suitability-based mutual fund approach. No predictions, no stock tips, no “sure-shot” recommendations.</div></div>
-
-      <div class="faq-item"><div class="faq-q">5. Do I need a DEMAT account?</div><div class="faq-a">Not required. You may invest and track through NJ Wealth & AMC systems without a Demat account.</div></div>
-
-      <div class="faq-item"><div class="faq-q">6. Can I start with SIP and later add lumpsum?</div><div class="faq-a">Yes — many investors begin with SIPs to build habits and add lumpsum when funds are available.</div></div>
-
-      <div class="faq-item"><div class="faq-q">7. Can minors invest?</div><div class="faq-a">Yes, investments can be made in a child's name under a parent/guardian until age 18.</div></div>
-
-      <div class="faq-item"><div class="faq-q">8. How long should I invest?</div><div class="faq-a">For equity funds: ideally 5–10+ years. Hybrid: 3–5 years. Debt: depends on short-term goals.</div></div>
-
-      <div class="faq-item"><div class="faq-q">9. Will I get portfolio tracking support?</div><div class="faq-a">Yes. Tracking, updates, and guidance are provided throughout your investment period.</div></div>
-
-      <div class="faq-item"><div class="faq-q">10. What if I panic during market fall?</div><div class="faq-a">You can contact me before taking emotional action — staying invested, not reacting impulsively is the key.</div></div>
-    </div>
-
-
-    <!-- ========================= PROCESS & DOCUMENTS ========================= -->
-    <div class="faq-group" id="process">
-
-      <div class="faq-item"><div class="faq-q">1. What is the complete onboarding process?</div><div class="faq-a">Step 1: SIP readiness check & Share details → Step 2: Risk profile → Step 3: Suitable plan → Step 4: Digital KYC → Step 5: SIP execution → Step 6: Review & tracking.</div></div>
-
-      <div class="faq-item"><div class="faq-q">2. What documents are needed?</div><div class="faq-a">PAN, Aadhaar, mobile-linked OTP, cancelled cheque, latest photo & signature. NRIs need passport, visa, FATCA, and NRE/NRO bank details.</div></div>
-
-      <div class="faq-item"><div class="faq-q">3. Is physical paperwork required?</div><div class="faq-a">In most cases, everything is 100% digital.</div></div>
-
-      <div class="faq-item"><div class="faq-q">4. How do I track portfolio performance?</div><div class="faq-a">Through NJ Wealth app/portal, AMC statements, and periodic reports.</div></div>
-
-      <div class="faq-item"><div class="faq-q">5. Can I change distributor?</div><div class="faq-a">Yes, if your investments are in regular plans — an ARN transfer request can be done.</div></div>
-
-      <div class="faq-item"><div class="faq-q">6. Can I transfer my investments from other platforms?</div><div class="faq-a">Yes, if they are regular. Direct plans cannot be converted.</div></div>
-
-      <div class="faq-item"><div class="faq-q">7. Can I pause/stop SIP anytime?</div><div class="faq-a">Yes, with no penalty.</div></div>
-
-      <div class="faq-item"><div class="faq-q">8. Will I receive statements?</div><div class="faq-a">Yes — via email + consolidated account statements (CAS).</div></div>
-    </div>
-
-
-    <!-- ========================= RISK & RETURNS ========================= -->
-    <div class="faq-group" id="risk">
-
-      <div class="faq-item"><div class="faq-q">1. Are mutual funds risky?</div><div class="faq-a">Yes, all market-linked products carry risk — but risk varies by category and reduces significantly with long-term disciplined investing.</div></div>
-
-      <div class="faq-item"><div class="faq-q">2. Do you guarantee any returns?</div><div class="faq-a">No. I do not, and cannot, guarantee any returns. Mutual Fund investments are subject to market risks. My role is to help you invest wisely and stay disciplined, not to predict or promise returns.</div></div>
-      
-      <div class="faq-item"><div class="faq-q">3. What returns can I expect?</div><div class="faq-a">No fixed return. Historically:  
-      • Equity: 10–15% CAGR (long term)  
-      • Hybrid: 8–12%  
-      • Debt: 5–7%</div></div>
-
-      <div class="faq-item"><div class="faq-q">4. What if the market crashes?</div><div class="faq-a">Crashes are part of long-term investing. Wealth is created through staying invested, not exiting emotionally.</div></div>
-
-      <div class="faq-item"><div class="faq-q">5. Will SIP protect me from losses?</div><div class="faq-a">SIP reduces entry timing risk, averages cost, and supports discipline — but it does not eliminate risk.</div></div>
-
-      <div class="faq-item"><div class="faq-q">6. Should I book profits regularly?</div><div class="faq-a">No — unnecessary booking disrupts compounding. Withdraw only for goal-based or rebalancing reasons.</div></div>
-    </div>
-
-
-    <!-- ========================= NRI & OVERSEAS ========================= -->
-    <div class="faq-group" id="nri">
-
-      <div class="faq-item"><div class="faq-q">1. Can NRIs invest in Indian mutual funds?</div><div class="faq-a">Yes, NRIs/OCIs can invest digitally through NRE/NRO accounts subject to FEMA and FATCA rules.</div></div>
-
-      <div class="faq-item"><div class="faq-q">2. Are US/Canada NRIs allowed?</div><div class="faq-a">Some AMCs allow with additional compliance, while others restrict.</div></div>
-
-      <div class="faq-item"><div class="faq-q">3. Can NRIs repatriate investments?</div><div class="faq-a">Yes, only if invested via NRE accounts; NRO funds follow annual limits.</div></div>
-
-      <div class="faq-item"><div class="faq-q">4. Is physical presence in India needed?</div><div class="faq-a">No — digital onboarding is allowed.</div></div>
-    </div>
-
-
-    <!-- ========================= FEES & PLANS ========================= -->
-    <div class="faq-group" id="fees">
-    
-      <div class="faq-item">
-        <div class="faq-q">1. Do I need to pay any separate advisory charges?</div>
-        <div class="faq-a">
-          No separate advisory or consultation fee is taken from investors. All guidance, onboarding, planning and service support are included as part of the standard investment journey.
-        </div>
-      </div>
-    
-      <div class="faq-item">
-        <div class="faq-q">2. If there are no advisory charges, how are services provided?</div>
-        <div class="faq-a">
-          Investors are supported through a regulated distribution and servicing model followed across the mutual fund industry, enabling personalised assistance without billing separate advisory fees.
-        </div>
-      </div>
-    
-      <div class="faq-item">
-        <div class="faq-q">3. What kind of support is included?</div>
-        <div class="faq-a">
-          Goal planning, risk suitability, portfolio review, disciplined investing guidance, asset allocation support, and ongoing monitoring — helping you stay aligned with long-term objectives.
-        </div>
-      </div>
-    
-      <div class="faq-item">
-        <div class="faq-q">4. Why is guided investing beneficial?</div>
-        <div class="faq-a">
-          Many investors prefer expert-supported investing to avoid confusion, over-research, impulsive decisions, and emotionally driven exits. Proper guidance and accountability often matter more in long-term wealth creation than one-time product selection.
-        </div>
-      </div>
-    
-      <div class="faq-item">
-        <div class="faq-q">5. Are there any hidden or surprise charges?</div>
-        <div class="faq-a">
-          No hidden, surprise, or additional charges are taken by me. All mutual fund-related costs, if any, are published and disclosed by the respective Asset Management Companies (AMCs) as per regulations.
-        </div>
-      </div>
-    
-    </div>
-
-   
-
-
-  <!-- CTA BOX -->
-  <div class="cta-box">
-    Still have a question?<br/>
-    <a href="https://api.whatsapp.com/send?phone=919211310914&text=Hi,+I+have+a+query+related+to+investing.">Message on WhatsApp</a>
+  <div class="faq-mobile-dropdown" id="faqDropdown">
+    <div class="faq-tab" data-target="start">Getting Started</div>
+    <div class="faq-tab" data-target="process">Process & Documents</div>
+    <div class="faq-tab" data-target="risk">Risk & Returns</div>
+    <div class="faq-tab" data-target="nri">NRI & Overseas</div>
+    <div class="faq-tab" data-target="fees">Fees & Plans</div>
   </div>
+</div>
+
+
+<!-- MAIN FAQ CONTENT -->
+<section class="container" style="margin-top:40px;">
+
+
+<!-- ========================= GROUP 1 ========================= -->
+<div class="faq-group active" id="start">
+  <h2>Getting Started</h2>
+  <div class="faq-item"><div class="faq-q">Who can invest?</div><div class="faq-a">Any Indian or NRI adult...</div></div>
+  <div class="faq-item"><div class="faq-q">Is there a minimum amount?</div><div class="faq-a">No fixed minimum...</div></div>
+</div>
+
+<!-- ========================= GROUP 2 ========================= -->
+<div class="faq-group" id="process">
+  <h2>Process & Documents</h2>
+  <div class="faq-item"><div class="faq-q">What documents are needed?</div><div class="faq-a">PAN, Aadhaar...</div></div>
+  <div class="faq-item"><div class="faq-q">Is onboarding fully digital?</div><div class="faq-a">Yes, 100% digital...</div></div>
+</div>
+
+<!-- ========================= GROUP 3 ========================= -->
+<div class="faq-group" id="risk">
+  <h2>Risk & Returns</h2>
+  <div class="faq-item"><div class="faq-q">Are mutual funds risky?</div><div class="faq-a">All market-linked...</div></div>
+</div>
+
+<!-- ========================= GROUP 4 ========================= -->
+<div class="faq-group" id="nri">
+  <h2>NRI & Overseas</h2>
+  <div class="faq-item"><div class="faq-q">Can NRIs invest?</div><div class="faq-a">Yes, NRIs can invest...</div></div>
+</div>
+
+<!-- ========================= GROUP 5 ========================= -->
+<div class="faq-group" id="fees">
+  <h2>Fees & Plans</h2>
+  <div class="faq-item"><div class="faq-q">Do I pay advisory charges?</div><div class="faq-a">No separate advisory fees...</div></div>
+</div>
+
+
+
+<!-- CTA BOX -->
+<div style="text-align:center; margin:40px 0;">
+  <a href="https://api.whatsapp.com/send?phone=919211310914&text=Hi,+I+have+a+query+related+to+investing." 
+     class="btn btn-primary">Message on WhatsApp</a>
+</div>
 
 </section>
-</main>
 
 
-<!-- FOOTER -->
+<!-- FOOTER (GLOBAL) -->
 <footer class="disclaimer">
   <div class="container">
     <p class="disclaimer-text">
@@ -221,33 +266,44 @@
 
 <!-- SCRIPT -->
 <script>
-  // Mobile nav toggle
-  const nav = document.querySelector('.nav');
-  const navToggle = document.getElementById('navToggle');
-  navToggle.addEventListener('click', () => nav.classList.toggle('open'));
+  // Sticky collapse on scroll
+  const tabsWrapper = document.querySelector('.faq-tabs-wrapper');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 250) tabsWrapper.classList.add('collapsed');
+    else tabsWrapper.classList.remove('collapsed');
+  });
+
+  // FAQ Tab Switch Logic
+  const tabs = document.querySelectorAll('.faq-tab');
+  const groups = document.querySelectorAll('.faq-group');
+  const mobileLabel = document.getElementById('faqMobileBar');
+  const dropdown = document.getElementById('faqDropdown');
+
+  function activateTab(target) {
+    tabs.forEach(t => t.classList.remove('active'));
+    document.querySelectorAll(`.faq-tab[data-target="${target}"]`).forEach(t => t.classList.add('active'));
+
+    groups.forEach(g => g.classList.remove('active'));
+    document.getElementById(target).classList.add('active');
+
+    mobileLabel.textContent = document.querySelector(`.faq-tab[data-target="${target}"]`).textContent + " ▾";
+    dropdown.classList.remove('open');
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => activateTab(tab.dataset.target));
+  });
+
+  // Mobile toggle
+  mobileLabel.addEventListener('click', () => dropdown.classList.toggle('open'));
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.addEventListener('click', () => item.classList.toggle('open'));
+  });
 
   // Footer year
   document.getElementById('year').textContent = new Date().getFullYear();
-
-  // Tab switching
-  const tabs = document.querySelectorAll('.faq-tab');
-  const groups = document.querySelectorAll('.faq-group');
-
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      groups.forEach(g => g.classList.remove('active'));
-      tab.classList.add('active');
-      document.getElementById(tab.dataset.target).classList.add('active');
-    });
-  });
-
-  // Accordion effects
-  document.querySelectorAll('.faq-item').forEach(item => {
-    item.addEventListener('click', () => {
-      item.classList.toggle('open');
-    });
-  });
 </script>
 
 </body>
