@@ -12,139 +12,63 @@
   <link rel="stylesheet" href="/styles/style.css">
 
   <style>
-    /* --- FAQ PAGE CUSTOM STYLING --- */
-
-    .faq-tabs-wrapper {
-      position: sticky;
-      top: 70px; /* sits under header */
-      z-index: 20;
-      background: white;
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
-      transition: all 0.25s ease;
-    }
-
-    /* collapsed mode */
-    .faq-tabs-wrapper.collapsed {
-      padding: 6px 0;
-      background: #fffffff5;
-      backdrop-filter: blur(6px);
-    }
-
+    /* ---- PAGE-SPECIFIC ---- */
     .faq-tabs {
       display: flex;
-      gap: 10px;
       justify-content: center;
+      gap: 10px;
+      margin: 30px auto 35px;
       flex-wrap: wrap;
     }
-
     .faq-tab {
-      padding: 8px 16px;
-      border-radius: 50px;
-      border: 1px solid #d6d6d6;
-      font-size: 0.85rem;
+      padding: 8px 20px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      border: 1px solid rgba(240,183,107,0.4);
+      background: rgba(255,255,255,0.06);
       cursor: pointer;
-      transition: 0.2s;
-      background: #fafafa;
+      transition: 0.25s;
     }
-
     .faq-tab.active {
-      background: #1d3a6a;
-      color: white;
-      border-color: #1d3a6a;
+      background: radial-gradient(circle at 10% 20%, #ffe6c0 0, #f0b76b 35%, #b9782f 100%);
+      color: #1b1406;
       font-weight: 600;
+      border-color: rgba(240,183,107,0.8);
     }
 
-    .faq-group {
-      display: none;
-      margin-top: 28px;
-    }
-
-    .faq-group.active {
-      display: block;
-    }
+    .faq-group { display: none; }
+    .faq-group.active { display: block; }
 
     .faq-item {
-      border: 1px solid #e8e8e8;
-      padding: 14px 18px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 15px 18px;
       border-radius: 10px;
-      margin-bottom: 12px;
-      background: white;
+      margin-bottom: 10px;
       cursor: pointer;
-      transition: 0.25s ease;
+      transition: 0.2s;
     }
+    .faq-item.open { border-color: rgba(240,183,107,0.5); }
 
-    .faq-item:hover {
-      border-color: #1d3a6a;
-    }
-
-    .faq-q {
-      font-weight: 600;
-      font-size: 1rem;
-    }
-
+    .faq-q { font-weight: 600; }
     .faq-a {
-      margin-top: 8px;
-      font-size: 0.9rem;
-      color: #555;
+      display: none;
+      font-size: 0.85rem;
+      margin-top: 7px;
       line-height: 1.55;
-      display: none;
+      color: #a9b2cc;
     }
-
-    .faq-item.open .faq-a {
-      display: block;
-    }
-
-    /* Collapsed dropdown bar (mobile & scroll) */
-    .faq-mobile-bar {
-      display: none;
-      position: sticky;
-      top: 70px;
-      background: white;
-      padding: 10px 16px;
-      border-bottom: 1px solid #ddd;
-      font-size: 0.9rem;
-      cursor: pointer;
-      z-index: 30;
-    }
-
-    .faq-tabs-wrapper.collapsed .faq-tabs {
-      display: none;
-    }
-
-    .faq-tabs-wrapper.collapsed .faq-mobile-bar {
-      display: block;
-    }
-
-    .faq-mobile-dropdown {
-      display: none;
-      background: #ffffff;
-      border-top: 1px solid #ddd;
-      padding: 10px;
-    }
-
-    .faq-mobile-dropdown.open {
-      display: block;
-    }
-
-    .faq-mobile-dropdown .faq-tab {
-      width: 100%;
-      text-align: center;
-      margin-bottom: 6px;
-    }
-
+    .faq-item.open .faq-a { display: block; }
   </style>
-</head>
 
-<body>
+</head>
+<body class="faq-page">
 
 <!-- HEADER -->
 <header>
   <div class="container nav">
     <div class="brand">
-      <div class="brand-logo">
-        <img src="/assets/img/logo.png" alt="Steady Growth Logo">
-      </div>
+      <div class="brand-logo"><img src="/assets/img/logo.png" alt="Steady Growth Logo"></div>
       <div class="brand-text">
         <div class="brand-name">Steady Growth</div>
         <div class="brand-sub">Mutual Fund Distribution</div>
@@ -171,139 +95,161 @@
 
 
 <!-- HERO -->
-<section class="hero">
+<section class="hero faq-hero">
   <div class="container" style="max-width:820px; text-align:center;">
     <h1 class="hero-title">Frequently Asked Questions</h1>
     <p class="hero-subtitle">
-      Clear answers to common questions about investing, documentation, discipline, expectations & safety.
+      Clear, structured answers based on where you are in your investing journey.
     </p>
   </div>
 </section>
 
 
-<!-- TABS SECTION (Sticky) -->
-<div class="faq-tabs-wrapper">
-  <div class="faq-mobile-bar" id="faqMobileBar">Getting Started ▾</div>
+<!-- MAIN CONTENT -->
+<main>
+<section class="container faq-container">
 
-  <div class="faq-tabs">
-    <div class="faq-tab active" data-target="start">Getting Started</div>
-    <div class="faq-tab" data-target="process">Process & Documents</div>
-    <div class="faq-tab" data-target="risk">Risk & Returns</div>
-    <div class="faq-tab" data-target="nri">NRI & Overseas</div>
-    <div class="faq-tab" data-target="fees">Fees & Plans</div>
-  </div>
 
-  <div class="faq-mobile-dropdown" id="faqDropdown">
-    <div class="faq-tab" data-target="start">Getting Started</div>
-    <div class="faq-tab" data-target="process">Process & Documents</div>
-    <div class="faq-tab" data-target="risk">Risk & Returns</div>
-    <div class="faq-tab" data-target="nri">NRI & Overseas</div>
-    <div class="faq-tab" data-target="fees">Fees & Plans</div>
-  </div>
+<!-- TABS -->
+<div class="faq-tabs">
+  <div class="faq-tab active" data-target="start">Getting Started</div>
+  <div class="faq-tab" data-target="process">Process & Documents</div>
+  <div class="faq-tab" data-target="risk">Risk & Returns</div>
+  <div class="faq-tab" data-target="nri">NRI & Overseas</div>
+  <div class="faq-tab" data-target="fees">Fees & Plans</div>
 </div>
 
 
-<!-- MAIN FAQ CONTENT -->
-<section class="container" style="margin-top:40px;">
 
-
-<!-- ========================= GROUP 1 ========================= -->
+<!-- ========================= GETTING STARTED ========================= -->
 <div class="faq-group active" id="start">
-  <h2>Getting Started</h2>
-  <div class="faq-item"><div class="faq-q">Who can invest?</div><div class="faq-a">Any Indian or NRI adult...</div></div>
-  <div class="faq-item"><div class="faq-q">Is there a minimum amount?</div><div class="faq-a">No fixed minimum...</div></div>
+
+  <div class="faq-item"><div class="faq-q">Who can invest through Steady Growth?</div>
+    <div class="faq-a">Any Indian or NRI adult with valid KYC...</div></div>
+
+  <div class="faq-item"><div class="faq-q">Is there a minimum investment requirement?</div>
+    <div class="faq-a">No fixed minimum...</div></div>
+
+  <div class="faq-item"><div class="faq-q">I have never invested before — am I eligible?</div>
+    <div class="faq-a">Absolutely — beginners are most welcome...</div></div>
+
+  <div class="faq-item"><div class="faq-q">Do you offer stock tips or guaranteed profits?</div>
+    <div class="faq-a">No predictions or stock tips...</div></div>
 </div>
 
-<!-- ========================= GROUP 2 ========================= -->
+
+
+<!-- ========================= PROCESS & DOCUMENTS ========================= -->
 <div class="faq-group" id="process">
-  <h2>Process & Documents</h2>
-  <div class="faq-item"><div class="faq-q">What documents are needed?</div><div class="faq-a">PAN, Aadhaar...</div></div>
-  <div class="faq-item"><div class="faq-q">Is onboarding fully digital?</div><div class="faq-a">Yes, 100% digital...</div></div>
+
+  <div class="faq-item"><div class="faq-q">What is the complete onboarding process?</div>
+    <div class="faq-a">Step 1 → Step 2 → Step 3...</div></div>
+
+  <div class="faq-item"><div class="faq-q">What documents are needed?</div>
+    <div class="faq-a">PAN, Aadhaar, cancelled cheque...</div></div>
+
+  <div class="faq-item"><div class="faq-q">Is physical paperwork required?</div>
+    <div class="faq-a">Everything is digital...</div></div>
+
 </div>
 
-<!-- ========================= GROUP 3 ========================= -->
+
+
+<!-- ========================= RISK & RETURNS ========================= -->
 <div class="faq-group" id="risk">
-  <h2>Risk & Returns</h2>
-  <div class="faq-item"><div class="faq-q">Are mutual funds risky?</div><div class="faq-a">All market-linked...</div></div>
+
+  <div class="faq-item"><div class="faq-q">Are mutual funds risky?</div>
+    <div class="faq-a">Yes, market-linked...</div></div>
+
+  <div class="faq-item"><div class="faq-q">Do you guarantee returns?</div>
+    <div class="faq-a">No guarantees...</div></div>
+
 </div>
 
-<!-- ========================= GROUP 4 ========================= -->
+
+
+<!-- ========================= NRI ========================= -->
 <div class="faq-group" id="nri">
-  <h2>NRI & Overseas</h2>
-  <div class="faq-item"><div class="faq-q">Can NRIs invest?</div><div class="faq-a">Yes, NRIs can invest...</div></div>
+
+  <div class="faq-item"><div class="faq-q">Can NRIs invest?</div>
+    <div class="faq-a">Yes, digitally through NRE/NRO...</div></div>
+
 </div>
 
-<!-- ========================= GROUP 5 ========================= -->
+
+
+<!-- ========================= FEES ========================= -->
 <div class="faq-group" id="fees">
-  <h2>Fees & Plans</h2>
-  <div class="faq-item"><div class="faq-q">Do I pay advisory charges?</div><div class="faq-a">No separate advisory fees...</div></div>
+
+  <div class="faq-item"><div class="faq-q">Do I need to pay advisory charges?</div>
+    <div class="faq-a">No separate advisory fee...</div></div>
+
+  <div class="faq-item"><div class="faq-q">How are services provided?</div>
+    <div class="faq-a">Through regulated distribution...</div></div>
+
 </div>
 
 
 
 <!-- CTA BOX -->
-<div style="text-align:center; margin:40px 0;">
-  <a href="https://api.whatsapp.com/send?phone=919211310914&text=Hi,+I+have+a+query+related+to+investing." 
-     class="btn btn-primary">Message on WhatsApp</a>
+<div class="cta-box" style="margin-top:40px; text-align:center;">
+  Still have a question?<br>
+  <a href="https://api.whatsapp.com/send?phone=919211310914&text=Hi,+I+have+a+query+related+to+investing." class="btn btn-primary" style="margin-top:10px;">
+    Message on WhatsApp
+  </a>
 </div>
 
 </section>
+</main>
 
 
-<!-- FOOTER (GLOBAL) -->
+
+<!-- FOOTER -->
 <footer class="disclaimer">
   <div class="container">
     <p class="disclaimer-text">
-      Mutual Fund investments are subject to market risks. Please read all scheme-related documents carefully before investing.
+      Mutual Fund investments are subject to market risks. Please read scheme documents carefully before investing.
     </p>
     <div class="footer-bottom">
-      <span>© <span id="year"></span> Steady Growth. All rights reserved.</span>
-      <span>Designed to encourage disciplined, long-term investing.</span>
+      © <span id="year"></span> Steady Growth. All rights reserved.
     </div>
   </div>
 </footer>
 
 
+
 <!-- SCRIPT -->
 <script>
-  // Sticky collapse on scroll
-  const tabsWrapper = document.querySelector('.faq-tabs-wrapper');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 250) tabsWrapper.classList.add('collapsed');
-    else tabsWrapper.classList.remove('collapsed');
-  });
-
-  // FAQ Tab Switch Logic
-  const tabs = document.querySelectorAll('.faq-tab');
-  const groups = document.querySelectorAll('.faq-group');
-  const mobileLabel = document.getElementById('faqMobileBar');
-  const dropdown = document.getElementById('faqDropdown');
-
-  function activateTab(target) {
-    tabs.forEach(t => t.classList.remove('active'));
-    document.querySelectorAll(`.faq-tab[data-target="${target}"]`).forEach(t => t.classList.add('active'));
-
-    groups.forEach(g => g.classList.remove('active'));
-    document.getElementById(target).classList.add('active');
-
-    mobileLabel.textContent = document.querySelector(`.faq-tab[data-target="${target}"]`).textContent + " ▾";
-    dropdown.classList.remove('open');
-  }
-
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => activateTab(tab.dataset.target));
-  });
-
-  // Mobile toggle
-  mobileLabel.addEventListener('click', () => dropdown.classList.toggle('open'));
-
-  // FAQ accordion
-  document.querySelectorAll('.faq-item').forEach(item => {
-    item.addEventListener('click', () => item.classList.toggle('open'));
-  });
+  // Mobile nav toggle
+  const nav = document.querySelector('.nav');
+  const navToggle = document.getElementById('navToggle');
+  navToggle.addEventListener('click', () => nav.classList.toggle('open'));
 
   // Footer year
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Tab switching
+  const tabs = document.querySelectorAll('.faq-tab');
+  const groups = document.querySelectorAll('.faq-group');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      groups.forEach(g => g.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.target).classList.add('active');
+    });
+  });
+
+  // Accordion — Auto close previous
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const parent = item.closest('.faq-group');
+      parent.querySelectorAll('.faq-item').forEach(i => {
+        if (i !== item) i.classList.remove('open');
+      });
+      item.classList.toggle('open');
+    });
+  });
 </script>
 
 </body>
