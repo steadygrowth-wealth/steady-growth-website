@@ -389,29 +389,36 @@ header {
 
 
 
-/* ========================= FAQ PAGE ========================= */
+/* ========================= FAQ PAGE THEME ========================= */
 
-.faq-container {
-  padding: 20px 0 60px;
+/* Dark Background */
+body.faq-page {
+  background: radial-gradient(circle at top, #141b35 0, #050816 55%);
+  color: #ffffff;
 }
 
+/* FAQ Container */
+.faq-container {
+  padding: 40px 0 60px;
+}
+
+/* Tabs */
 .faq-tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
   justify-content: center;
-  margin: 20px 0 28px;
+  gap: 12px;
+  margin: 20px 0 32px;
 }
 
 .faq-tab {
-  padding: 7px 16px;
+  padding: 7px 18px;
   border-radius: 999px;
-  font-size: 0.85rem;
-  cursor: pointer;
   border: 1px solid rgba(240,183,107,0.35);
-  background: rgba(6,10,28,0.7);
-  color: #f7f7f7;
-  transition: all 0.2s ease-out;
+  background: rgba(255,255,255,0.05);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.25s ease;
 }
 
 .faq-tab.active {
@@ -420,20 +427,13 @@ header {
   font-weight: 500;
 }
 
-.faq-group {
-  display: none;
-}
-
-.faq-group.active {
-  display: block;
-}
-
+/* FAQ Items */
 .faq-item {
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.07);
   border-radius: 12px;
-  padding: 14px 16px;
-  margin-bottom: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -443,28 +443,28 @@ header {
 }
 
 .faq-q {
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 500;
 }
 
 .faq-a {
   font-size: 0.85rem;
-  color: #a7afc7;
-  margin-top: 6px;
-  line-height: 1.55;
+  margin-top: 8px;
+  color: #c8cce4;
   display: none;
+  line-height: 1.55;
 }
 
 .faq-item.open .faq-a {
   display: block;
 }
 
+/* CTA Box */
 .cta-box {
   text-align: center;
-  margin-top: 28px;
-  padding: 18px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(6, 10, 28, 0.6);
+  margin-top: 40px;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
 }
-
