@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contact – Steady Growth Mutual Fund Distribution</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="/styles/style.css">
+</head>
+
+<body>
+
+<!-- Header -->
+<header>
+  <div class="container nav">
+    <div class="brand">
+      <div class="brand-logo">
+        <img src="/assets/img/logo.png" alt="Steady Growth Logo">
+      </div>
+      <div class="brand-text">
+        <div class="brand-name">Steady Growth</div>
+        <div class="brand-sub">Mutual Fund Distribution</div>
+      </div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="/index.html">Home</a>
+      <a href="/pages/about.html">About</a>
+      <a href="/pages/services.html">Services</a>
+      <a href="/pages/process.html">Process</a>
+      <a href="/pages/faq.html">FAQs</a>
+    </nav>
+
+    <div class="nav-cta">
+      <a href="/pages/contact.html" class="btn btn-ghost">Request a Call</a>
+      <a href="/readiness.html" class="btn btn-primary">Check Readiness</a>
+    </div>
+
+    <div class="nav-toggle" id="navToggle">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</header>
+
+
+<!-- Page Heading -->
+<section class="hero" style="padding:60px 0 30px;">
+  <div class="container" style="max-width:820px; text-align:center;">
+    <h1 class="hero-title">Connect with Me</h1>
+    <p class="hero-subtitle">
+      Share a few details and I’ll get in touch to understand your needs.
+      No pressure, no obligations — just a simple conversation about your goals.
+    </p>
+  </div>
+</section>
+
+
+<!-- Contact Body -->
+<section>
+  <div class="container contact-grid">
+
+    <!-- LEFT CARD: DETAILS -->
+    <div class="card card-soft contact-details">
+      <p><strong>Ankit Chakraborty</strong><br>
+        Mutual Fund Distributor – Steady Growth
+      </p>
+
+      <p>
+        <strong>ARN:</strong> ARN-285834 &nbsp; | &nbsp;
+        <strong>EUIN:</strong> EUIN-E538021
+      </p>
+
+      <p>
+        <strong>Mobile / WhatsApp:</strong> +91-9211310914<br>
+        <strong>Email:</strong> steadygrowth.wealth@gmail.com
+      </p>
+
+      <div class="contact-tags">
+        <span class="contact-tag">Goal-based investing</span>
+        <span class="contact-tag">SIP &amp; lump sum</span>
+        <span class="contact-tag">NJ Wealth platform</span>
+      </div>
+
+      <!-- ACTION BUTTONS -->
+      <div class="contact-actions">
+        <a href="https://api.whatsapp.com/send?phone=919211310914&text=Hi,+I+need+assistance+in+starting+my+investment+journey."
+           target="_blank"
+           class="btn btn-primary">
+          Message on WhatsApp
+        </a>
+
+        <a href="http://p.njw.bz/38462" class="btn btn-primary">
+          Start Your Investment Journey
+        </a>
+      </div>
+
+      <p class="form-note" style="margin-top:12px;">
+        I usually respond within one working day. All discussions are kept private and confidential.
+      </p>
+    </div>
+
+
+    <!-- RIGHT CARD: FORM -->
+    <div class="card">
+      <form
+        id="contactForm"
+        action="https://script.google.com/macros/s/AKfycbw-belwpkcLadQvVzgq0cwq_-HD2KBk0vZFyvqHQF3GrYVgpsU8_30Z6jOS2wwzM-ot/exec"
+        method="POST"
+        novalidate
+      >
+
+        <!-- Hidden Config -->
+        <input type="hidden" name="_subject" value="New Lead Submission - Steady Growth">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="box">
+        <input type="hidden" name="_next" value="https://steady-growth-website.vercel.app/thankyou.html">
+        <input type="hidden" name="_autoresponse" value="Thank you for contacting Steady Growth. We will get back to you soon.">
+
+        <!-- Honeypot -->
+        <div style="display:none;">
+          <label>Leave this field empty</label>
+          <input type="text" name="_honey">
+        </div>
+
+        <!-- Full Name -->
+        <div class="field-group">
+          <label for="name">Full Name*</label>
+          <input type="text" id="name" name="name" placeholder="Your name" required>
+        </div>
+
+        <!-- Mobile -->
+        <div class="field-group">
+          <label for="phone">Mobile Number*</label>
+          <input
+            type="tel"
+            id="phone"
+            name="mobile"
+            placeholder="10-digit mobile number"
+            pattern="^[0-9]{10}$"
+            required
+          >
+          <small class="error-msg" style="color:#ff6b6b; display:none;">
+            Enter valid 10-digit mobile number
+          </small>
+        </div>
+
+        <!-- Email -->
+        <div class="field-group">
+          <label for="email">Email (optional)</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com">
+        </div>
+
+        <!-- Profession -->
+        <div class="field-group">
+          <label for="profession">Profession (optional)</label>
+          <select id="profession" name="profession">
+            <option value="">Select (optional)</option>
+            <option>Business</option>
+            <option>Private Sector Service</option>
+            <option>Government Service</option>
+            <option>Student</option>
+            <option>Homemaker</option>
+            <option>Retired</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <!-- Goal -->
+        <div class="field-group">
+          <label for="goal">Primary Financial Goal*</label>
+          <select id="goal" name="goal" required>
+            <option value="">Select an option</option>
+            <option>Retirement planning</option>
+            <option>Children's education</option>
+            <option>Wealth creation</option>
+            <option>House purchase</option>
+            <option>Other / Not sure</option>
+          </select>
+        </div>
+
+        <!-- Contact Time -->
+        <div class="field-group">
+          <label for="contact_time">Preferred time to contact (optional)</label>
+          <select id="contact_time" name="contact_time">
+            <option value="">Select (optional)</option>
+            <option>09:00 AM – 12:00 PM</option>
+            <option>12:00 PM – 03:00 PM</option>
+            <option>03:00 PM – 06:00 PM</option>
+            <option>06:00 PM – 09:00 PM</option>
+          </select>
+        </div>
+
+        <!-- Lead Source -->
+        <div class="field-group">
+          <label for="lead_source">How did you hear about us? (optional)</label>
+          <select id="lead_source" name="lead_source">
+            <option value="">Select (optional)</option>
+            <option>Facebook</option>
+            <option>Instagram</option>
+            <option>WhatsApp</option>
+            <option>Google Search</option>
+            <option>YouTube</option>
+            <option>Friend / Referral</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <!-- Message -->
+        <div class="field-group">
+          <label for="message">Anything specific you’d like to share?</label>
+          <textarea
+            id="message"
+            name="message"
+            placeholder="Example: I want to start SIP of ₹5,000 per month for 10+ years."
+          ></textarea>
+        </div>
+
+        <!-- Loader -->
+        <div id="loader" style="display:none; color:#f0b76b; font-size:0.85rem;">
+          ⏳ Submitting your details… please wait
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn-primary" id="submitBtn">Submit Details</button>
+        <p class="form-note">Your information will be kept confidential.</p>
+      </form>
+
+      <div id="result" style="margin-top:10px; font-size:0.85rem;"></div>
+
+      <p class="form-note" style="margin-top:6px;">
+        By submitting this form, you authorise me to contact you for Mutual Fund related information and services.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- Footer -->
+<footer class="disclaimer">
+  <div class="container">
+    <p class="disclaimer-text">
+      <strong>Disclaimer:</strong> Mutual Fund investments are subject to market risks. Please read all scheme-related
+      documents carefully before investing. The content on this website is for informational purposes only.
+    </p>
+
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Steady Growth. All rights reserved.</span>
+      <span>Designed to encourage disciplined, long-term investing.</span>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+// Mobile Nav
+const nav = document.querySelector('.nav');
+const navToggle = document.getElementById('navToggle');
+navToggle.addEventListener('click', () => nav.classList.toggle('open'));
+
+// Footer Year
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Form Submission Handler (Same as original)
+const contactForm = document.getElementById("contactForm");
+const loader = document.getElementById("loader");
+const result = document.getElementById("result");
+
+if (contactForm) {
+  contactForm.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const submitBtn = form.querySelector("button[type=submit]");
+    const originalText = submitBtn.textContent;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting...";
+    if (loader) loader.style.display = "block";
+    if (result) result.textContent = "Submitting your details securely…";
+
+    const formData = Object.fromEntries(new FormData(form).entries());
+
+    try {
+      await fetch(form.action, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+
+      if (result) result.textContent = "Details submitted. Redirecting…";
+      window.location.href = "https://steady-growth-website.vercel.app/thankyou.html";
+
+    } catch (err) {
+      if (loader) loader.style.display = "none";
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+      if (result) {
+        result.style.color = "#ff6b6b";
+        result.textContent = "Something went wrong. Please try again or contact on WhatsApp.";
+      }
+    }
+  });
+}
+</script>
+
+</body>
+</html>
