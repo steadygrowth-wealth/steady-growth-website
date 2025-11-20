@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>About Steady Growth – Mutual Fund Distribution</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="/styles/style.css">
+</head>
+
+<body>
+
+<!-- Header -->
+<header>
+  <div class="container nav">
+    <div class="brand">
+      <div class="brand-logo">
+        <img src="/assets/img/logo.png" alt="Steady Growth Logo">
+      </div>
+      <div class="brand-text">
+        <div class="brand-name">Steady Growth</div>
+        <div class="brand-sub">Mutual Fund Distribution</div>
+      </div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="/index.html">Home</a>
+      <a href="/pages/services.html">Services</a>
+      <a href="/pages/process.html">Process</a>
+      <a href="/pages/faq.html">FAQs</a>
+      <a href="/pages/contact.html">Contact</a>
+    </nav>
+
+    <div class="nav-cta">
+      <a href="/pages/contact.html" class="btn btn-ghost">Request a Call</a>
+      <a href="/readiness.html" class="btn btn-primary">Check Readiness</a>
+    </div>
+
+    <div class="nav-toggle" id="navToggle">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</header>
+
+<!-- Page Heading -->
+<section class="hero" style="padding:60px 0 30px;">
+  <div class="container" style="max-width:820px; text-align:center;">
+    <h1 class="hero-title">About Steady Growth</h1>
+    <p class="hero-subtitle">
+      A calm, disciplined and long-term focused approach to mutual fund investing—built for individuals who value clarity over noise.
+    </p>
+  </div>
+</section>
+
+<!-- About Content -->
+<section>
+  <div class="container two-col">
+
+    <!-- LEFT COLUMN -->
+    <div>
+      <h2 class="section-title">Our Philosophy</h2>
+      <p class="section-subtitle">
+        Investing doesn’t have to be overwhelming, speculative or stressful. With a structured plan and the right guidance, wealth can grow steadily—year after year.
+      </p>
+
+      <div class="card card-soft">
+        <span class="badge-inline">Why I do what I do</span>
+        <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:10px;">
+          As a Mutual Fund Distributor with my own ARN &amp; EUIN, I work with clients who value clarity over complexity. My role is to:
+        </p>
+
+        <ul class="list">
+          <li>
+            <div class="list-bullet"></div>
+            <div>Understand your goals — retirement, children’s education, house purchase, or wealth creation.</div>
+          </li>
+          <li>
+            <div class="list-bullet"></div>
+            <div>Help you choose appropriate mutual fund schemes based on your risk profile and time horizon.</div>
+          </li>
+          <li>
+            <div class="list-bullet"></div>
+            <div>Facilitate execution and tracking through the NJ Wealth platform.</div>
+          </li>
+          <li>
+            <div class="list-bullet"></div>
+            <div>Encourage disciplined, long-term investing instead of emotional, short-term decisions.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div>
+      <div class="card card-soft">
+        <span class="badge-inline">What you can expect</span>
+
+        <ul class="list">
+          <li>
+            <div class="list-bullet"></div>
+            <div><strong>Transparency:</strong> Clear communication on commissions, no false promises about returns.</div>
+          </li>
+          <li>
+            <div class="list-bullet"></div>
+            <div><strong>Process &amp; discipline:</strong> SIPs, rebalancing and periodic reviews — not market timing.</div>
+          </li>
+          <li>
+            <div class="list-bullet"></div>
+            <div><strong>Safety-first mindset:</strong> Suitability and risk profile are always prioritised.</div>
+          </li>
+          <li>
+            <div class="list-bullet"></div>
+            <div><strong>Personal attention:</strong> You’re not just a folio number — I prefer long-term client relationships.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Sub CTA -->
+<section class="container" style="text-align:center; padding:50px 0;">
+  <h2 class="section-title">Ready to Start Investing?</h2>
+  <p class="section-subtitle">
+    Take the first step — assess your investment readiness.
+  </p>
+  <a href="/readiness.html" class="btn btn-primary">Check Your Investment Readiness →</a>
+</section>
+
+<!-- Footer -->
+<footer class="disclaimer">
+  <div class="container">
+    <p class="disclaimer-text">
+      <strong>Disclaimer:</strong> Mutual Fund investments are subject to market risks. Please read all scheme-related
+      documents carefully before investing.
+    </p>
+
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Steady Growth. All rights reserved.</span>
+      <span>Designed to encourage disciplined, long-term investing.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Mobile Nav
+const nav = document.querySelector('.nav');
+const navToggle = document.getElementById('navToggle');
+navToggle.addEventListener('click', () => nav.classList.toggle('open'));
+
+// Footer Year
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
