@@ -4,10 +4,11 @@
   <meta charset="UTF-8" />
   <title>FAQs – Steady Growth | Mutual Fund Investing Help</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- External stylesheet -->
+
+  <!-- Global Styles -->
   <link rel="stylesheet" href="/styles/style.css">
 </head>
 
@@ -60,17 +61,18 @@
 
 <!-- MAIN CONTENT -->
 <main>
-
 <section class="container faq-container">
 
-  <!-- GROUPS (also inside) -->
-  <div class="faq-group active" id="start">...</div>
-  <div class="faq-group" id="process">...</div>
-  <div class="faq-group" id="risk">...</div>
-  <div class="faq-group" id="nri">...</div>
-  <div class="faq-group" id="fees">...</div>
+  <!-- TABS -->
+  <div class="faq-tabs">
+    <div class="faq-tab active" data-target="start">Getting Started</div>
+    <div class="faq-tab" data-target="process">Process & Documents</div>
+    <div class="faq-tab" data-target="risk">Risk & Returns</div>
+    <div class="faq-tab" data-target="nri">NRI & Overseas</div>
+    <div class="faq-tab" data-target="fees">Fees & Plans</div>
+  </div>
 
-
+  
     <!-- ========================= GETTING STARTED ========================= -->
     <div class="faq-group active" id="start">
 
@@ -193,14 +195,13 @@
    
 
 
-<!-- CTA BOX -->
+ <!-- CTA BOX -->
   <div class="cta-box">
     Still have a question?<br/>
     <a href="https://api.whatsapp.com/send?phone=919211310914&text=Hi,+I+have+a+query+related+to+investing.">Message on WhatsApp</a>
   </div>
 
 </section>
-
 </main>
 
 
@@ -218,6 +219,7 @@
 </footer>
 
 
+<!-- SCRIPT -->
 <script>
   // Mobile nav toggle
   const nav = document.querySelector('.nav');
@@ -240,7 +242,7 @@
     });
   });
 
-  // Accordion
+  // Accordion effects
   document.querySelectorAll('.faq-item').forEach(item => {
     item.addEventListener('click', () => {
       item.classList.toggle('open');
