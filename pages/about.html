@@ -5,17 +5,22 @@
   <title>About Steady Growth – Mutual Fund Distribution</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- External Stylesheet -->
   <link rel="stylesheet" href="/styles/style.css">
 </head>
 
-<body>
+<body class="page-about">
 
-<!-- Header (unchanged) -->
+<!-- Header -->
 <header>
   <div class="container nav">
     <div class="brand">
-      <img src="/assets/img/logo.png" alt="Steady Growth Logo" class="brand-logo">
+      <div class="brand-logo">
+        <img src="/assets/img/logo.png" alt="Steady Growth Logo">
+      </div>
       <div class="brand-text">
         <div class="brand-name">Steady Growth</div>
         <div class="brand-sub">Mutual Fund Distribution</div>
@@ -41,52 +46,56 @@
   </div>
 </header>
 
-
 <!-- PREMIUM HERO -->
 <section class="hero hero-premium">
-  <div class="container narrow">
-    <h1>About Steady Growth</h1>
-    <p class="lead">
-      Helping individuals grow wealth steadily through discipline, clarity and long-term thinking—without speculation or market noise.
+  <div class="container hero-inner">
+    <div class="hero-tag">About</div>
+    <h1 class="hero-title-lg">About Steady Growth</h1>
+    <p class="hero-lead">
+      Helping individuals grow wealth steadily through discipline, clarity and long-term thinking —
+      without speculation or market noise.
     </p>
   </div>
 </section>
 
+<!-- ABOUT CONTENT -->
+<section class="section-padded about-section">
+  <div class="container about-grid">
 
-<!-- SECTION: PHILOSOPHY -->
-<section class="section-padded">
-  <div class="container flex two-col-premium">
-
-    <div class="left">
+    <!-- LEFT COLUMN -->
+    <div class="about-left">
       <h2 class="section-title">Our Philosophy</h2>
       <p class="section-desc">
-        Wealth building isn't about prediction or timing—it’s about consistency, planning and behaviour. When backed by structure, markets become a tool for long-term prosperity.
+        Wealth building isn't about prediction or timing — it’s about consistency, planning and behaviour.
+        When backed by structure, markets become a tool for long-term prosperity.
       </p>
 
-      <div class="highlight-box">
+      <div class="about-card about-card-primary">
         <span class="badge-inline">Why I do this</span>
-        <p>
-          As a Mutual Fund Distributor (ARN + EUIN), I work with clients who value clarity, suitability and goal-based investing. My role:
+        <p class="about-card-intro">
+          As a Mutual Fund Distributor (ARN &amp; EUIN), I work with clients who value clarity, suitability and
+          goal-based investing. My role is to:
         </p>
 
         <ul class="styled-list">
-          <li>Understand goals: retirement, education, home purchase, wealth creation.</li>
-          <li>Align schemes based on risk profile and investment horizon.</li>
-          <li>Execute & track investments via NJ Wealth platform.</li>
-          <li>Promote disciplined, long-term investing—not emotional decisions.</li>
+          <li>Understand your goals — retirement, children’s education, home purchase, wealth creation.</li>
+          <li>Align mutual fund schemes with your risk profile and investment horizon.</li>
+          <li>Execute and track investments through the NJ Wealth platform.</li>
+          <li>Encourage disciplined, long-term investing — not emotional, short-term decisions.</li>
         </ul>
       </div>
     </div>
 
-    <div class="right">
-      <div class="highlight-box soft">
-        <span class="badge-inline">What You Can Expect</span>
+    <!-- RIGHT COLUMN -->
+    <div class="about-right">
+      <div class="about-card about-card-secondary">
+        <span class="badge-inline">What you can expect</span>
 
         <ul class="styled-list">
-          <li><strong>Transparency:</strong> No false promises; full clarity on commissions.</li>
-          <li><strong>Process & Discipline:</strong> SIPs, periodic rebalancing—never market timing.</li>
-          <li><strong>Safety-first:</strong> Suitability and risk alignment over returns chasing.</li>
-          <li><strong>Personal attention:</strong> Focus on long-term client relationships.</li>
+          <li><strong>Transparency:</strong> Clear communication on commissions; no false promises on returns.</li>
+          <li><strong>Process &amp; discipline:</strong> SIPs, rebalancing and periodic reviews — not market timing.</li>
+          <li><strong>Safety-first mindset:</strong> Suitability and risk profile are always prioritised.</li>
+          <li><strong>Personal attention:</strong> You’re not just a folio number; I prefer long-term relationships.</li>
         </ul>
       </div>
     </div>
@@ -94,30 +103,43 @@
   </div>
 </section>
 
-
-<!-- CALL TO ACTION -->
-<section class="section-cta">
-  <div class="container narrow" style="text-align:center;">
-    <h2>Ready to Begin Your Investment Journey?</h2>
-    <p class="section-desc">Start with a quick readiness check to understand where you stand.</p>
-    <a href="/readiness.html" class="btn btn-primary large">Check Investment Readiness</a>
+<!-- CTA -->
+<section class="section-cta-gold">
+  <div class="container cta-inner">
+    <h2 class="cta-title">Ready to Begin Your Investment Journey?</h2>
+    <p class="cta-subtitle">
+      Start with a quick readiness check to understand where you stand today.
+    </p>
+    <a href="/readiness.html" class="btn btn-primary btn-large">
+      Check Your Investment Readiness →
+    </a>
   </div>
 </section>
 
-
-<!-- FOOTER -->
-<footer class="footer">
+<!-- Footer -->
+<footer class="disclaimer">
   <div class="container">
-    <p><strong>Disclaimer:</strong> Mutual Fund investments are subject to market risks. Please read scheme-related documents carefully.</p>
+    <p class="disclaimer-text">
+      <strong>Disclaimer:</strong> Mutual Fund investments are subject to market risks. Please read all
+      scheme-related documents carefully before investing.
+    </p>
 
     <div class="footer-bottom">
       <span>© <span id="year"></span> Steady Growth. All rights reserved.</span>
-      <span>Designed for long-term investing.</span>
+      <span>Designed for long-term, disciplined investing.</span>
     </div>
   </div>
 </footer>
 
 <script>
+// Mobile Nav
+const nav = document.querySelector('.nav');
+const navToggle = document.getElementById('navToggle');
+if (nav && navToggle) {
+  navToggle.addEventListener('click', () => nav.classList.toggle('open'));
+}
+
+// Footer Year
 document.getElementById('year').textContent = new Date().getFullYear();
 </script>
 
