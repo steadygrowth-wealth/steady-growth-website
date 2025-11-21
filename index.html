@@ -28,6 +28,7 @@
       </div>
     </div>
 
+    <!-- DESKTOP NAV -->
     <nav class="nav-links">
       <a href="/pages/about.html">About</a>
       <a href="/pages/services.html">Services</a>
@@ -41,11 +42,25 @@
       <a href="readiness.html" class="btn btn-primary">Check Your Investment Readiness</a>
     </div>
 
+    <!-- HAMBURGER MENU BUTTON -->
     <div class="nav-toggle" id="navToggle">
       <span></span><span></span><span></span>
     </div>
   </div>
 </header>
+
+<!-- ============================
+     MOBILE FULLSCREEN MENU
+============================= -->
+<div id="mobileMenu" class="mobile-nav-overlay">
+  <div class="mobile-nav-menu">
+    <a href="/pages/about.html">About</a>
+    <a href="/pages/services.html">Services</a>
+    <a href="/pages/process.html">Process</a>
+    <a href="/pages/faq.html">FAQs</a>
+    <a href="/pages/contact.html">Contact</a>
+  </div>
+</div>
 
 <!-- Hero -->
 <main>
@@ -214,12 +229,15 @@
 </footer>
 
 <script>
-// Mobile Nav
-const nav = document.querySelector('.nav');
+// --------------------------
+// Mobile Nav Fullscreen Menu
+// --------------------------
 const navToggle = document.getElementById('navToggle');
+const mobileMenu = document.getElementById('mobileMenu');
 
 navToggle.addEventListener('click', () => {
-  nav.classList.toggle('open');
+  mobileMenu.classList.toggle('active');
+  navToggle.classList.toggle('open'); // convert hamburger to X
 });
 
 // Footer year
