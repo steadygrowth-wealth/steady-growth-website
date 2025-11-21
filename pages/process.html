@@ -12,15 +12,13 @@
   <link rel="stylesheet" href="/styles/style.css">
 </head>
 
-<body>
+<body class="page-process">
 
-<!-- Header -->
+<!-- ========================= HEADER ========================= -->
 <header>
   <div class="container nav">
     <div class="brand">
-      <div class="brand-logo">
-        <img src="/assets/img/logo.png" alt="Steady Growth Logo">
-      </div>
+      <img src="/assets/img/logo.png" alt="Steady Growth Logo" class="brand-logo">
       <div class="brand-text">
         <div class="brand-name">Steady Growth</div>
         <div class="brand-sub">Mutual Fund Distribution</div>
@@ -47,68 +45,80 @@
 </header>
 
 
-<!-- Page Heading -->
-<section class="hero" style="padding:60px 0 30px;">
-  <div class="container" style="max-width:820px; text-align:center;">
-    <h1 class="hero-title">How We Work Together</h1>
-    <p class="hero-subtitle">
+<!-- ========================= HERO ========================= -->
+<section class="hero hero-premium">
+  <div class="container hero-inner">
+    <div class="hero-tag">Process</div>
+    <h1 class="hero-title-lg">How We Work Together</h1>
+    <p class="hero-lead">
       A structured, disciplined, and transparent approach—so you always know what’s happening with your investments.
     </p>
   </div>
 </section>
 
 
-<!-- PROCESS STEPS -->
-<section>
-  <div class="container process-steps">
+<!-- ========================= STEP SECTIONS ========================= -->
 
-    <div class="card card-soft">
-      <div class="step-number">1</div>
-      <div class="step-title">Intro call &amp; understanding your goals</div>
-      <p class="step-text">
+<section class="process-section even">
+  <div class="container process-inner">
+    <div class="process-content">
+      <h2>1. Intro call & understanding your goals</h2>
+      <p>
         We discuss your goals, current investments, time horizon and comfort with risk over a call or meeting.
       </p>
     </div>
+  </div>
+</section>
 
-    <div class="card card-soft">
-      <div class="step-number">2</div>
-      <div class="step-title">Risk profile &amp; plan outline</div>
-      <p class="step-text">
-        Based on your risk profile, I outline a suitable asset mix and appropriate mutual fund categories/schemes.
+<section class="process-section alt odd">
+  <div class="container process-inner">
+    <div class="process-content">
+      <h2>2. Risk profile & plan outline</h2>
+      <p>
+        Based on your risk profile, I outline a suitable asset mix and appropriate mutual fund categories and schemes.
       </p>
     </div>
+  </div>
+</section>
 
-    <div class="card card-soft">
-      <div class="step-number">3</div>
-      <div class="step-title">Execution via NJ Wealth</div>
-      <p class="step-text">
+<section class="process-section even">
+  <div class="container process-inner">
+    <div class="process-content">
+      <h2>3. Execution via NJ Wealth</h2>
+      <p>
         Investments are executed digitally on the NJ Wealth platform for convenience, documentation and tracking.
       </p>
     </div>
+  </div>
+</section>
 
-    <div class="card card-soft">
-      <div class="step-number">4</div>
-      <div class="step-title">Review &amp; course-correction</div>
-      <p class="step-text">
-        We review periodically to see if your investments remain aligned with your goals and make adjustments when required.
+<section class="process-section alt odd">
+  <div class="container process-inner">
+    <div class="process-content">
+      <h2>4. Review & course-correction</h2>
+      <p>
+        We review periodically to ensure your investments remain aligned with goals and update the plan when needed.
       </p>
     </div>
-
   </div>
 </section>
 
 
-<!-- CTA -->
-<section class="container" style="text-align:center; padding:50px 0;">
-  <h2 class="section-title">Ready to Begin?</h2>
-  <p class="section-subtitle">
-    Let’s discuss your goals and plan your investment journey together.
-  </p>
-  <a href="/pages/contact.html" class="btn btn-primary">Contact Me →</a>
+<!-- ========================= CTA ========================= -->
+<section class="section-cta-gold">
+  <div class="container cta-inner">
+    <h2 class="cta-title">Ready to Begin Your Investment Journey?</h2>
+    <p class="cta-subtitle">
+      Let’s discuss your goals and create a disciplined investment plan.
+    </p>
+    <a href="/pages/contact.html" class="btn btn-primary btn-large">
+      Contact Me →
+    </a>
+  </div>
 </section>
 
 
-<!-- Footer -->
+<!-- ========================= FOOTER ========================= -->
 <footer class="disclaimer">
   <div class="container">
     <p class="disclaimer-text">
@@ -124,12 +134,10 @@
 
 
 <script>
-// Mobile Nav
 const nav = document.querySelector('.nav');
 const navToggle = document.getElementById('navToggle');
 navToggle.addEventListener('click', () => nav.classList.toggle('open'));
 
-// Footer Year
 document.getElementById('year').textContent = new Date().getFullYear();
 </script>
 
