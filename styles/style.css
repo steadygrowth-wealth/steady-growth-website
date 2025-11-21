@@ -771,4 +771,11 @@ body.faq-page {
   color: rgba(226, 230, 245, 0.9);
 }
 
+.section-cta-gold .cta-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+
 
