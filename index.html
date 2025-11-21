@@ -28,7 +28,6 @@
       </div>
     </div>
 
-    <!-- DESKTOP NAV -->
     <nav class="nav-links">
       <a href="/pages/about.html">About</a>
       <a href="/pages/services.html">Services</a>
@@ -42,25 +41,11 @@
       <a href="readiness.html" class="btn btn-primary">Check Your Investment Readiness</a>
     </div>
 
-    <!-- HAMBURGER MENU BUTTON -->
     <div class="nav-toggle" id="navToggle">
       <span></span><span></span><span></span>
     </div>
   </div>
 </header>
-
-<!-- ============================
-     MOBILE FULLSCREEN MENU
-============================= -->
-<div id="mobileMenu" class="mobile-nav-overlay">
-  <div class="mobile-nav-menu">
-    <a href="/pages/about.html">About</a>
-    <a href="/pages/services.html">Services</a>
-    <a href="/pages/process.html">Process</a>
-    <a href="/pages/faq.html">FAQs</a>
-    <a href="/pages/contact.html">Contact</a>
-  </div>
-</div>
 
 <!-- Hero -->
 <main>
@@ -154,6 +139,7 @@
   <!-- Preview Sections -->
   <section class="container" style="padding:20px 0; display:grid; gap:26px;">
 
+    <!-- ABOUT PREVIEW -->
     <div class="preview-card card-soft">
       <div class="icon-circle">A</div>
       <h3 style="font-size:1rem; margin-bottom:6px;">About Steady Growth</h3>
@@ -163,6 +149,7 @@
       <a href="/pages/about.html" class="btn btn-ghost">Learn More →</a>
     </div>
 
+    <!-- SERVICES PREVIEW -->
     <div class="preview-card card-soft">
       <div class="icon-circle">S</div>
       <h3 style="font-size:1rem; margin-bottom:6px;">Services Offered</h3>
@@ -172,6 +159,7 @@
       <a href="/pages/services.html" class="btn btn-ghost">View Services →</a>
     </div>
 
+    <!-- PROCESS PREVIEW -->
     <div class="preview-card card-soft">
       <div class="icon-circle">P</div>
       <h3 style="font-size:1rem; margin-bottom:6px;">How We Work Together</h3>
@@ -181,6 +169,7 @@
       <a href="/pages/process.html" class="btn btn-ghost">See Process →</a>
     </div>
 
+    <!-- FAQ PREVIEW -->
     <div class="preview-card card-soft">
       <div class="icon-circle">F</div>
       <h3 style="font-size:1rem; margin-bottom:6px;">Frequently Asked Questions</h3>
@@ -225,23 +214,12 @@
 </footer>
 
 <script>
-// --------------------------
-// Mobile Nav Fullscreen Menu
-// --------------------------
+// Mobile Nav
+const nav = document.querySelector('.nav');
 const navToggle = document.getElementById('navToggle');
-const mobileMenu = document.getElementById('mobileMenu');
 
 navToggle.addEventListener('click', () => {
-  mobileMenu.classList.toggle('active');
-  navToggle.classList.toggle('open');
-});
-
-// Close menu when clicking a link
-document.querySelectorAll('.mobile-nav-menu a').forEach(link => {
-  link.addEventListener('click', () => {
-    mobileMenu.classList.remove('active');
-    navToggle.classList.remove('open');
-  });
+  nav.classList.toggle('open');
 });
 
 // Footer year
