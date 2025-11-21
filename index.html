@@ -154,7 +154,6 @@
   <!-- Preview Sections -->
   <section class="container" style="padding:20px 0; display:grid; gap:26px;">
 
-    <!-- ABOUT PREVIEW -->
     <div class="preview-card card-soft">
       <div class="icon-circle">A</div>
       <h3 style="font-size:1rem; margin-bottom:6px;">About Steady Growth</h3>
@@ -164,7 +163,6 @@
       <a href="/pages/about.html" class="btn btn-ghost">Learn More →</a>
     </div>
 
-    <!-- SERVICES PREVIEW -->
     <div class="preview-card card-soft">
       <div class="icon-circle">S</div>
       <h3 style="font-size:1rem; margin-bottom:6px;">Services Offered</h3>
@@ -174,7 +172,6 @@
       <a href="/pages/services.html" class="btn btn-ghost">View Services →</a>
     </div>
 
-    <!-- PROCESS PREVIEW -->
     <div class="preview-card card-soft">
       <div class="icon-circle">P</div>
       <h3 style="font-size:1rem; margin-bottom:6px;">How We Work Together</h3>
@@ -184,7 +181,6 @@
       <a href="/pages/process.html" class="btn btn-ghost">See Process →</a>
     </div>
 
-    <!-- FAQ PREVIEW -->
     <div class="preview-card card-soft">
       <div class="icon-circle">F</div>
       <h3 style="font-size:1rem; margin-bottom:6px;">Frequently Asked Questions</h3>
@@ -237,7 +233,15 @@ const mobileMenu = document.getElementById('mobileMenu');
 
 navToggle.addEventListener('click', () => {
   mobileMenu.classList.toggle('active');
-  navToggle.classList.toggle('open'); // convert hamburger to X
+  navToggle.classList.toggle('open');
+});
+
+// Close menu when clicking a link
+document.querySelectorAll('.mobile-nav-menu a').forEach(link => {
+  link.addEventListener('click', () => {
+    mobileMenu.classList.remove('active');
+    navToggle.classList.remove('open');
+  });
 });
 
 // Footer year
