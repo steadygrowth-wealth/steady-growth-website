@@ -372,6 +372,7 @@ header {
   font-size: 0.74rem;
   color: var(--text-muted);
   margin-bottom: 8px;
+  text-align: center;
 }
 
 .footer-bottom {
