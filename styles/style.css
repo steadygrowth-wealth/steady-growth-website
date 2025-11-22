@@ -696,3 +696,19 @@ body, html {
   flex-wrap: wrap;
   gap: 24px;
 }
+
+
+
+
+
+
+
+
+
+/* Force lock scroll when menu is open */
+body.menu-open, html.menu-open {
+  height: 100vh;
+  overflow: hidden !important;
+  position: fixed;
+  width: 100%;
+}
