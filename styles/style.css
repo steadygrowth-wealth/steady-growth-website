@@ -971,18 +971,18 @@ body.faq-page {
   /* position: relative; */
 /* } */
 
-/* Add gold line between sections */
-/* .page-process .process-section:not(:first-child)::before { */
-  /* content: ""; */
-  /* position: absolute; */
-  /* top: 0; */
-  /* left: 50%; */
-  /* transform: translateX(-50%); */
-  /* width: 60%; */
-  /* height: 1px; */
-  /* background: linear-gradient(90deg, transparent, #f0b76b, transparent); */
-  /* opacity: 0.5; */
-/* } */
+Add gold line between sections
+.page-process .process-section:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #f0b76b, transparent);
+  opacity: 0.5;
+}
 
 /* Inner content */
 .page-process .process-inner {
