@@ -1417,3 +1417,111 @@ body, html {
 }
 
 
+
+
+/* =========================================
+   LUXURY MOBILE MENU — FINAL VERSION
+========================================= */
+
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #050816 0%, #0b1020 55%, #03040c 100%);
+  backdrop-filter: blur(22px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 26px;
+  gap: 32px;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.05);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  z-index: 999;
+}
+
+/* Gold floating glow */
+.menu-bg-glow {
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  background: radial-gradient(circle at center, rgba(240,183,107,0.22), transparent 70%);
+  filter: blur(45px);
+  z-index: -1;
+  opacity: 0.7;
+  animation: glowMove 16s infinite alternate ease-in-out;
+}
+
+@keyframes glowMove {
+  0% { transform: translate(-18%, -12%); }
+  100% { transform: translate(18%, 14%); }
+}
+
+/* Opening state */
+.mobile-menu.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+/* Menu links */
+.mobile-nav-links a {
+  display: block;
+  font-family: "Playfair Display", serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  padding: 14px 0;
+  text-align: center;
+  border-bottom: 1px solid rgba(240, 183, 107, 0.2);
+  width: 100%;
+  max-width: 350px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.45s ease;
+}
+
+/* Animate each link when menu opens */
+.mobile-menu.open .mobile-nav-links a {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered delay */
+.mobile-nav-links a:nth-child(1) { transition-delay: 0.15s; }
+.mobile-nav-links a:nth-child(2) { transition-delay: 0.23s; }
+.mobile-nav-links a:nth-child(3) { transition-delay: 0.30s; }
+.mobile-nav-links a:nth-child(4) { transition-delay: 0.37s; }
+.mobile-nav-links a:nth-child(5) { transition-delay: 0.44s; }
+
+/* Hover effect */
+.mobile-nav-links a:hover {
+  color: #f0b76b;
+  letter-spacing: 0.045em;
+}
+
+/* CTA button */
+.menu-cta {
+  margin-top: 40px;
+  width: 80%;
+  max-width: 340px;
+  font-size: 1.05rem;
+  padding: 16px 0;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.55s ease 0.55s;
+}
+
+.mobile-menu.open .menu-cta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hide desktop nav on mobile */
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none !important;
+  }
+}
+
