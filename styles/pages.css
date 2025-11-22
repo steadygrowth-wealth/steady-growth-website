@@ -1,0 +1,32 @@
+/* PAGE BACKGROUNDS */
+
+.page-about,
+.page-services,
+.page-process,
+.page-contact {
+  background: radial-gradient(circle at top left, rgba(240, 183, 107, 0.06), transparent),
+              var(--bg-dark);
+  color: #f7f7ff;
+}
+
+/* Universal page padding */
+.section-padded {
+  padding: 72px 0 40px;
+}
+
+/* Page titles */
+.section-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.45rem;
+  margin-bottom: 12px;
+  color: #fff;
+}
+
+/* Center subtitles */
+.section-subtitle {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: rgba(226, 230, 245, 0.85);
+  max-width: 580px;
+  margin: 0 auto;
+}
