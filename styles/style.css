@@ -705,13 +705,7 @@ body, html {
 
 
 
-/* Force lock scroll when menu is open */
-body.menu-open, html.menu-open {
-  height: 100vh;
-  overflow: hidden !important;
-  position: fixed;
-  width: 100%;
-}
+
 
 
 
@@ -731,20 +725,10 @@ body.menu-open, html.menu-open {
 
 
 
-.mobile-nav-links {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  z-index: 10000;
-}
 
 
 
-.mobile-nav-links a {
-  color: #ffffff !important;
-  display: block;
-}
+
 
 
 
@@ -799,11 +783,137 @@ html.menu-open, body.menu-open {
 
 
 
+
+
+
+/* ============================================================
+   MOBILE MENU — FINAL CLEAN VERSION
+============================================================ */
+
+/* Fullscreen container */
 .mobile-menu {
-  background: rgba(5, 8, 22, 0.95);
-  backdrop-filter: blur(20px);
-  top: 0;
-  left: 0;
+  position: fixed;
+  inset: 0;
   width: 100vw;
   height: 100vh;
+  background: linear-gradient(135deg, #050816 0%, #0b1020 55%, #03040c 100%);
+  backdrop-filter: blur(24px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.05);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  z-index: 99999;
+  padding: 40px 26px;
 }
+
+/* Open state */
+.mobile-menu.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+/* Lock scroll when open */
+html.menu-open, body.menu-open {
+  overflow: hidden !important;
+  height: 100vh;
+  position: fixed;
+  width: 100%;
+}
+
+/* Close button */
+.menu-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #fff;
+  opacity: 0.85;
+}
+
+.menu-close:hover {
+  opacity: 1;
+}
+
+/* Gold background glow */
+.menu-bg-glow {
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  background: radial-gradient(circle, rgba(240,183,107,0.25), transparent 70%);
+  filter: blur(45px);
+  z-index: -1;
+  animation: glowMove 16s infinite alternate ease-in-out;
+}
+
+/* Menu links */
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.mobile-nav-links a {
+  font-family: "Playfair Display", serif;
+  font-size: 1.6rem;
+  padding: 14px 0;
+  width: 100%;
+  max-width: 350px;
+  text-align: center;
+  color: #ffffff !important;
+  border-bottom: 1px solid rgba(240,183,107,0.18);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.4s ease;
+}
+
+/* Animate links when menu opens */
+.mobile-menu.open .mobile-nav-links a {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* CTA button inside menu */
+.menu-cta {
+  margin-top: 40px;
+  width: 80%;
+  max-width: 340px;
+  font-size: 1.05rem;
+  padding: 16px 0;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+
+/* Animate CTA */
+.mobile-menu.open .menu-cta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Desktop vs Mobile visibility rules */
+@media (min-width: 769px) {
+  .mobile-menu,
+  .nav-toggle {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-links,
+  .nav-cta {
+    display: none !important;
+  }
+
+  .nav-toggle {
+    display: flex !important;
+  }
+}
+
