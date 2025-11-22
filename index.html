@@ -236,20 +236,26 @@
 </footer>
 
 <script>
-// Mobile Nav
+// =============================
+// MOBILE MENU (FULLSCREEN)
+// =============================
+
+// Select toggle button and menu
 const navToggle = document.getElementById("navToggle");
 const mobileMenu = document.getElementById("mobileMenu");
 
+// Toggle open/close
 navToggle.addEventListener("click", () => {
   mobileMenu.classList.toggle("open");
-  document.body.style.overflow = mobileMenu.classList.contains("open")
-    ? "hidden"
-    : "auto";
+  document.body.classList.toggle("menu-open");
 });
 
-// Footer year
+// =============================
+// FOOTER YEAR AUTO-UPDATE
+// =============================
 document.getElementById('year').textContent = new Date().getFullYear();
 </script>
+
 
 
 </body>
