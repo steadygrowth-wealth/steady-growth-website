@@ -712,3 +712,47 @@ body.menu-open, html.menu-open {
   position: fixed;
   width: 100%;
 }
+
+
+
+
+/* Desktop nav should be visible on all large screens */
+@media (min-width: 769px) {
+  .nav-links,
+  .nav-cta {
+    display: flex !important;
+  }
+
+  .nav-toggle,
+  .mobile-menu {
+    display: none !important;
+  }
+}
+
+
+
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  z-index: 10000;
+}
+
+
+
+.mobile-nav-links a {
+  color: #ffffff !important;
+  display: block;
+}
+
+
+
+.mobile-nav-links a {
+  font-family: "Playfair Display", serif;
+  font-size: 1.7rem;
+  padding: 18px 0;
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid rgba(240,183,107,0.18);
+}
