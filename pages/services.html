@@ -19,32 +19,60 @@
 ========================================= -->
 <header>
   <div class="container nav">
+    
+    <!-- BRAND -->
     <div class="brand">
-      <img src="/assets/img/logo.png" alt="Steady Growth Logo" class="brand-logo">
+      <div class="brand-logo">
+        <img src="/assets/img/logo.png" alt="Steady Growth Logo">
+      </div>
       <div class="brand-text">
         <div class="brand-name">Steady Growth</div>
         <div class="brand-sub">Mutual Fund Distribution</div>
       </div>
     </div>
 
+    <!-- DESKTOP NAV -->
     <nav class="nav-links">
-      <a href="/index.html">Home</a>
       <a href="/pages/about.html">About</a>
+      <a href="/pages/services.html">Services</a>
       <a href="/pages/process.html">Process</a>
       <a href="/pages/faq.html">FAQs</a>
       <a href="/pages/contact.html">Contact</a>
     </nav>
 
+    <!-- DESKTOP CTA -->
     <div class="nav-cta">
       <a href="/pages/contact.html" class="btn btn-ghost">Request a Call</a>
-      <a href="/readiness.html" class="btn btn-primary">Check Readiness</a>
     </div>
 
+    <!-- MOBILE MENU TOGGLE -->
     <div class="nav-toggle" id="navToggle">
       <span></span><span></span><span></span>
     </div>
+
+  </div>
+
+  <!-- FULLSCREEN MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="menu-bg-glow"></div>
+
+    <!-- CLOSE BUTTON -->
+    <div class="menu-close" id="menuClose">✕</div>
+
+    <nav class="mobile-nav-links">
+      <a href="/pages/about.html">About</a>
+      <a href="/pages/services.html">Services</a>
+      <a href="/pages/process.html">Process</a>
+      <a href="/pages/faq.html">FAQs</a>
+      <a href="/pages/contact.html">Contact</a>
+    </nav>
+
+    <a href="/pages/contact.html" class="btn btn-primary menu-cta">
+      Request a Call
+    </a>
   </div>
 </header>
+
 
 
 <!-- =========================================
@@ -164,12 +192,34 @@
      SCRIPTS
 ========================================= -->
 <script>
-const nav = document.querySelector('.nav');
-const navToggle = document.getElementById('navToggle');
-navToggle.addEventListener('click', () => nav.classList.toggle('open'));
+const navToggle = document.getElementById("navToggle");
+const mobileMenu = document.getElementById("mobileMenu");
+const menuClose = document.getElementById("menuClose");
 
-document.getElementById('year').textContent = new Date().getFullYear();
+// Open Menu
+navToggle.addEventListener("click", () => {
+  mobileMenu.classList.add("open");
+  document.body.classList.add("menu-open");
+});
+
+// Close Menu
+menuClose.addEventListener("click", () => {
+  mobileMenu.classList.remove("open");
+  document.body.classList.remove("menu-open");
+});
+
+// Close menu on link click
+document.querySelectorAll(".mobile-nav-links a").forEach(link => {
+  link.addEventListener("click", () => {
+    mobileMenu.classList.remove("open");
+    document.body.classList.remove("menu-open");
+  });
+});
+
+// Footer Year Auto Update
+document.getElementById("year").textContent = new Date().getFullYear();
 </script>
+
 
 </body>
 </html>
