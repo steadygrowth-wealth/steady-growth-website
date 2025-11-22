@@ -2,94 +2,154 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact — Steady Growth</title>
+  <title>Contact – Steady Growth</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- GLOBAL STYLES (must match your other pages) -->
-  <link rel="stylesheet" href="../styles/styles.css" />
-  <link rel="stylesheet" href="../styles/header.css" />
-  <link rel="stylesheet" href="../styles/footer.css" />
-
-  <!-- GOOGLE FONTS -->
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="/styles/style.css">
 </head>
 
 <body class="page-contact">
 
-  <!-- ========================= HEADER ========================= -->
-  <header>
-    <!-- your existing navbar -->
-  </header>
+<!-- ========================= HEADER ========================= -->
+<header>
+  <div class="container nav">
+    <div class="brand">
+      <img src="/assets/img/logo.png" alt="Steady Growth Logo" class="brand-logo">
+      <div class="brand-text">
+        <div class="brand-name">Steady Growth</div>
+        <div class="brand-sub">Mutual Fund Distribution</div>
+      </div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="/index.html">Home</a>
+      <a href="/pages/about.html">About</a>
+      <a href="/pages/services.html">Services</a>
+      <a href="/pages/process.html">Process</a>
+      <a href="/pages/faq.html">FAQs</a>
+      <a href="/pages/contact.html" class="active">Contact</a>
+    </nav>
+
+    <div class="nav-cta">
+      <a href="/pages/contact.html" class="btn btn-ghost">Request a Call</a>
+      <a href="/readiness.html" class="btn btn-primary">Check Readiness</a>
+    </div>
+
+    <div class="nav-toggle" id="navToggle">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</header>
 
 
-  <!-- ========================= HERO ========================= -->
-  <section class="hero-premium">
-    <div class="hero-inner">
+<!-- ========================= HERO (MATCH PROCESS STYLE) ========================= -->
+<section class="hero-premium page-contact">
+  <div class="hero-inner">
 
-      <span class="hero-tag">Contact</span>
+    <span class="hero-tag">Contact</span>
 
-      <h1 class="hero-title-lg">Let’s talk about your money, calmly.</h1>
+    <h1 class="hero-title-lg">Let’s Begin Your Wealth Journey</h1>
 
-      <p class="hero-lead">
-        No hype. No push. A conversation to understand where you are and how we may help.
+    <p class="hero-lead">
+      Whether you're just starting or looking to streamline multiple goals, 
+      let’s connect and plan a disciplined investment strategy.
+    </p>
+
+  </div>
+</section>
+
+
+
+<!-- ========================= CONTACT SECTION ========================= -->
+
+<section class="contact-section">
+  <div class="contact-wrapper">
+
+    <!-- Contact Card -->
+    <div class="contact-card">
+      <h2 class="contact-name">Ankit Chakraborty</h2>
+      <div class="contact-role">Mutual Fund Distributor</div>
+
+      <p class="contact-description">
+        I help individuals and families build long-term wealth through
+        structured and behaviour-aligned mutual fund investing. 
+        Reach out—I’d love to understand your goals.
       </p>
 
-    </div>
-  </section>
-
-
-  <!-- ========================= CONTACT CARDS ========================= -->
-  <section class="contact-section">
-    <div class="contact-wrapper">
-
-      <!-- LEFT CARD -->
-      <div class="contact-card">
-        <h2 class="contact-name">Ankit Chakraborty</h2>
-        <p class="contact-role">Mutual Fund Distributor & Investment Partner</p>
-
-        <p class="contact-description">
-          I work with individuals and families who prefer a disciplined, long-term approach to money — grounded in clarity and purpose.
-        </p>
-
-        <a href="tel:+919000000000" class="btn btn-primary">
-          Request a Call
-        </a>
-      </div>
-
-
-      <!-- RIGHT CARD -->
-      <div class="contact-card contact-channels">
+      <div class="contact-channels">
 
         <div class="channel-item">
           <div class="channel-label">Email</div>
-          <a href="mailto:youremail@example.com" class="channel-value">youremail@example.com</a>
+          <a href="mailto:youremail@gmail.com" class="channel-value">
+            youremail@gmail.com
+          </a>
         </div>
 
         <div class="channel-item">
           <div class="channel-label">Phone / WhatsApp</div>
-          <a href="tel:+919000000000" class="channel-value">+91 90000 00000</a>
+          <a href="tel:+919876543210" class="channel-value">
+            +91 98765 43210
+          </a>
         </div>
 
         <div class="channel-item">
-          <div class="channel-label">Serving</div>
-          <div class="channel-value">Clients across India (online)</div>
-        </div>
-
-        <div class="channel-item">
-          <div class="channel-label">Preferred Time</div>
-          <div class="channel-value">10:00am – 7:00pm IST</div>
+          <div class="channel-label">Location</div>
+          <div class="channel-value">Kolkata, West Bengal, India</div>
         </div>
 
       </div>
-
     </div>
-  </section>
 
 
-  <!-- ========================= FOOTER ========================= -->
-  <footer>
-    <!-- your footer -->
-  </footer>
+    <!-- Contact Form -->
+    <div class="preview-card">
+      <form action="#" method="post">
+
+        <label for="name" class="channel-label">Name</label>
+        <input type="text" id="name" name="name" required class="form-input">
+
+        <label for="email" class="channel-label">Email</label>
+        <input type="email" id="email" name="email" required class="form-input">
+
+        <label for="message" class="channel-label">Message</label>
+        <textarea id="message" name="message" rows="5" required class="form-input"></textarea>
+
+        <button type="submit" class="btn btn-primary btn-large" style="margin-top: 14px;">
+          Send Message →
+        </button>
+
+      </form>
+    </div>
+
+  </div>
+</section>
+
+
+
+<!-- ========================= FOOTER ========================= -->
+<footer class="disclaimer">
+  <div class="container">
+    <p class="disclaimer-text">
+      <strong>Disclaimer:</strong> Mutual Fund investments are subject to market risks. Please read all scheme-related documents carefully before investing.
+    </p>
+
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Steady Growth. All rights reserved.</span>
+      <span>Designed to encourage disciplined, long-term investing.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const nav = document.querySelector('.nav');
+const navToggle = document.getElementById('navToggle');
+navToggle.addEventListener('click', () => nav.classList.toggle('open'));
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
 
 </body>
 </html>
