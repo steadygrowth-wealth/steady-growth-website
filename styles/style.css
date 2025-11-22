@@ -943,66 +943,76 @@ body.faq-page {
 }
 
 /* =========================================
-   PROCESS ROADMAP (REPLACES SERVICES GRID)
+   PROCESS ROADMAP — CURVED ALTERNATING TIMELINE
    ========================================= */
 
-.page-process .process-roadmap {
+.process-roadmap {
   position: relative;
   width: 90%;
   max-width: 900px;
-  margin: 100px auto 40px;
-  padding-top: 40px;
+  margin: 120px auto;
+  padding: 40px 0;
 }
 
-/* Golden connecting line */
-.page-process .process-roadmap::before {
-  content: "";
+/* Curved Golden SVG Line */
+.process-roadmap .roadmap-line {
   position: absolute;
   top: 0;
-  bottom: 0;
   left: 50%;
-  width: 3px;
-  background: linear-gradient(to bottom, #c98832, #f0b76b, #ffcf81);
-  opacity: 0.75;
+  width: 220px; /* controls curve width */
   transform: translateX(-50%);
-  border-radius: 2px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.8;
 }
 
-/* Each step block */
-.page-process .process-step {
-  width: 50%;
+/* Step Positioning */
+.process-roadmap .step {
+  width: 48%;
   position: relative;
-  margin-bottom: 130px;
+  margin-bottom: 140px;
+  z-index: 2;
 }
 
-.page-process .process-step.left {
+/* Left side steps */
+.process-roadmap .step.left {
   text-align: right;
-  padding-right: 60px;
+  margin-right: auto;
+  padding-right: 80px;
 }
 
-.page-process .process-step.right {
+/* Right side steps */
+.process-roadmap .step.right {
   text-align: left;
   margin-left: auto;
-  padding-left: 60px;
+  padding-left: 80px;
 }
 
-/* Node dot on timeline */
-.page-process .process-step::before {
+/* Golden Dot Node */
+.process-roadmap .step::before {
   content: "";
   position: absolute;
-  top: 12px;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   background: #f0b76b;
   border-radius: 50%;
-  box-shadow: 0 0 18px rgba(240, 183, 107, 0.9);
+  top: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 0 16px rgba(240,183,107,0.85);
+  z-index: 3;
 }
 
-.page-process .process-step.left::before { right: -10px; }
-.page-process .process-step.right::before { left: -10px; }
+/* Align node to curve direction */
+.process-roadmap .step.left::before {
+  right: -35px;
+}
 
-/* Card styling */
-.page-process .step-box {
+.process-roadmap .step.right::before {
+  left: -35px;
+}
+
+/* Step Card Styling */
+.process-roadmap .step-box {
   background: linear-gradient(145deg,
               rgba(240, 183, 107, 0.10),
               rgba(5, 8, 22, 0.96));
@@ -1013,8 +1023,8 @@ body.faq-page {
   backdrop-filter: blur(6px);
 }
 
-/* Number styling */
-.page-process .step-number {
+/* Step Number */
+.process-roadmap .step-number {
   font-size: 2.6rem;
   font-weight: 700;
   font-family: "Playfair Display", serif;
@@ -1022,19 +1032,56 @@ body.faq-page {
   margin-bottom: 12px;
 }
 
-/* Titles */
-.page-process .step-box h3 {
+/* Step Title */
+.process-roadmap .step-box h3 {
   font-family: "Playfair Display", serif;
   font-size: 1.2rem;
   margin-bottom: 10px;
   color: #ffffff;
 }
 
-/* Text */
-.page-process .step-box p {
+/* Step Text */
+.process-roadmap .step-box p {
   font-size: 0.92rem;
   line-height: 1.7;
   color: rgba(226, 230, 245, 0.9);
+}
+
+/* =========================================
+   MOBILE RESPONSIVE
+   ========================================= */
+
+@media (max-width: 700px) {
+
+  /* Remove curved line on mobile */
+  .process-roadmap .roadmap-line {
+    display: none;
+  }
+
+  /* Replace with simple vertical line */
+  .process-roadmap::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 24px;
+    width: 2px;
+    background: rgba(240,183,107,0.4);
+  }
+
+  /* Full-width blocks */
+  .process-roadmap .step {
+    width: 100%;
+    text-align: left !important;
+    padding-left: 60px;
+    margin-left: 0;
+  }
+
+  /* Align dots left */
+  .process-roadmap .step::before {
+    left: 10px;
+    transform: translateY(-50%);
+  }
 }
 
 /* =========================================
