@@ -1525,3 +1525,23 @@ body, html {
   }
 }
 
+
+
+/* FIX: Mobile menu should fully cover the page */
+.mobile-menu {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999 !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Prevent background from scrolling */
+body.menu-open {
+  overflow: hidden !important;
+}
