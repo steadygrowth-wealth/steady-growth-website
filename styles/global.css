@@ -20,6 +20,8 @@ body {
   overflow-x: hidden;
 }
 
+/* ================= VARIABLES ================= */
+
 :root {
   --bg-dark: #050816;
   --bg-section: #0b1020;
@@ -121,7 +123,6 @@ header {
   max-width: 520px;
 }
 
-
 /* ============================================================
    BUTTONS
 ============================================================ */
@@ -145,7 +146,6 @@ header {
   color: var(--text-muted);
 }
 
-
 /* ============================================================
    FOOTER
 ============================================================ */
@@ -164,4 +164,15 @@ header {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+}
+
+/* ============================================================
+   FIX: DISABLE SCROLL WHEN MOBILE MENU IS OPEN
+============================================================ */
+
+html.menu-open, body.menu-open {
+  overflow: hidden !important;
+  height: 100vh;
+  width: 100%;
+  position: fixed;
 }
