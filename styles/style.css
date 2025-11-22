@@ -945,145 +945,100 @@ body.faq-page {
 /* =========================================
    PROCESS ROADMAP — CURVED ALTERNATING TIMELINE
    ========================================= */
-
 /* =============================
-   OPTION A – CURVED JOURNEY
+   OPTION E – MINIMAL EDITORIAL
    ============================= */
 
-.page-process .process-journey {
-  position: relative;
+.page-process .process-steps-editorial {
   width: 90%;
-  max-width: 900px;
+  max-width: 860px;
   margin: 80px auto 110px;
-  padding: 20px 0;
 }
 
-/* Curved golden line */
-.page-process .process-journey-line {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 130px; /* controls curve width */
-  transform: translateX(-50%);
-  pointer-events: none;
-  opacity: 0.8;
-  z-index: 0;
+/* Each row */
+.page-process .process-steps-editorial .step-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 26px;
+  padding: 22px 0;
+  border-bottom: 1px solid rgba(240, 183, 107, 0.12);
 }
 
-/* Step wrapper */
-.page-process .journey-step {
+/* Last row softer border */
+.page-process .process-steps-editorial .step-row:last-child {
+  border-bottom-color: rgba(240, 183, 107, 0.06);
+}
+
+/* Big number */
+.page-process .process-steps-editorial .step-index {
+  font-family: "Playfair Display", serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: rgba(240, 183, 107, 0.9);
+  line-height: 1;
   position: relative;
-  width: 46%;
-  margin-bottom: 110px;
-  z-index: 1;
 }
 
-/* Left & right alignment */
-.page-process .journey-step.left {
-  margin-right: auto;
-  padding-right: 80px;
-  text-align: right;
-}
-
-.page-process .journey-step.right {
-  margin-left: auto;
-  padding-left: 80px;
-  text-align: left;
-}
-
-/* Golden node */
-.page-process .journey-step::before {
+/* Subtle glow bar under number */
+.page-process .process-steps-editorial .step-index::after {
   content: "";
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #f0b76b;
-  box-shadow: 0 0 14px rgba(240, 183, 107, 0.75);
-  z-index: 2;
+  left: 4px;
+  bottom: -6px;
+  width: 24px;
+  height: 2px;
+  background: linear-gradient(90deg, #c88832, #f0b76b);
+  opacity: 0.9;
 }
 
-.page-process .journey-step.left::before {
-  right: -26px;
-}
-
-.page-process .journey-step.right::before {
-  left: -26px;
-}
-
-/* Card styling */
-.page-process .journey-card {
-  background: linear-gradient(145deg,
-              rgba(240, 183, 107, 0.12),
-              rgba(5, 8, 22, 0.98));
-  border: 1px solid rgba(240, 183, 107, 0.35);
-  border-radius: 18px;
-  padding: 26px 30px 24px;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(6px);
-}
-
-/* Large step number */
-.page-process .journey-number {
-  font-family: "Playfair Display", serif;
-  font-size: 2.4rem;
-  font-weight: 700;
-  color: #f0b76b;
-  margin-bottom: 10px;
-}
-
-/* Titles & text */
-.page-process .journey-card h3 {
+/* Title & text */
+.page-process .process-steps-editorial .step-content h3 {
   font-family: "Playfair Display", serif;
   font-size: 1.15rem;
-  margin-bottom: 8px;
-  letter-spacing: -0.015em;
+  margin-bottom: 6px;
   color: #ffffff;
+  letter-spacing: -0.01em;
 }
 
-.page-process .journey-card p {
-  font-size: 0.92rem;
-  line-height: 1.7;
-  color: rgba(226, 230, 245, 0.9);
+.page-process .process-steps-editorial .step-content p {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: rgba(226, 230, 245, 0.92);
 }
 
-/* Responsive */
-@media (max-width: 700px) {
-  .page-process .process-journey {
+/* Slight hover highlight on desktop */
+@media (hover: hover) {
+  .page-process .process-steps-editorial .step-row:hover {
+    background: radial-gradient(circle at left, rgba(240, 183, 107, 0.06), transparent 55%);
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+
+  .page-process .process-steps-editorial {
     margin: 60px auto 80px;
   }
 
-  .page-process .process-journey-line {
-    display: none; /* hide curve on small screens */
+  .page-process .process-steps-editorial .step-row {
+    grid-template-columns: auto 1fr;
+    column-gap: 18px;
+    padding: 18px 0;
   }
 
-  /* Simple straight line on mobile */
-  .page-process .process-journey::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 22px;
-    width: 2px;
-    background: rgba(240, 183, 107, 0.4);
+  .page-process .process-steps-editorial .step-index {
+    font-size: 2.2rem;
   }
 
-  .page-process .journey-step {
-    width: 100%;
-    margin-bottom: 80px;
-    padding-left: 60px;
-    padding-right: 0;
-    text-align: left !important;
+  .page-process .process-steps-editorial .step-content h3 {
+    font-size: 1.05rem;
   }
 
-  .page-process .journey-step::before {
-    left: 13px;
-    right: auto;
+  .page-process .process-steps-editorial .step-content p {
+    font-size: 0.9rem;
   }
 }
-
 
 
 /* =========================================
