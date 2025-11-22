@@ -919,10 +919,10 @@ body.faq-page {
 }
 
 /* Spacing for each section */
-.page-process .process-section {
-  padding: 72px 0;
-  position: relative;
-}
+/* .page-process .process-section { */
+  /* padding: 72px 0; */
+  /* position: relative; */
+/* } */
 
 /* Add gold line between sections */
 .page-process .process-section:not(:first-child)::before {
