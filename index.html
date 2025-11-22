@@ -18,7 +18,7 @@
 <!-- Header & Nav -->
 <header>
   <div class="container nav">
-
+    
     <!-- BRAND -->
     <div class="brand">
       <div class="brand-logo">
@@ -31,7 +31,7 @@
     </div>
 
     <!-- DESKTOP NAV -->
-    <nav class="desktop-nav nav-links-desktop">
+    <nav class="nav-links">
       <a href="/pages/about.html">About</a>
       <a href="/pages/services.html">Services</a>
       <a href="/pages/process.html">Process</a>
@@ -40,23 +40,23 @@
     </nav>
 
     <!-- DESKTOP CTA -->
-    <div class="desktop-nav nav-cta-desktop">
+    <div class="nav-cta">
       <a href="/pages/contact.html" class="btn btn-ghost">Request a Call</a>
     </div>
 
-    <!-- MOBILE BURGER -->
+    <!-- MOBILE MENU TOGGLE -->
     <div class="nav-toggle" id="navToggle">
       <span></span><span></span><span></span>
     </div>
+
   </div>
 
   <!-- FULLSCREEN MOBILE MENU -->
   <div class="mobile-menu" id="mobileMenu">
+    <div class="menu-bg-glow"></div>
 
     <!-- CLOSE BUTTON -->
-    <div class="menu-close" id="menuClose">×</div>
-
-    <div class="menu-bg-glow"></div>
+    <div class="menu-close" id="menuClose">✕</div>
 
     <nav class="mobile-nav-links">
       <a href="/pages/about.html">About</a>
@@ -69,7 +69,6 @@
     <a href="/pages/contact.html" class="btn btn-primary menu-cta">
       Request a Call
     </a>
-
   </div>
 </header>
 
@@ -242,31 +241,34 @@
 </footer>
 
 <script>
-<script>
 const navToggle = document.getElementById("navToggle");
 const mobileMenu = document.getElementById("mobileMenu");
 const menuClose = document.getElementById("menuClose");
 
-// Open menu
+// Open Menu
 navToggle.addEventListener("click", () => {
   mobileMenu.classList.add("open");
   document.body.classList.add("menu-open");
 });
 
-// Close menu
+// Close Menu
 menuClose.addEventListener("click", () => {
   mobileMenu.classList.remove("open");
   document.body.classList.remove("menu-open");
 });
 
-// Close on link click
+// Close menu on link click
 document.querySelectorAll(".mobile-nav-links a").forEach(link => {
   link.addEventListener("click", () => {
     mobileMenu.classList.remove("open");
     document.body.classList.remove("menu-open");
   });
 });
+
+// Footer Year Auto Update
+document.getElementById("year").textContent = new Date().getFullYear();
 </script>
+
 
 
 
