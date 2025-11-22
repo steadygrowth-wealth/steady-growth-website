@@ -52,12 +52,15 @@ header {
   border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
-/* BRAND LOGO SIZING */
+/* LOGO FIX */
 .brand-logo img {
-  width: 5px;  /* adjust if needed */
-  height: auto;
+  max-width: 32px;
+  max-height: 32px;
+  width: 32px;
+  height: 32px;
   object-fit: contain;
 }
+
 
 .nav {
   height: var(--nav-height);
