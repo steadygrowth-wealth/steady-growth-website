@@ -946,165 +946,145 @@ body.faq-page {
    PROCESS ROADMAP — CURVED ALTERNATING TIMELINE
    ========================================= */
 
-.process-roadmap {
+/* =============================
+   OPTION A – CURVED JOURNEY
+   ============================= */
+
+.page-process .process-journey {
   position: relative;
   width: 90%;
   max-width: 900px;
-  margin: 120px auto;
-  padding: 40px 0;
+  margin: 80px auto 110px;
+  padding: 20px 0;
 }
 
-/* Curved Golden SVG Line */
-.process-roadmap .roadmap-line {
+/* Curved golden line */
+.page-process .process-journey-line {
   position: absolute;
   top: 0;
   left: 50%;
-  width: 220px; /* controls curve width */
+  width: 130px; /* controls curve width */
   transform: translateX(-50%);
   pointer-events: none;
-  z-index: 0;
   opacity: 0.8;
+  z-index: 0;
 }
 
-/* Step Positioning */
-.process-roadmap .step {
-  width: 48%;
+/* Step wrapper */
+.page-process .journey-step {
   position: relative;
-  margin-bottom: 140px;
+  width: 46%;
+  margin-bottom: 110px;
+  z-index: 1;
+}
+
+/* Left & right alignment */
+.page-process .journey-step.left {
+  margin-right: auto;
+  padding-right: 80px;
+  text-align: right;
+}
+
+.page-process .journey-step.right {
+  margin-left: auto;
+  padding-left: 80px;
+  text-align: left;
+}
+
+/* Golden node */
+.page-process .journey-step::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #f0b76b;
+  box-shadow: 0 0 14px rgba(240, 183, 107, 0.75);
   z-index: 2;
 }
 
-/* Left side steps */
-.process-roadmap .step.left {
-  text-align: right;
-  margin-right: auto;
-  padding-right: 80px;
+.page-process .journey-step.left::before {
+  right: -26px;
 }
 
-/* Right side steps */
-.process-roadmap .step.right {
-  text-align: left;
-  margin-left: auto;
-  padding-left: 80px;
+.page-process .journey-step.right::before {
+  left: -26px;
 }
 
-/* Golden Dot Node */
-.process-roadmap .step::before {
-  content: "";
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  background: #f0b76b;
-  border-radius: 50%;
-  top: 50%;
-  transform: translateY(-50%);
-  box-shadow: 0 0 16px rgba(240,183,107,0.85);
-  z-index: 3;
-}
-
-/* Align node to curve direction */
-.process-roadmap .step.left::before {
-  right: -35px;
-}
-
-.process-roadmap .step.right::before {
-  left: -35px;
-}
-
-/* Step Card Styling */
-.process-roadmap .step-box {
+/* Card styling */
+.page-process .journey-card {
   background: linear-gradient(145deg,
-              rgba(240, 183, 107, 0.10),
-              rgba(5, 8, 22, 0.96));
+              rgba(240, 183, 107, 0.12),
+              rgba(5, 8, 22, 0.98));
   border: 1px solid rgba(240, 183, 107, 0.35);
-  padding: 28px 32px;
   border-radius: 18px;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
+  padding: 26px 30px 24px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(6px);
 }
 
-/* Step Number */
-.process-roadmap .step-number {
-  font-size: 2.6rem;
-  font-weight: 700;
+/* Large step number */
+.page-process .journey-number {
   font-family: "Playfair Display", serif;
+  font-size: 2.4rem;
+  font-weight: 700;
   color: #f0b76b;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
-/* Step Title */
-.process-roadmap .step-box h3 {
+/* Titles & text */
+.page-process .journey-card h3 {
   font-family: "Playfair Display", serif;
-  font-size: 1.2rem;
-  margin-bottom: 10px;
+  font-size: 1.15rem;
+  margin-bottom: 8px;
+  letter-spacing: -0.015em;
   color: #ffffff;
 }
 
-/* Step Text */
-.process-roadmap .step-box p {
+.page-process .journey-card p {
   font-size: 0.92rem;
   line-height: 1.7;
   color: rgba(226, 230, 245, 0.9);
 }
 
-/* =========================================
-   MOBILE RESPONSIVE
-   ========================================= */
-
+/* Responsive */
 @media (max-width: 700px) {
-
-  /* Remove curved line on mobile */
-  .process-roadmap .roadmap-line {
-    display: none;
+  .page-process .process-journey {
+    margin: 60px auto 80px;
   }
 
-  /* Replace with simple vertical line */
-  .process-roadmap::before {
+  .page-process .process-journey-line {
+    display: none; /* hide curve on small screens */
+  }
+
+  /* Simple straight line on mobile */
+  .page-process .process-journey::before {
     content: "";
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 24px;
+    left: 22px;
     width: 2px;
-    background: rgba(240,183,107,0.4);
+    background: rgba(240, 183, 107, 0.4);
   }
 
-  /* Full-width blocks */
-  .process-roadmap .step {
+  .page-process .journey-step {
     width: 100%;
-    text-align: left !important;
+    margin-bottom: 80px;
     padding-left: 60px;
-    margin-left: 0;
+    padding-right: 0;
+    text-align: left !important;
   }
 
-  /* Align dots left */
-  .process-roadmap .step::before {
-    left: 10px;
-    transform: translateY(-50%);
+  .page-process .journey-step::before {
+    left: 13px;
+    right: auto;
   }
 }
 
-/* =========================================
-   RESPONSIVE
-   ========================================= */
 
-@media (max-width: 700px) {
-
-  .page-process .process-roadmap::before {
-    left: 26px;
-  }
-
-  .page-process .process-step {
-    width: 100%;
-    text-align: left !important;
-    padding-left: 60px;
-    margin-left: 0;
-  }
-
-  .page-process .process-step::before {
-    left: 10px;
-  }
-}
 
 /* =========================================
    CTA SECTION — SAME AS SERVICES
