@@ -885,12 +885,24 @@ body.faq-page {
 
 
 /* =========================================
-   PROCESS PAGE — PREMIUM ALTERNATING STEP LAYOUT
+   PROCESS PAGE — PREMIUM LUXURY THEME
    ========================================= */
-/* Hero */
+
+/* Page Background (same as services) */
+.page-process {
+  background:
+    radial-gradient(circle at top left, rgba(240, 183, 107, 0.06), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(240, 183, 107, 0.04), transparent 55%),
+    var(--bg-dark);
+  color: #f7f7ff;
+}
+
+/* =========================================
+   HERO SECTION (IDENTICAL TO SERVICES)
+   ========================================= */
 
 .page-process .hero-premium {
-  padding: 80px 0 52px;
+  padding: 84px 0 56px;
   background:
     radial-gradient(circle at top left, rgba(240, 183, 107, 0.18), transparent 55%),
     linear-gradient(135deg, #050816 0%, #02030a 55%, #050816 100%);
@@ -905,13 +917,11 @@ body.faq-page {
 
 .page-process .hero-tag {
   display: inline-flex;
-  align-items: center;
-  gap: 8px;
   padding: 4px 14px;
-  border-radius: 999px;
   font-size: 0.7rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  border-radius: 999px;
   background: rgba(240, 183, 107, 0.08);
   border: 1px solid rgba(240, 183, 107, 0.4);
   color: rgba(255, 255, 255, 0.82);
@@ -921,31 +931,31 @@ body.faq-page {
 .page-process .hero-title-lg {
   font-family: "Playfair Display", serif;
   font-size: 2.4rem;
-  line-height: 1.1;
   letter-spacing: -0.03em;
   margin-bottom: 14px;
 }
 
 .page-process .hero-lead {
-  max-width: 640px;
+  max-width: 620px;
   font-size: 0.98rem;
   line-height: 1.65;
   color: rgba(232, 235, 245, 0.9);
 }
 
-/* ================================
-   PROCESS — ROADMAP SECTION
-================================ */
+/* =========================================
+   PROCESS ROADMAP (REPLACES SERVICES GRID)
+   ========================================= */
 
-.process-roadmap {
+.page-process .process-roadmap {
   position: relative;
   width: 90%;
   max-width: 900px;
-  margin: 120px auto;
+  margin: 100px auto 40px;
+  padding-top: 40px;
 }
 
-/* GOLDEN TIMELINE */
-.process-roadmap::before {
+/* Golden connecting line */
+.page-process .process-roadmap::before {
   content: "";
   position: absolute;
   top: 0;
@@ -958,50 +968,53 @@ body.faq-page {
   border-radius: 2px;
 }
 
-/* STEP ALIGNMENT */
-.step {
+/* Each step block */
+.page-process .process-step {
   width: 50%;
   position: relative;
   margin-bottom: 130px;
 }
 
-.step.left {
+.page-process .process-step.left {
   text-align: right;
   padding-right: 60px;
 }
 
-.step.right {
+.page-process .process-step.right {
   text-align: left;
   margin-left: auto;
   padding-left: 60px;
 }
 
-/* NODE CONNECTOR */
-.step::before {
+/* Node dot on timeline */
+.page-process .process-step::before {
   content: "";
   position: absolute;
-  top: 14px;
+  top: 12px;
   width: 20px;
   height: 20px;
   background: #f0b76b;
   border-radius: 50%;
-  box-shadow: 0 0 18px rgba(240,183,107,0.9);
+  box-shadow: 0 0 18px rgba(240, 183, 107, 0.9);
 }
 
-.step.left::before { right: -10px; }
-.step.right::before { left: -10px; }
+.page-process .process-step.left::before { right: -10px; }
+.page-process .process-step.right::before { left: -10px; }
 
-/* STEP BOX DESIGN */
-.step-box {
-  background: rgba(255,255,255,0.04);
+/* Card styling */
+.page-process .step-box {
+  background: linear-gradient(145deg,
+              rgba(240, 183, 107, 0.10),
+              rgba(5, 8, 22, 0.96));
+  border: 1px solid rgba(240, 183, 107, 0.35);
   padding: 28px 32px;
-  border-radius: 16px;
-  border: 1px solid rgba(240,183,107,0.35);
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(6px);
 }
 
-/* NUMBER DESIGN */
-.step-number {
+/* Number styling */
+.page-process .step-number {
   font-size: 2.6rem;
   font-weight: 700;
   font-family: "Playfair Display", serif;
@@ -1009,9 +1022,45 @@ body.faq-page {
   margin-bottom: 12px;
 }
 
+/* Titles */
+.page-process .step-box h3 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+/* Text */
+.page-process .step-box p {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: rgba(226, 230, 245, 0.9);
+}
 
 /* =========================================
-   CTA SECTION (MATCH ABOUT PAGE)
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 700px) {
+
+  .page-process .process-roadmap::before {
+    left: 26px;
+  }
+
+  .page-process .process-step {
+    width: 100%;
+    text-align: left !important;
+    padding-left: 60px;
+    margin-left: 0;
+  }
+
+  .page-process .process-step::before {
+    left: 10px;
+  }
+}
+
+/* =========================================
+   CTA SECTION — SAME AS SERVICES
    ========================================= */
 
 .page-process .section-cta-gold {
@@ -1024,14 +1073,12 @@ body.faq-page {
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* CTA Layout */
 .page-process .cta-inner {
   max-width: 700px;
   margin: 0 auto;
   text-align: center;
 }
 
-/* CTA Text */
 .page-process .cta-title {
   font-family: "Playfair Display", serif;
   font-size: 1.5rem;
@@ -1044,7 +1091,6 @@ body.faq-page {
   margin-bottom: 24px;
 }
 
-/* CTA Button */
 .page-process .btn-primary.btn-large {
   padding: 12px 30px;
   border-radius: 999px;
