@@ -1103,7 +1103,7 @@ body.faq-page {
   color: #f7f7ff;
 }
 
-/* HERO — SAME STYLE AS SERVICES */
+/* HERO — SAME AS SERVICES */
 .page-contact .hero-premium {
   padding: 84px 0 56px;
   background:
@@ -1117,6 +1117,7 @@ body.faq-page {
   margin: 0 auto;
   text-align: left;
 }
+
 
 /* CONTACT SECTION */
 .page-contact .contact-section {
@@ -1132,6 +1133,7 @@ body.faq-page {
   gap: 36px;
 }
 
+
 /* CARDS — EXACT SAME STYLE AS SERVICE CARDS */
 .page-contact .contact-card {
   background: linear-gradient(145deg,
@@ -1143,7 +1145,7 @@ body.faq-page {
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
 }
 
-/* LEFT CARD TEXT */
+/* TEXT ELEMENTS */
 .page-contact .contact-name {
   font-family: "Playfair Display", serif;
   font-size: 1.35rem;
@@ -1163,20 +1165,8 @@ body.faq-page {
   margin-bottom: 24px;
 }
 
-/* CTA BUTTON — SAME AS SERVICES */
-.page-contact .btn-primary.btn-large {
-  padding: 12px 30px;
-  border-radius: 999px;
-  font-size: 0.96rem;
-  font-weight: 600;
-  background-image: linear-gradient(135deg, #c88832, #f0b76b, #ffcf81);
-  color: #1a1206;
-  border: none;
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.7);
-  transition: 0.25s;
-}
 
-/* RIGHT COLUMN — CHANNEL LIST */
+/* CHANNEL LIST */
 .page-contact .contact-channels {
   display: flex;
   flex-direction: column;
@@ -1205,12 +1195,10 @@ body.faq-page {
   text-decoration: underline;
 }
 
+
 /* RESPONSIVE */
 @media (max-width: 850px) {
   .page-contact .contact-wrapper {
     grid-template-columns: 1fr;
   }
 }
-
-
-
