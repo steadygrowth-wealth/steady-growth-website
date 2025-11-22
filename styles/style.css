@@ -1545,3 +1545,27 @@ body, html {
 body.menu-open {
   overflow: hidden !important;
 }
+
+
+/* RESET OLD NAV ON MOBILE */
+@media (max-width: 768px) {
+  .nav-links,
+  .nav-cta {
+    display: none !important;
+  }
+}
+
+/* HIDE DESKTOP NAV ON MOBILE */
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none !important;
+  }
+}
+
+/* SHOW DESKTOP NAV ON LARGE SCREEN */
+@media (min-width: 769px) {
+  .mobile-menu,
+  .nav-toggle {
+    display: none;
+  }
+}
