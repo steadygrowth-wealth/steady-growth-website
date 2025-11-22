@@ -173,19 +173,16 @@ const navToggle = document.getElementById("navToggle");
 const mobileMenu = document.getElementById("mobileMenu");
 const menuClose = document.getElementById("menuClose");
 
-// Open Menu
 navToggle.addEventListener("click", () => {
   mobileMenu.classList.add("open");
   document.body.classList.add("menu-open");
 });
 
-// Close Menu
 menuClose.addEventListener("click", () => {
   mobileMenu.classList.remove("open");
   document.body.classList.remove("menu-open");
 });
 
-// Close menu on link click
 document.querySelectorAll(".mobile-nav-links a").forEach(link => {
   link.addEventListener("click", () => {
     mobileMenu.classList.remove("open");
@@ -193,8 +190,6 @@ document.querySelectorAll(".mobile-nav-links a").forEach(link => {
   });
 });
 
-// Footer Year Auto Update
-document.getElementById("year").textContent = new Date().getFullYear();
 </script>
 
 
