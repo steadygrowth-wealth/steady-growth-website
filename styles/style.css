@@ -1371,3 +1371,49 @@ body.faq-page {
   }
 }
 
+/* FIX MOBILE HORIZONTAL OVERFLOW */
+body, html {
+  overflow-x: hidden;
+}
+
+.page-contact, .contact-section, .contact-wrapper, .premium-contact-form {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* FORCE FULL WIDTH ON MOBILE */
+@media (max-width: 768px) {
+
+  .contact-wrapper {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 16px;
+    display: block;
+  }
+
+  .premium-contact-form {
+    width: 100%;
+    max-width: 100%;
+    padding: 24px 18px;
+    box-sizing: border-box;
+  }
+
+  .form-luxury {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .btn-primary.btn-large {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+
