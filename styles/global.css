@@ -54,7 +54,7 @@ header {
 
 /* BRAND LOGO SIZING */
 .brand-logo img {
-  width: 10px;  /* adjust if needed */
+  width: 5px;  /* adjust if needed */
   height: auto;
   object-fit: contain;
 }
