@@ -756,3 +756,54 @@ body.menu-open, html.menu-open {
   text-align: center;
   border-bottom: 1px solid rgba(240,183,107,0.18);
 }
+
+
+
+
+
+
+
+/* FORCE MOBILE MENU ITEMS TO SHOW */
+.mobile-menu.open .mobile-nav-links {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 24px;
+  opacity: 1 !important;
+  transform: none !important;
+  z-index: 99999;
+}
+
+.mobile-menu.open a {
+  font-size: 1.6rem;
+  padding: 12px 0;
+  display: block;
+  width: 100%;
+  text-align: center;
+  color: #ffffff !important;
+}
+
+
+
+
+
+html.menu-open, body.menu-open {
+  overflow: hidden !important;
+  height: 100vh;
+  position: fixed;
+  width: 100%;
+}
+
+
+
+
+.mobile-menu {
+  background: rgba(5, 8, 22, 0.95);
+  backdrop-filter: blur(20px);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
