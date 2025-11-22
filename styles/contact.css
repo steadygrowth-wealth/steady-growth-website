@@ -1,27 +1,33 @@
 /* =========================================
-   CONTACT PAGE — PREMIUM
+   CONTACT PAGE — PREMIUM LUXURY THEME
    ========================================= */
 
 .page-contact {
   background:
-    radial-gradient(circle at top left, rgba(240,183,107,0.06), transparent 55%),
-    radial-gradient(circle at bottom right, rgba(240,183,107,0.04), transparent 55%),
+    radial-gradient(circle at top left, rgba(240, 183, 107, 0.06), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(240, 183, 107, 0.04), transparent 55%),
     var(--bg-dark);
-  color: #ffffff;
+  color: #f7f7ff;
 }
 
-/* HERO STYLING (MATCH SERVICES) */
+/* HERO — SAME AS .page-services */
 .page-contact .hero-premium {
-  padding: 90px 0 65px;
+  padding: 84px 0 56px;
   background:
     radial-gradient(circle at top left, rgba(240, 183, 107, 0.18), transparent 55%),
     linear-gradient(135deg, #050816 0%, #02030a 55%, #050816 100%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
-/* CONTACT SECTION */
+.page-contact .hero-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+/* CONTACT SECTION SPACING */
 .page-contact .contact-section {
-  padding: 80px 0 110px;
+  padding: 72px 0 110px;
 }
 
 .page-contact .contact-wrapper {
@@ -30,29 +36,30 @@
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1.1fr 1fr;
-  gap: 32px;
+  gap: 36px;
 }
 
-/* CARD BASE */
+/* CARDS INHERIT EXACT SERVICES STYLE */
 .page-contact .contact-card {
   background: linear-gradient(145deg,
               rgba(240, 183, 107, 0.10),
               rgba(5, 8, 22, 0.96));
   border: 1px solid rgba(240, 183, 107, 0.35);
+  padding: 26px 28px 24px;
   border-radius: 18px;
-  padding: 32px 34px;
-  box-shadow: 0 18px 40px rgba(0,0,0,0.75);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
+  transition: 0.25s ease;
 }
 
-/* LEFT CARD */
+/* PROFILE CARD TEXT */
 .page-contact .contact-name {
   font-family: "Playfair Display", serif;
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   margin-bottom: 6px;
 }
 
 .page-contact .contact-role {
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   color: rgba(240, 183, 107, 0.9);
   margin-bottom: 14px;
 }
@@ -60,32 +67,30 @@
 .page-contact .contact-description {
   font-size: 0.95rem;
   line-height: 1.7;
-  color: rgba(226,230,245,0.9);
-  margin-bottom: 22px;
+  color: rgba(226, 230, 245, 0.92);
+  margin-bottom: 24px;
 }
 
-/* BUTTON */
-.page-contact .btn-contact {
+/* CTA BUTTON — SAME AS SERVICES */
+.page-contact .btn-primary.btn-large {
   padding: 12px 30px;
   border-radius: 999px;
-  font-size: 0.95rem;
+  font-size: 0.96rem;
   font-weight: 600;
   background-image: linear-gradient(135deg, #c88832, #f0b76b, #ffcf81);
   color: #1a1206;
   border: none;
-  text-decoration: none;
-  display: inline-block;
-  box-shadow: 0 14px 36px rgba(0,0,0,0.8);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.7);
   transition: 0.25s;
 }
 
-.page-contact .btn-contact:hover {
+.page-contact .btn-primary.btn-large:hover {
   transform: translateY(-2px);
-  box-shadow: 0 18px 44px rgba(0,0,0,0.9);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.85);
 }
 
-/* RIGHT CARD CHANNELS */
-.page-contact .channel-card {
+/* CHANNEL LIST */
+.page-contact .contact-channels {
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -93,28 +98,28 @@
 
 .page-contact .channel-item {
   padding-bottom: 10px;
-  border-bottom: 1px solid rgba(240,183,107,0.16);
+  border-bottom: 1px solid rgba(240, 183, 107, 0.16);
 }
 
-.page-contact .label {
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
+.page-contact .channel-label {
+  font-size: 0.78rem;
   text-transform: uppercase;
-  color: rgba(216,222,238,0.8);
+  letter-spacing: 0.12em;
+  color: rgba(216, 222, 238, 0.8);
 }
 
-.page-contact .value {
+.page-contact .channel-value {
   font-size: 0.95rem;
-  color: rgba(250,250,255,0.96);
+  color: rgba(246, 249, 255, 0.96);
   text-decoration: none;
 }
 
-.page-contact .value:hover {
+.page-contact .channel-value:hover {
   text-decoration: underline;
 }
 
 /* RESPONSIVE */
-@media (max-width: 800px) {
+@media (max-width: 850px) {
   .page-contact .contact-wrapper {
     grid-template-columns: 1fr;
   }
