@@ -161,3 +161,32 @@
     font-size: 1.8rem;
   }
 }
+
+
+/* =============================
+   FIX: Ensure full dark theme applies to entire page
+   ============================= */
+
+/* Remove white background from header */
+.page-contact header {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Make hero match Services style */
+.page-contact .hero-premium {
+  padding: 84px 0 56px;
+  background:
+    radial-gradient(circle at top left, rgba(240, 183, 107, 0.18), transparent 55%),
+    linear-gradient(135deg, #050816 0%, #02030a 55%, #050816 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+}
+
+/* Prevent default background override */
+.page-contact body,
+.page-contact section,
+.page-contact .contact-card-section {
+  background: transparent !important;
+}
+
