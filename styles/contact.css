@@ -1,0 +1,163 @@
+/* =============================
+   CONTACT PAGE – BUSINESS CARD
+   ============================= */
+
+.page-contact {
+  background:
+    radial-gradient(circle at top left, rgba(240, 183, 107, 0.06), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(240, 183, 107, 0.04), transparent 55%),
+    var(--bg-dark);
+  color: #f7f7ff;
+}
+
+/* Section wrapper */
+.page-contact .contact-card-section {
+  padding: 84px 0 96px;
+}
+
+.page-contact .contact-card-inner {
+  width: 90%;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+/* Heading area */
+.page-contact .contact-heading-block {
+  max-width: 720px;
+  margin-bottom: 40px;
+}
+
+.page-contact .contact-tag {
+  display: inline-flex;
+  padding: 4px 14px;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  background: rgba(240, 183, 107, 0.08);
+  border: 1px solid rgba(240, 183, 107, 0.4);
+  color: rgba(255, 255, 255, 0.82);
+  margin-bottom: 14px;
+}
+
+.page-contact .contact-title-lg {
+  font-family: "Playfair Display", serif;
+  font-size: 2.1rem;
+  letter-spacing: -0.03em;
+  margin-bottom: 10px;
+}
+
+.page-contact .contact-lead {
+  font-size: 0.96rem;
+  line-height: 1.7;
+  color: rgba(232, 235, 245, 0.9);
+}
+
+/* Grid layout */
+.page-contact .contact-card-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 26px;
+  margin-top: 50px;
+}
+
+/* Card base */
+.page-contact .contact-card {
+  background: linear-gradient(145deg,
+              rgba(240, 183, 107, 0.12),
+              rgba(5, 8, 22, 0.98));
+  border-radius: 18px;
+  border: 1px solid rgba(240, 183, 107, 0.35);
+  padding: 26px 28px 24px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.72);
+}
+
+/* Intro card */
+.page-contact .contact-name {
+  font-family: "Playfair Display", serif;
+  font-size: 1.35rem;
+  margin-bottom: 4px;
+}
+
+.page-contact .contact-role {
+  font-size: 0.9rem;
+  color: rgba(240, 183, 107, 0.92);
+  margin-bottom: 14px;
+}
+
+.page-contact .contact-blurb {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: rgba(226, 230, 245, 0.92);
+  margin-bottom: 20px;
+}
+
+/* CTA button */
+.page-contact .btn-contact-primary {
+  padding: 10px 24px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  background-image: linear-gradient(135deg, #c88832, #f0b76b, #ffcf81);
+  color: #1a1206;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.8);
+  transition: 0.25s;
+}
+
+.page-contact .btn-contact-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9);
+}
+
+/* Channels list */
+.page-contact .contact-channels {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.page-contact .contact-channel {
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(240, 183, 107, 0.16);
+}
+
+.page-contact .contact-channel:last-child {
+  border-bottom-color: rgba(240, 183, 107, 0.06);
+}
+
+.page-contact .channel-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(216, 222, 238, 0.8);
+  margin-bottom: 2px;
+}
+
+.page-contact .channel-value {
+  font-size: 0.95rem;
+  color: rgba(246, 249, 255, 0.96);
+  text-decoration: none;
+}
+
+.page-contact .channel-value:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .page-contact .contact-card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-contact .contact-card-section {
+    padding: 64px 0 80px;
+  }
+
+  .page-contact .contact-title-lg {
+    font-size: 1.8rem;
+  }
+}
