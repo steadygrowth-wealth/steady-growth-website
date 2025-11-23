@@ -16,9 +16,10 @@
 
 <body class="page-contact">
 
+<!-- ========================= HEADER ========================= -->
 <header>
   <div class="container nav">
-
+    
     <!-- BRAND -->
     <a href="../index.html" class="brand">
       <div class="brand-logo">
@@ -37,7 +38,6 @@
       <a href="./services.html">Services</a>
       <a href="./process.html">Process</a>
       <a href="./faq.html">FAQs</a>
-      <a href="./contact.html">Contact</a>
     </nav>
 
     <!-- DESKTOP CTA -->
@@ -45,15 +45,18 @@
       <a href="./contact.html" class="btn btn-ghost">Request a Call</a>
     </div>
 
+    <!-- MOBILE MENU TOGGLE -->
     <div class="nav-toggle" id="navToggle">
       <span></span><span></span><span></span>
     </div>
+
   </div>
 
-  <!-- MOBILE MENU -->
+  <!-- FULLSCREEN MOBILE MENU -->
   <div class="mobile-menu" id="mobileMenu">
     <div class="menu-bg-glow"></div>
 
+    <!-- CLOSE BUTTON -->
     <div class="menu-close" id="menuClose">✕</div>
 
     <nav class="mobile-nav-links">
@@ -62,7 +65,6 @@
       <a href="./services.html">Services</a>
       <a href="./process.html">Process</a>
       <a href="./faq.html">FAQs</a>
-      <a href="./contact.html">Contact</a>
     </nav>
 
     <a href="./contact.html" class="btn btn-primary menu-cta">
@@ -72,7 +74,8 @@
 </header>
 
 
-<!-- HERO SECTION -->
+
+<!-- ========================= HERO ========================= -->
 <section class="hero-premium">
   <div class="container hero-inner">
     <span class="hero-tag">Contact</span>
@@ -85,20 +88,24 @@
 </section>
 
 
-<!-- CONTACT SECTION -->
+
+<!-- ========================= CONTACT SECTION ========================= -->
 <section class="contact-section">
   <div class="contact-wrapper">
 
-    <!-- LEFT CARD -->
+    <!-- Contact Card -->
     <div class="contact-card">
       <h2 class="contact-name">Ankit Chakraborty</h2>
       <div class="contact-role">Mutual Fund Distributor</div>
 
       <p class="contact-description">
-        I help individuals and families build long-term wealth through structured and behaviour-aligned mutual fund investing. Reach out—I’d love to understand your goals.
+        I help individuals and families build long-term wealth through
+        structured and behaviour-aligned mutual fund investing. 
+        Reach out—I’d love to understand your goals.
       </p>
 
       <div class="contact-channels">
+
         <div class="channel-item">
           <div class="channel-label">Email</div>
           <a href="mailto:steadygrowth.wealth@gmail.com" class="channel-value">
@@ -117,11 +124,13 @@
           <div class="channel-label">Location</div>
           <div class="channel-value">Kolkata, West Bengal, India</div>
         </div>
+
       </div>
     </div>
 
 
-    <!-- RIGHT FORM CARD -->
+
+    <!-- ========================= FORM CARD (SINGLE COLUMN) ========================= -->
     <div class="contact-card premium-contact-form">
 
       <h2 class="contact-name">Get Started</h2>
@@ -131,18 +140,31 @@
 
       <form action="#" method="post" class="form-luxury">
 
-        <div class="form-row">
-          <div class="form-group">
-            <label>Name</label>
-            <input type="text" name="name" placeholder="Your full name" required>
-          </div>
-
-          <div class="form-group">
-            <label>City</label>
-            <input type="text" name="city" placeholder="Where are you based?" required>
-          </div>
+        <!-- Name -->
+        <div class="form-group full">
+          <label>Name</label>
+          <input type="text" name="name" placeholder="Your full name" required>
         </div>
 
+        <!-- City -->
+        <div class="form-group full">
+          <label>City</label>
+          <input type="text" name="city" placeholder="Where are you based?" required>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group full">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="you@example.com" required>
+        </div>
+
+        <!-- Phone -->
+        <div class="form-group full">
+          <label>Phone / WhatsApp</label>
+          <input type="tel" name="phone" placeholder="+91 98765 43210" required>
+        </div>
+
+        <!-- Dropdown -->
         <div class="form-group full">
           <label>Primary Financial Goal</label>
           <select name="goal" required>
@@ -155,6 +177,7 @@
           </select>
         </div>
 
+        <!-- Radios -->
         <div class="form-group full">
           <label>Investment Approach</label>
           <div class="form-options">
@@ -164,6 +187,12 @@
           </div>
         </div>
 
+        <!-- Message -->
+        <div class="form-group full">
+          <label>Anything Specific You Want to Share?</label>
+          <textarea name="message" rows="5" placeholder="Tell us more…"></textarea>
+        </div>
+
         <button type="submit" class="btn btn-primary btn-large" style="margin-top: 20px;">
           Request a Consultation →
         </button>
@@ -171,12 +200,12 @@
       </form>
 
     </div>
-
   </div>
 </section>
 
 
-<!-- FOOTER -->
+
+<!-- ========================= FOOTER ========================= -->
 <footer class="disclaimer">
   <div class="container">
     <p class="disclaimer-text">
@@ -189,6 +218,7 @@
     </div>
   </div>
 </footer>
+
 
 
 <script>
@@ -204,6 +234,13 @@ navToggle.addEventListener("click", () => {
 menuClose.addEventListener("click", () => {
   mobileMenu.classList.remove("open");
   document.body.classList.remove("menu-open");
+});
+
+document.querySelectorAll(".mobile-nav-links a").forEach(link => {
+  link.addEventListener("click", () => {
+    mobileMenu.classList.remove("open");
+    document.body.classList.remove("menu-open");
+  });
 });
 </script>
 
