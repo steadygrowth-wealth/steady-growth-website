@@ -182,6 +182,7 @@ header {
 
 
 
-* {
-  border: 1px solid red !important;
+header {
+  background: red !important;
 }
+
