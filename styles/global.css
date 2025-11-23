@@ -243,53 +243,50 @@ header {
 }
 
 
-/* ============================================================
-   📱 MOBILE HEADER (COMPACT, PREMIUM)
-============================================================ */
+/* ========== FINAL HEADER TUNING (MOBILE) ========== */
 @media (max-width: 1024px) {
 
   :root {
-    --nav-height: 58px !important;
+    --nav-height: 50px !important;
+  }
+
+  header {
+    padding: 0 !important;
   }
 
   .nav {
-    padding: 0 14px !important;
-    gap: 10px !important;
+    height: 50px !important;
+    padding: 0 12px !important;
+    gap: 8px !important;
   }
 
-  .brand {
-    gap: 6px !important;
-    align-items: center !important;
-  }
-
+  /* Reduce logo further */
   .brand-logo img {
-    height: 34px !important;
+    height: 28px !important;
   }
 
+  /* Tighten brand block */
+  .brand {
+    gap: 4px !important;
+  }
+
+  /* Adjust brand name */
   .brand-name {
-    font-size: 18px !important;
+    font-size: 16px !important;
     line-height: 1 !important;
     margin: 0 !important;
   }
 
+  /* Subtitle smaller + closer */
   .brand-sub {
-    font-size: 9px !important;
-    letter-spacing: 1.4px !important;
-    margin-top: 0 !important;
+    font-size: 8px !important;
+    letter-spacing: 1.2px !important;
+    margin-top: -1px !important;
+    opacity: 0.65 !important;
   }
 
+  /* Remove extra space above hero */
   .hero {
-    padding-top: 32px !important;
-  }
-
-  /* Hide desktop nav */
-  .nav-links,
-  .nav-cta {
-    display: none !important;
-  }
-
-  /* Show menu toggle */
-  .nav-toggle {
-    display: flex !important;
+    padding-top: 20px !important;
   }
 }
