@@ -31,7 +31,7 @@ body {
   --text-muted: #a7afc7;
   --border-soft: rgba(255, 255, 255, 0.08);
   --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
-  --nav-height: 58px; /* More compact like screenshot */
+  --nav-height: 58px; /* Compact like screenshot */
 }
 
 .container {
@@ -55,11 +55,10 @@ header {
   justify-content: center;
 }
 
-/* NAV BAR WRAPPER */
+/* NAV INNER WRAPPER */
 .nav {
   height: var(--nav-height);
   width: min(1200px, 94vw);
-  margin: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -67,15 +66,15 @@ header {
   padding: 0 20px;
 }
 
-/* LOGO + BRAND GROUP */
-.brand-group {
+/* BRAND GROUP (LEFT SIDE) */
+.brand {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-/* LOGO FIX */
-.brand-group img {
+/* LOGO */
+.brand-logo img {
   height: 42px;
   width: auto;
   object-fit: contain;
@@ -83,19 +82,20 @@ header {
 }
 
 /* BRAND TEXT */
-.brand-text h1 {
+.brand-name {
   font-size: 20px;
   font-weight: 600;
-  margin: 0;
   line-height: 1.1;
+  margin-bottom: 2px;
+  color: white;
 }
 
-.brand-text span {
+.brand-sub {
   font-size: 10px;
   letter-spacing: 2px;
   opacity: 0.7;
+  text-transform: uppercase;
   display: block;
-  margin-top: 1px;
 }
 
 /* NAV LINKS */
@@ -107,41 +107,41 @@ header {
 }
 
 .nav-links a {
-  position: relative;
-  padding-bottom: 4px;
-  transition: 0.2s ease;
   text-decoration: none;
   color: var(--text-muted);
+  padding-bottom: 4px;
+  transition: 0.25s;
 }
 
 .nav-links a:hover {
-  color: white;
+  color: #fff;
 }
 
-/* CTA BUTTONS */
+/* CTA BUTTONS (RIGHT SIDE) */
 .nav-cta {
   display: flex;
   gap: 14px;
   white-space: nowrap;
 }
 
-.nav-cta a {
-  border-radius: 50px;
-  padding: 10px 20px;
-  font-size: 0.9rem;
-}
-
-/* Stroke Button */
-.nav-cta a:first-child {
+.nav-cta .btn-ghost {
   border: 1px solid rgba(255,255,255,0.25);
+  padding: 10px 20px;
+  border-radius: 50px;
   color: var(--text-muted);
 }
 
-/* Gold Gradient Button */
-.nav-cta a:last-child {
+.nav-cta .btn-primary {
   background: linear-gradient(90deg, #f2c176, #d9923d);
+  padding: 10px 24px;
+  border-radius: 50px;
   color: #1b1407;
   font-weight: 600;
+}
+
+/* MOBILE MENU TOGGLE ALIGNMENT */
+.nav-toggle {
+  display: none;
 }
 
 /* ============================================================
