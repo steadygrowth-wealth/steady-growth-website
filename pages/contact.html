@@ -8,11 +8,13 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- External Stylesheet -->
-  <link rel="stylesheet" href="/styles/global.css">
-  <link rel="stylesheet" href="/styles/mobile-menu.css">
-  <link rel="stylesheet" href="/styles/contact.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../styles/global.css">
+  <link rel="stylesheet" href="../styles/mobile-menu.css">
+  <link rel="stylesheet" href="../styles/contact.css">
 
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../assets/img/logo.png">
 
 </head>
 
@@ -23,28 +25,28 @@
   <div class="container nav">
     
     <!-- BRAND -->
-    <div href="/index.html" class="brand">
+    <a href="../index.html" class="brand">
       <div class="brand-logo">
-        <img src="/assets/img/logo.png" alt="Steady Growth Logo">
+        <img src="../assets/img/logo.png" alt="Steady Growth Logo">
       </div>
       <div class="brand-text">
         <div class="brand-name">Steady Growth</div>
         <div class="brand-sub">Mutual Fund Distribution</div>
       </div>
-    </div>
+    </a>
 
     <!-- DESKTOP NAV -->
     <nav class="nav-links">
-      <a href="/index.html">Home</a>
-      <a href="/pages/about.html">About</a>
-      <a href="/pages/services.html">Services</a>
-      <a href="/pages/process.html">Process</a>
-      <a href="/pages/faq.html">FAQs</a>
+      <a href="../index.html">Home</a>
+      <a href="./about.html">About</a>
+      <a href="./services.html">Services</a>
+      <a href="./process.html">Process</a>
+      <a href="./faq.html">FAQs</a>
     </nav>
 
     <!-- DESKTOP CTA -->
     <div class="nav-cta">
-      <a href="/pages/contact.html" class="btn btn-ghost">Request a Call</a>
+      <a href="./contact.html" class="btn btn-ghost">Request a Call</a>
     </div>
 
     <!-- MOBILE MENU TOGGLE -->
@@ -62,22 +64,21 @@
     <div class="menu-close" id="menuClose">✕</div>
 
     <nav class="mobile-nav-links">
-      <a href="/index.html">Home</a>
-      <a href="/pages/about.html">About</a>
-      <a href="/pages/services.html">Services</a>
-      <a href="/pages/process.html">Process</a>
-      <a href="/pages/faq.html">FAQs</a>
+      <a href="../index.html">Home</a>
+      <a href="./about.html">About</a>
+      <a href="./services.html">Services</a>
+      <a href="./process.html">Process</a>
+      <a href="./faq.html">FAQs</a>
     </nav>
 
-    <a href="/pages/contact.html" class="btn btn-primary menu-cta">
+    <a href="./contact.html" class="btn btn-primary menu-cta">
       Request a Call
     </a>
   </div>
 </header>
 
 
-
-<!-- ========================= HERO (MATCH PROCESS STYLE) ========================= -->
+<!-- ========================= HERO ========================= -->
 <section class="hero-premium">
   <div class="container hero-inner">
 
@@ -94,9 +95,7 @@
 </section>
 
 
-
 <!-- ========================= CONTACT SECTION ========================= -->
-
 <section class="contact-section">
   <div class="contact-wrapper">
 
@@ -135,82 +134,81 @@
       </div>
     </div>
 
-
+    <!-- FORM CARD -->
     <div class="contact-card premium-contact-form">
 
-  <h2 class="contact-name">Get Started</h2>
-  <div class="contact-role" style="margin-bottom: 24px;">
-    Tell us a little about your goals — we’ll reach out personally.
-  </div>
-
-  <form action="#" method="post" class="form-luxury">
-
-    <!-- Row 1 -->
-    <div class="form-row">
-      <div class="form-group">
-        <label>Name</label>
-        <input type="text" name="name" placeholder="Your full name" required>
+      <h2 class="contact-name">Get Started</h2>
+      <div class="contact-role" style="margin-bottom: 24px;">
+        Tell us a little about your goals — we’ll reach out personally.
       </div>
 
-      <div class="form-group">
-        <label>City</label>
-        <input type="text" name="city" placeholder="Where are you based?" required>
-      </div>
+      <form action="#" method="post" class="form-luxury">
+
+        <!-- Row 1 -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" name="name" placeholder="Your full name" required>
+          </div>
+
+          <div class="form-group">
+            <label>City</label>
+            <input type="text" name="city" placeholder="Where are you based?" required>
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="you@example.com" required>
+          </div>
+
+          <div class="form-group">
+            <label>Phone / WhatsApp</label>
+            <input type="tel" name="phone" placeholder="+91 98765 43210" required>
+          </div>
+        </div>
+
+        <!-- Dropdown -->
+        <div class="form-group full">
+          <label>Primary Financial Goal</label>
+          <select name="goal" required>
+            <option value="">Select a goal…</option>
+            <option>Long-term Wealth Creation</option>
+            <option>Retirement & Financial Independence</option>
+            <option>Child Education / Marriage</option>
+            <option>Tax-efficient Investing</option>
+            <option>Capital Preservation</option>
+          </select>
+        </div>
+
+        <!-- Radios -->
+        <div class="form-group full">
+          <label>Investment Approach</label>
+          <div class="form-options">
+            <label><input type="radio" name="approach" value="sip" required> SIP / Monthly Investing</label>
+            <label><input type="radio" name="approach" value="lumpsum"> Lump Sum</label>
+            <label><input type="radio" name="approach" value="both"> Both</label>
+          </div>
+        </div>
+
+        <!-- Message -->
+        <div class="form-group full">
+          <label>Anything Specific You Want to Share?</label>
+          <textarea name="message" rows="5" placeholder="Tell us more…"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-large" style="margin-top: 20px;">
+          Request a Consultation →
+        </button>
+
+      </form>
+
     </div>
-
-    <!-- Row 2 -->
-    <div class="form-row">
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" name="email" placeholder="you@example.com" required>
-      </div>
-
-      <div class="form-group">
-        <label>Phone / WhatsApp</label>
-        <input type="tel" name="phone" placeholder="+91 98765 43210" required>
-      </div>
-    </div>
-
-    <!-- Dropdown -->
-    <div class="form-group full">
-      <label>Primary Financial Goal</label>
-      <select name="goal" required>
-        <option value="">Select a goal…</option>
-        <option>Long-term Wealth Creation</option>
-        <option>Retirement & Financial Independence</option>
-        <option>Child Education / Marriage</option>
-        <option>Tax-efficient Investing</option>
-        <option>Capital Preservation</option>
-      </select>
-    </div>
-
-    <!-- Radios -->
-    <div class="form-group full">
-      <label>Investment Approach</label>
-      <div class="form-options">
-        <label><input type="radio" name="approach" value="sip" required> SIP / Monthly Investing</label>
-        <label><input type="radio" name="approach" value="lumpsum"> Lump Sum</label>
-        <label><input type="radio" name="approach" value="both"> Both</label>
-      </div>
-    </div>
-
-    <!-- Message -->
-    <div class="form-group full">
-      <label>Anything Specific You Want to Share?</label>
-      <textarea name="message" rows="5" placeholder="Tell us more…"></textarea>
-    </div>
-
-    <button type="submit" class="btn btn-primary btn-large" style="margin-top: 20px;">
-      Request a Consultation →
-    </button>
-
-  </form>
-
-</div>
 
   </div>
 </section>
-
 
 
 <!-- ========================= FOOTER ========================= -->
@@ -228,8 +226,6 @@
 </footer>
 
 
-
-  
 <script>
 const navToggle = document.getElementById("navToggle");
 const mobileMenu = document.getElementById("mobileMenu");
@@ -251,9 +247,7 @@ document.querySelectorAll(".mobile-nav-links a").forEach(link => {
     document.body.classList.remove("menu-open");
   });
 });
-
 </script>
-
 
 </body>
 </html>
