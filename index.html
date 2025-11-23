@@ -12,21 +12,19 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- External Stylesheet -->
+  <!-- Styles -->
   <link rel="stylesheet" href="./styles/global.css">
   <link rel="stylesheet" href="./styles/mobile-menu.css">
   <link rel="stylesheet" href="./styles/home.css">
-
 </head>
 
 <body class="page-home">
 
-<!-- Header & Nav -->
+<!-- ========================= HEADER ========================= -->
 <header>
   <div class="container nav">
     
-    <!-- BRAND -->
-    <div href="./index.html" class="brand">
+    <a href="./index.html" class="brand">
       <div class="brand-logo">
         <img src="./assets/img/logo.png" alt="Steady Growth Logo">
       </div>
@@ -34,9 +32,8 @@
         <div class="brand-name">Steady Growth</div>
         <div class="brand-sub">Mutual Fund Distribution</div>
       </div>
-    </div>
+    </a>
 
-    <!-- DESKTOP NAV -->
     <nav class="nav-links">
       <a href="./pages/about.html">About</a>
       <a href="./pages/services.html">Services</a>
@@ -45,23 +42,19 @@
       <a href="./pages/contact.html">Contact</a>
     </nav>
 
-    <!-- DESKTOP CTA -->
     <div class="nav-cta">
       <a href="./pages/contact.html" class="btn btn-ghost">Request a Call</a>
     </div>
 
-    <!-- MOBILE MENU TOGGLE -->
     <div class="nav-toggle" id="navToggle">
       <span></span><span></span><span></span>
     </div>
 
   </div>
 
-  <!-- FULLSCREEN MOBILE MENU -->
+  <!-- MOBILE MENU -->
   <div class="mobile-menu" id="mobileMenu">
     <div class="menu-bg-glow"></div>
-
-    <!-- CLOSE BUTTON -->
     <div class="menu-close" id="menuClose">✕</div>
 
     <nav class="mobile-nav-links">
@@ -72,161 +65,93 @@
       <a href="./pages/contact.html">Contact</a>
     </nav>
 
-    <a href="./pages/contact.html" class="btn btn-primary menu-cta">
-      Request a Call
-    </a>
+    <a href="./pages/contact.html" class="btn btn-primary menu-cta">Request a Call</a>
   </div>
 </header>
 
-<!-- Hero -->
-<main>
-  <section class="hero" id="home">
-    <div class="container hero-grid">
-      <div>
-        <div class="eyebrow">Steady Growth – Long-Term Wealth, One SIP at a Time</div>
-        <h1 class="hero-title">
-          Premium, goal-based <span class="hero-highlight">Mutual Fund Distribution</span> for serious investors.
-        </h1>
 
-        <p class="hero-subtitle">
-          I work with professionals, business owners, NRIs and HNIs to build wealth gradually through disciplined SIPs
-          and diversified mutual fund portfolios — without noise, speculation or “get rich quick” promises.
-        </p>
 
-        <div class="hero-points">
-          <div class="pill">
-            <div class="pill-dot"></div>
-            <span>SEBI / AMFI compliant distribution</span>
-          </div>
-          <div class="pill">
-            <div class="pill-dot"></div>
-            <span>Goal-based SIP &amp; lump sum planning</span>
-          </div>
-          <div class="pill">
-            <div class="pill-dot"></div>
-            <span>Execution via NJ Wealth platform</span>
-          </div>
-        </div>
+<!-- ========================= HERO ========================= -->
+<section class="hero" id="home" style="padding: 120px 0;">
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow">Steady Growth – Long-Term Wealth, One SIP at a Time</div>
+      <h1 class="hero-title">
+        Premium, goal-based <span class="hero-highlight">Mutual Fund Distribution</span> for serious investors.
+      </h1>
 
-        <div class="hero-cta">
-          <a href="https://api.whatsapp.com/send?phone=919211310914&text=Hi,+I+need+assistance+in+starting+my+investment+journey." class="btn btn-primary">Talk on WhatsApp</a>
-          <a href="./pages/services.html" class="btn btn-primary">View Services</a>
-        </div>
+      <p class="hero-subtitle">
+        I help individuals, NRIs and families grow wealth through disciplined SIPs & diversified portfolios — without speculation.
+      </p>
 
-        <p class="hero-note">
-          <strong>No stock tips.</strong> No guaranteed returns. Just honest guidance on mutual fund investing.
-        </p>
+      <div class="hero-cta">
+        <a href="https://api.whatsapp.com/send?phone=919211310914" class="btn btn-primary">Talk on WhatsApp</a>
+        <a href="./pages/services.html" class="btn btn-primary">View Services</a>
       </div>
-
-      <!-- Profile card -->
-      <div>
-        <div class="hero-card">
-          <div class="sparkle"></div>
-          <div class="badge">
-            <span>✔</span>
-            Registered Mutual Fund Distributor
-          </div>
-
-          <div class="profile">
-            <div class="profile-photo">
-              <img src="./assets/img/profile.jpg" alt="Profile Photo">
-            </div>
-            <div class="profile-text">
-              <h3>Ankit Chakraborty</h3>
-              <p>Individual Mutual Fund Distributor</p>
-            </div>
-          </div>
-
-          <p class="tagline-small">
-            I work with individuals and families who want to invest sensibly for their future — not gamble with it.
-          </p>
-
-          <p class="reg-line">
-            <span>ARN:</span> ARN-285834 &nbsp; | &nbsp;
-            <span>EUIN:</span> EUIN-E538021
-            &nbsp;&nbsp; <a href="./verification.html" class="btn btn-ghost" style="padding:6px 14px; font-size:0.78rem;">Verify My ARN</a>
-          </p>
-
-          <p class="reg-line muted">
-            Execution &amp; back-office support powered by <strong>NJ Wealth</strong>.
-          </p>
-        </div>
-      </div>
-
     </div>
-  </section>
-
-  <!-- =========================
-     SIP READINESS SECTION
-========================= -->
-<section class="section-cta-black" style="padding:80px 0; background:#0b1020;">
-  <div class="container" style="text-align:center; max-width:800px;">
-      
-    <h2 class="section-title">Check Your SIP Readiness</h2>
-    <p class="section-subtitle">
-      Understand whether you’re financially prepared to begin disciplined investing — before taking action.
-    </p>
-
-    <a href="./readiness.html" class="btn btn-primary btn-large" style="margin-top:20px;">
-      Check SIP Readiness →
-    </a>
-
   </div>
 </section>
 
 
 
-<!-- =========================
-     RISK PROFILE SECTION
-========================= -->
-<section class="section-cta-black" style="padding:80px 0; background:#050816;">
-  <div class="container" style="text-align:center; max-width:800px;">
-      
-    <h2 class="section-title">Know Your Risk Profile</h2>
-    <p class="section-subtitle">
-      Your investment strategy must align with your comfort level, risk capacity, and long-term goals.
-    </p>
+<!-- ========================= SECTION: SIP READINESS ========================= -->
+<section class="section-readiness" style="padding:90px 0; text-align:center;">
+  <h2 class="section-title">Check Your SIP Readiness</h2>
 
-    <a href="./risk.html" class="btn btn-primary btn-large" style="margin-top:20px;">
-      Assess Risk Profile →
-    </a>
+  <p style="margin-bottom:32px;">
+    Understand whether you're financially prepared to begin disciplined investing — before taking action.
+  </p>
 
-  </div>
+  <a href="./readiness.html" class="btn btn-primary">Check SIP Readiness →</a>
 </section>
 
 
-  
-  <!-- Short Contact CTA -->
-  <section class="container" style="text-align:center; padding:40px 0;">
-    <h2 class="section-title">Need Help?</h2>
-    <p class="section-subtitle">Have questions about investing? Let’s connect.</p>
-    <a href="./pages/contact.html" class="btn btn-primary" style="margin-top:10px;">
-      Contact Me →
-    </a>
-  </section>
 
-</main>
+<!-- ========================= SECTION: RISK PROFILE ========================= -->
+<section class="section-risk" style="padding:90px 0; text-align:center;">
+  <h2 class="section-title">Know Your Risk Profile</h2>
 
-<!-- Footer -->
+  <p style="margin-bottom:32px;">
+    Your investment strategy must align with your comfort level, risk capacity, and long-term goals.
+  </p>
+
+  <a href="./risk.html" class="btn btn-primary">Assess Risk Profile →</a>
+</section>
+
+
+
+<!-- ========================= SECTION: CONTACT CTA ========================= -->
+<section class="section-contact-cta" style="padding:90px 0; text-align:center;">
+  <h2 class="section-title">Need Help?</h2>
+
+  <p style="margin-bottom:32px;">
+    Have questions about investing? Let's connect.
+  </p>
+
+  <a href="./pages/contact.html" class="btn btn-primary">Contact Me →</a>
+</section>
+
+
+
+<!-- ========================= FOOTER ========================= -->
 <footer class="disclaimer">
   <div class="container">
     <p class="disclaimer-text">
-      <strong>Disclaimer:</strong> Mutual Fund investments are subject to market risks. Please read all scheme-related
-      documents carefully before investing. The content on this website is for informational purposes only and should
-      not be construed as investment, tax or legal advice. Past performance may or may not be sustained in the future.
+      <strong>Disclaimer:</strong> Mutual Fund investments are subject to market risks. Please read scheme documents before investing.
     </p>
 
     <p class="disclaimer-text">
-      Steady Growth acts as a Mutual Fund Distributor with ARN/EUIN as mentioned above and facilitates investments
-      through the NJ Wealth platform and respective AMCs / RTAs.
+      Steady Growth acts as a Mutual Fund Distributor and facilitates investments via NJ Wealth & AMCs.
     </p>
 
     <div class="footer-bottom">
       <span>© <span id="year"></span> Steady Growth. All rights reserved.</span>
-      <span>Designed to encourage disciplined, long-term investing.</span>
+      <span>Designed for disciplined, long-term investing.</span>
     </div>
   </div>
 </footer>
+
+
 
 <script>
 const navToggle = document.getElementById("navToggle");
