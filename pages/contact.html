@@ -12,6 +12,50 @@
   <link rel="stylesheet" href="../styles/global.css">
   <link rel="stylesheet" href="../styles/mobile-menu.css">
   <link rel="stylesheet" href="../styles/contact.css">
+
+  <!-- Simple form-specific styling -->
+  <style>
+    .phone-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .phone-code-select {
+      flex: 0 0 130px;
+    }
+
+    .phone-input {
+      flex: 1 1 160px;
+    }
+
+    .phone-code-select select,
+    .form-luxury select {
+      background-color: #050816; /* dark dropdown */
+      color: #ffffff;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 0.9rem;
+    }
+
+    .form-luxury select option {
+      background-color: #050816;
+      color: #ffffff;
+    }
+
+    .form-luxury input,
+    .form-luxury textarea {
+      width: 100%;
+    }
+
+    .error-message {
+      margin-top: 4px;
+      font-size: 0.8rem;
+      color: #ffb3b3;
+    }
+  </style>
 </head>
 
 <body class="page-contact">
@@ -65,6 +109,7 @@
       <a href="./services.html">Services</a>
       <a href="./process.html">Process</a>
       <a href="./faq.html">FAQs</a>
+      <a href="./contact.html">Contact</a>
     </nav>
 
     <a href="./contact.html" class="btn btn-primary menu-cta">
@@ -138,36 +183,101 @@
         Tell us a little about your goals — we’ll reach out personally.
       </div>
 
-      <form action="#" method="post" class="form-luxury">
+      <form action="#" method="post" class="form-luxury" id="contactForm" novalidate>
 
         <!-- Name -->
         <div class="form-group full">
-          <label>Name</label>
-          <input type="text" name="name" placeholder="Your full name" required>
+          <label for="name">Name<span style="color:#f88;"> *</span></label>
+          <input type="text" id="name" name="name" placeholder="Your full name" required>
+          <div class="error-message" id="nameError"></div>
         </div>
 
         <!-- City -->
         <div class="form-group full">
-          <label>City</label>
-          <input type="text" name="city" placeholder="Where are you based?" required>
+          <label for="city">City<span style="color:#f88;"> *</span></label>
+          <input type="text" id="city" name="city" placeholder="Where are you based?" required>
+          <div class="error-message" id="cityError"></div>
         </div>
 
         <!-- Email -->
         <div class="form-group full">
-          <label>Email</label>
-          <input type="email" name="email" placeholder="you@example.com" required>
+          <label for="email">Email<span style="color:#f88;"> *</span></label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required>
+          <div class="error-message" id="emailError"></div>
         </div>
 
-        <!-- Phone -->
+        <!-- Phone with country code -->
         <div class="form-group full">
-          <label>Phone / WhatsApp</label>
-          <input type="tel" name="phone" placeholder="+91 98765 43210" required>
+          <label for="phone">Phone / WhatsApp<span style="color:#f88;"> *</span></label>
+          <div class="phone-row">
+            <div class="phone-code-select">
+              <select id="countryCode" name="country_code" required>
+                <!-- Default India -->
+                <option value="+91" data-min="10" data-max="10" selected>🇮🇳 India (+91)</option>
+                <!-- A reasonably broad global list (you can add more as needed) -->
+                <option value="+1" data-min="10" data-max="10">🇺🇸 United States (+1)</option>
+                <option value="+44" data-min="10" data-max="11">🇬🇧 United Kingdom (+44)</option>
+                <option value="+61" data-min="9" data-max="9">🇦🇺 Australia (+61)</option>
+                <option value="+1" data-min="10" data-max="10">🇨🇦 Canada (+1)</option>
+                <option value="+971" data-min="9" data-max="9">🇦🇪 United Arab Emirates (+971)</option>
+                <option value="+65" data-min="8" data-max="8">🇸🇬 Singapore (+65)</option>
+                <option value="+60" data-min="9" data-max="10">🇲🇾 Malaysia (+60)</option>
+                <option value="+81" data-min="9" data-max="10">🇯🇵 Japan (+81)</option>
+                <option value="+82" data-min="9" data-max="10">🇰🇷 South Korea (+82)</option>
+                <option value="+49" data-min="10" data-max="11">🇩🇪 Germany (+49)</option>
+                <option value="+33" data-min="9" data-max="9">🇫🇷 France (+33)</option>
+                <option value="+39" data-min="9" data-max="10">🇮🇹 Italy (+39)</option>
+                <option value="+34" data-min="9" data-max="9">🇪🇸 Spain (+34)</option>
+                <option value="+41" data-min="9" data-max="9">🇨🇭 Switzerland (+41)</option>
+                <option value="+31" data-min="9" data-max="9">🇳🇱 Netherlands (+31)</option>
+                <option value="+46" data-min="9" data-max="9">🇸🇪 Sweden (+46)</option>
+                <option value="+47" data-min="8" data-max="8">🇳🇴 Norway (+47)</option>
+                <option value="+45" data-min="8" data-max="8">🇩🇰 Denmark (+45)</option>
+                <option value="+32" data-min="9" data-max="9">🇧🇪 Belgium (+32)</option>
+                <option value="+43" data-min="10" data-max="11">🇦🇹 Austria (+43)</option>
+                <option value="+352" data-min="9" data-max="9">🇱🇺 Luxembourg (+352)</option>
+                <option value="+353" data-min="9" data-max="9">🇮🇪 Ireland (+353)</option>
+                <option value="+62" data-min="9" data-max="11">🇮🇩 Indonesia (+62)</option>
+                <option value="+63" data-min="9" data-max="10">🇵🇭 Philippines (+63)</option>
+                <option value="+66" data-min="9" data-max="9">🇹🇭 Thailand (+66)</option>
+                <option value="+86" data-min="11" data-max="11">🇨🇳 China (+86)</option>
+                <option value="+852" data-min="8" data-max="8">🇭🇰 Hong Kong (+852)</option>
+                <option value="+853" data-min="8" data-max="8">🇲🇴 Macao (+853)</option>
+                <option value="+65" data-min="8" data-max="8">🇸🇬 Singapore (+65)</option>
+                <option value="+64" data-min="8" data-max="9">🇳🇿 New Zealand (+64)</option>
+                <option value="+55" data-min="10" data-max="11">🇧🇷 Brazil (+55)</option>
+                <option value="+54" data-min="10" data-max="10">🇦🇷 Argentina (+54)</option>
+                <option value="+57" data-min="10" data-max="10">🇨🇴 Colombia (+57)</option>
+                <option value="+51" data-min="9" data-max="9">🇵🇪 Peru (+51)</option>
+                <option value="+56" data-min="9" data-max="9">🇨🇱 Chile (+56)</option>
+                <option value="+52" data-min="10" data-max="10">🇲🇽 Mexico (+52)</option>
+                <option value="+234" data-min="10" data-max="11">🇳🇬 Nigeria (+234)</option>
+                <option value="+27" data-min="9" data-max="9">🇿🇦 South Africa (+27)</option>
+                <option value="+20" data-min="9" data-max="10">🇪🇬 Egypt (+20)</option>
+                <option value="+966" data-min="9" data-max="9">🇸🇦 Saudi Arabia (+966)</option>
+                <option value="+974" data-min="8" data-max="8">🇶🇦 Qatar (+974)</option>
+                <option value="+968" data-min="8" data-max="9">🇴🇲 Oman (+968)</option>
+                <option value="+973" data-min="8" data-max="8">🇧🇭 Bahrain (+973)</option>
+                <option value="+965" data-min="8" data-max="8">🇰🇼 Kuwait (+965)</option>
+                <option value="+94" data-min="9" data-max="9">🇱🇰 Sri Lanka (+94)</option>
+                <option value="+880" data-min="10" data-max="10">🇧🇩 Bangladesh (+880)</option>
+                <option value="+977" data-min="10" data-max="10">🇳🇵 Nepal (+977)</option>
+                <option value="+92" data-min="10" data-max="11">🇵🇰 Pakistan (+92)</option>
+                <!-- Fallback generic option -->
+                <option value="+00" data-min="6" data-max="15">🌍 Other (+..)</option>
+              </select>
+            </div>
+            <div class="phone-input">
+              <input type="tel" id="phone" name="phone" placeholder="Phone number" required>
+            </div>
+          </div>
+          <div class="error-message" id="phoneError"></div>
         </div>
 
-        <!-- Dropdown -->
+        <!-- Primary Financial Goal -->
         <div class="form-group full">
-          <label>Primary Financial Goal</label>
-          <select name="goal" required>
+          <label for="goal">Primary Financial Goal<span style="color:#f88;"> *</span></label>
+          <select id="goal" name="goal" required>
             <option value="">Select a goal…</option>
             <option>Long-term Wealth Creation</option>
             <option>Retirement & Financial Independence</option>
@@ -175,22 +285,24 @@
             <option>Tax-efficient Investing</option>
             <option>Capital Preservation</option>
           </select>
+          <div class="error-message" id="goalError"></div>
         </div>
 
-        <!-- Radios -->
+        <!-- Investment Approach -->
         <div class="form-group full">
-          <label>Investment Approach</label>
+          <label>Investment Approach<span style="color:#f88;"> *</span></label>
           <div class="form-options">
             <label><input type="radio" name="approach" value="sip" required> SIP / Monthly Investing</label>
             <label><input type="radio" name="approach" value="lumpsum"> Lump Sum</label>
             <label><input type="radio" name="approach" value="both"> Both</label>
           </div>
+          <div class="error-message" id="approachError"></div>
         </div>
 
         <!-- Message -->
         <div class="form-group full">
-          <label>Anything Specific You Want to Share?</label>
-          <textarea name="message" rows="5" placeholder="Tell us more…"></textarea>
+          <label for="message">Anything Specific You Want to Share?</label>
+          <textarea id="message" name="message" rows="5" placeholder="Tell us more…"></textarea>
         </div>
 
         <button type="submit" class="btn btn-primary btn-large" style="margin-top: 20px;">
@@ -241,6 +353,78 @@ document.querySelectorAll(".mobile-nav-links a").forEach(link => {
     mobileMenu.classList.remove("open");
     document.body.classList.remove("menu-open");
   });
+});
+
+// ---------------------
+// Form validation logic
+// ---------------------
+const form = document.getElementById('contactForm');
+const emailInput = document.getElementById('email');
+const phoneInput = document.getElementById('phone');
+const countryCodeSelect = document.getElementById('countryCode');
+
+form.addEventListener('submit', function (e) {
+  let valid = true;
+
+  // Clear previous errors
+  ['nameError','cityError','emailError','phoneError','goalError','approachError'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = '';
+  });
+
+  // Basic required checks (browser also does this, but we add messages)
+  const name = document.getElementById('name');
+  const city = document.getElementById('city');
+  const goal = document.getElementById('goal');
+  const approachChecked = document.querySelector('input[name="approach"]:checked');
+
+  if (!name.value.trim()) {
+    document.getElementById('nameError').textContent = 'Please enter your name.';
+    valid = false;
+  }
+  if (!city.value.trim()) {
+    document.getElementById('cityError').textContent = 'Please enter your city.';
+    valid = false;
+  }
+
+  // Email validation
+  const emailVal = emailInput.value.trim();
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(emailVal)) {
+    document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+    valid = false;
+  }
+
+  // Phone validation
+  let phoneVal = phoneInput.value.replace(/[\s\-]/g, '');
+  const selectedOption = countryCodeSelect.options[countryCodeSelect.selectedIndex];
+  const minLen = parseInt(selectedOption.dataset.min || '6', 10);
+  const maxLen = parseInt(selectedOption.dataset.max || '15', 10);
+
+  if (!/^\d+$/.test(phoneVal)) {
+    document.getElementById('phoneError').textContent = 'Phone number should contain digits only.';
+    valid = false;
+  } else if (phoneVal.length < minLen || phoneVal.length > maxLen) {
+    document.getElementById('phoneError').textContent =
+      'Phone number length does not match the typical length for the selected country.';
+    valid = false;
+  }
+
+  // Goal required
+  if (!goal.value) {
+    document.getElementById('goalError').textContent = 'Please select your primary financial goal.';
+    valid = false;
+  }
+
+  // Approach required
+  if (!approachChecked) {
+    document.getElementById('approachError').textContent = 'Please select your investment approach.';
+    valid = false;
+  }
+
+  if (!valid) {
+    e.preventDefault();
+  }
 });
 </script>
 
