@@ -1,166 +1,49 @@
-/* ============================================================
-   MOBILE MENU — PREMIUM LUXURY GLASS STYLE
-============================================================ */
-
-.nav-toggle {
-  display: none;
-  flex-direction: column;
-  gap: 4px;
-  cursor: pointer;
+/* Toggle shown only on mobile */
+@media (max-width: 768px) {
+  .nav-toggle { display: flex !important; }
 }
 
-.nav-toggle span {
-  width: 24px;
-  height: 2px;
-  background: white;
-  border-radius: 2px;
-}
-
-
-/* ============================================================
-   FULLSCREEN OVERLAY
-============================================================ */
-
+/* Fullscreen mobile menu */
 .mobile-menu {
   position: fixed;
   inset: 0;
-  width: 100vw;
-  min-height: 100vh;
-
-  /* Luxury + Dark Gradient + Glass Blur */
-  background: radial-gradient(circle at top, rgba(10,14,28,0.95), rgba(5,8,22,0.92));
-  backdrop-filter: blur(26px);
-
+  background: rgba(5, 8, 22, 0.96);
+  backdrop-filter: blur(18px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 32px;
-
+  gap: 28px;
   opacity: 0;
   pointer-events: none;
-  transform: scale(1.05);
-  transition: opacity 0.45s ease, transform 0.45s ease;
-
+  transform: translateY(20px);
+  transition: all 0.4s ease;
   z-index: 9999;
-  padding: 50px 26px;
 }
 
-/* Open state */
 .mobile-menu.open {
   opacity: 1;
   pointer-events: auto;
-  transform: scale(1);
+  transform: translateY(0);
 }
 
-
-/* Disable scrolling when open */
-html.menu-open, body.menu-open {
-  overflow: hidden !important;
-  position: fixed;
-  width: 100%;
-  height: 100vh;
-}
-
-
-/* ============================================================
-   NAV LINKS
-============================================================ */
-
-.mobile-nav-links {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-
+/* Nav links */
 .mobile-nav-links a {
   font-family: "Playfair Display", serif;
-  font-size: 1.8rem;
-  font-weight: 500;
-  padding: 20px 0;
-  width: 100%;
-  max-width: 360px;
-  text-align: center;
-
+  font-size: 1.5rem;
+  padding: 14px 0;
   color: white;
-  letter-spacing: 0.3px;
-  border-bottom: 1px solid rgba(240,183,107,0.18);
-
-  opacity: 0;
-  transform: translateY(12px);
-  transition: all 0.35s ease;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-/* Fade in animation */
-.mobile-menu.open .mobile-nav-links a {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-
-/* ============================================================
-   CTA BUTTON
-============================================================ */
-
+/* CTA inside menu */
 .menu-cta {
-  margin-top: 50px;
-  width: 80%;
-  max-width: 340px;
+  margin-top: 20px;
+  padding: 14px 36px;
   font-size: 1rem;
-  padding: 16px 0;
-
-  opacity: 0;
-  transform: translateY(20px);
-  transition: 0.5s ease;
-
-  border-radius: 50px;
-  background: linear-gradient(90deg, #ffe6c0 0%, #f0b76b 35%, #b9782f 100%);
-  color: #1c1407;
-  font-weight: 600;
 }
 
-.mobile-menu.open .menu-cta {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-
-/* ============================================================
-   CLOSE BUTTON
-============================================================ */
-
-.menu-close {
-  position: absolute;
-  top: 24px;
-  right: 26px;
-  font-size: 2rem;
-  cursor: pointer;
-  color: white;
-  opacity: 0.55;
-  transition: 0.25s ease;
-}
-
-.menu-close:hover {
-  opacity: 0.95;
-}
-
-
-/* ============================================================
-   RESPONSIVE VISIBILITY
-============================================================ */
-
-@media(min-width: 769px) {
-  .mobile-menu, .nav-toggle {
-    display: none !important;
-  }
-}
-
-@media(max-width: 768px) {
-  .nav-links, .nav-cta {
-    display: none !important;
-  }
-  .nav-toggle {
-    display: flex;
-  }
+/* Hide menu on desktop */
+@media (min-width: 769px) {
+  .mobile-menu, .nav-toggle { display: none !important; }
 }
