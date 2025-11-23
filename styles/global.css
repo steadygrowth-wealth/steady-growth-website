@@ -96,13 +96,23 @@ header {
 
 
 /* ============================================================
-   BRAND
+   BRAND (CLICKABLE)
 ============================================================ */
 
 .brand {
   display: flex;
   align-items: center;
   gap: 12px;
+
+  /* NEW — make it act like a button */
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand:hover {
+  opacity: 0.85;
+  transition: 0.2s ease;
 }
 
 .brand-logo img {
