@@ -4,50 +4,84 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
 
 
-/* RESET */
+/* ============================================================
+   GLOBAL RESET + BASE
+============================================================ */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   font-family: "Poppins", sans-serif !important;
   background: radial-gradient(circle at top, #141b35 0%, #050816 55%);
   color: var(--text-main);
+  line-height: 1.6;
   overflow-x: hidden;
 }
 
 
-/* VARIABLES */
+/* ============================================================
+   VARIABLES
+============================================================ */
 :root {
-  --nav-height: 72px;
+  --bg-dark: #050816;
+  --bg-section: #0b1020;
+  --accent: #f0b76b;
+  --accent-soft: rgba(240, 183, 107, 0.14);
   --text-main: #f7f7f7;
   --text-muted: #a7afc7;
-  --accent: #f0b76b;
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --shadow-soft: 0 18px 45px rgba(0,0,0,0.55);
+  --nav-height: 72px;
 }
 
 
-/* CONTAINER */
+/* ============================================================
+   TYPOGRAPHY
+============================================================ */
+
+h1, h2, h3, h4,
+.hero-title,
+.brand-name {
+  font-family: "Playfair Display", serif !important;
+  font-weight: 600;
+}
+
+p, li, a, span, small {
+  font-family: "Poppins", sans-serif;
+}
+
+
+/* ============================================================
+   CONTAINER
+============================================================ */
+
 .container {
   width: min(1120px, 92vw);
   margin: auto;
 }
 
 
-/* HEADER (DESKTOP) */
+/* ============================================================
+   HEADER (DESKTOP)
+============================================================ */
+
 header {
   position: sticky;
   top: 0;
   z-index: 999;
   width: 100%;
-  display: flex;
-  justify-content: center;
   background: rgba(5, 8, 22, 0.55);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  justify-content: center;
 }
 
 .nav {
@@ -56,46 +90,57 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 12px;
+  padding: 0 16px;
+  gap: 24px;
 }
 
 
-/* BRAND */
+/* ============================================================
+   BRAND
+============================================================ */
+
 .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .brand-logo img {
-  height: 40px;
+  height: 42px;
   width: auto;
 }
 
 .brand-name {
-  font-family: "Playfair Display", serif;
   font-size: 20px;
   font-weight: 600;
+  line-height: 1.05;
   color: white;
 }
 
 .brand-sub {
   font-size: 10px;
+  letter-spacing: 2px;
   opacity: 0.7;
   text-transform: uppercase;
-  letter-spacing: 1.8px;
+  display: block;
 }
 
 
-/* NAV LINKS */
+/* ============================================================
+   DESKTOP NAV LINKS
+============================================================ */
+
 .nav-links {
   display: flex;
   gap: 28px;
+  color: var(--text-muted);
 }
 
 .nav-links a {
-  color: var(--text-muted);
   text-decoration: none;
+  color: var(--text-muted);
+  padding-bottom: 4px;
+  transition: 0.25s ease;
 }
 
 .nav-links a:hover {
@@ -103,67 +148,27 @@ header {
 }
 
 
-/* CTA */
+/* ============================================================
+   CTA (DESKTOP)
+============================================================ */
+
+.nav-cta {
+  display: flex;
+  gap: 14px;
+  white-space: nowrap;
+}
+
 .nav-cta .btn-ghost {
   border: 1px solid rgba(255,255,255,0.25);
   padding: 10px 20px;
   border-radius: 50px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
 }
 
 
 /* ============================================================
-   📱 MOBILE HEADER — KEY FIXES
-============================================================ */
-
-@media (max-width: 768px) {
-
-  :root {
-    --nav-height: 52px !important;
-  }
-
-  .nav {
-    padding: 0 8px;
-  }
-
-  .brand-logo img {
-    height: 30px !important;
-  }
-
-  .brand {
-    gap: 6px !important;
-    align-items: center !important;
-  }
-
-  .brand-name {
-    font-size: 16px !important;
-    margin-bottom: -2px !important;
-  }
-
-  .brand-sub {
-    font-size: 8px !important;
-    letter-spacing: 1px !important;
-    margin-top: -4px !important;
-  }
-
-  /* Reduce space below header */
-  .hero {
-    padding-top: 20px !important;
-  }
-
-  /* Hide desktop nav */
-  .nav-links,
-  .nav-cta {
-    display: none !important;
-  }
-
-  .nav-toggle {
-    display: flex !important;
-  }
-}
-
-
-/* ============================================================
-   TOGGLE BUTTON
+   MENU TOGGLE (HIDDEN DESKTOP)
 ============================================================ */
 
 .nav-toggle {
@@ -180,3 +185,119 @@ header {
   border-radius: 2px;
 }
 
+
+/* ============================================================
+   HERO SECTION
+============================================================ */
+
+.hero {
+  padding: 80px 0 60px;
+}
+
+.hero-title {
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  margin-bottom: 14px;
+}
+
+.hero-highlight {
+  background: linear-gradient(90deg, #ffe5ba, #f0b76b, #ffdf9c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* ============================================================
+   BUTTONS
+============================================================ */
+
+.btn {
+  border-radius: 999px;
+  padding: 10px 22px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: radial-gradient(circle at 10% 20%, #ffe6c0 0, #f0b76b 35%, #b9782f 100%);
+  color: #1c1408;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.18);
+  color: var(--text-muted);
+}
+
+
+/* ============================================================
+   FOOTER
+============================================================ */
+
+.disclaimer {
+  background: rgba(5, 8, 22, 0.96);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 32px 0 22px;
+  text-align: center;
+}
+
+.footer-bottom {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+
+/* ============================================================
+   📱 MOBILE HEADER — COMPACT PREMIUM VERSION
+============================================================ */
+
+@media (max-width: 1024px) {
+
+  :root {
+    --nav-height: 52px !important;
+  }
+
+  .nav {
+    padding: 0 10px !important;
+    gap: 10px !important;
+  }
+
+  .brand-logo img {
+    height: 30px !important;
+  }
+
+  .brand {
+    gap: 6px !important;
+    align-items: center !important;
+  }
+
+  .brand-name {
+    font-size: 16px !important;
+    line-height: 1 !important;
+    margin-bottom: -2px !important;
+  }
+
+  .brand-sub {
+    font-size: 8px !important;
+    letter-spacing: 1.2px !important;
+    margin-top: -4px !important;
+  }
+
+  .hero {
+    padding-top: 24px !important;
+  }
+
+  /* Hide desktop nav */
+  .nav-links,
+  .nav-cta {
+    display: none !important;
+  }
+
+  /* Show mobile toggle */
+  .nav-toggle {
+    display: flex !important;
+  }
+}
