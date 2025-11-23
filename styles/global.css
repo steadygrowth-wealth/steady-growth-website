@@ -1,85 +1,53 @@
 /* ============================================================
-   GOOGLE FONTS (Loaded from Google)
+   GOOGLE FONTS
 ============================================================ */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
 
 
-/* ============================================================
-   GLOBAL RESET + BASE
-============================================================ */
+/* RESET */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   font-family: "Poppins", sans-serif !important;
   background: radial-gradient(circle at top, #141b35 0%, #050816 55%);
   color: var(--text-main);
-  line-height: 1.6;
   overflow-x: hidden;
 }
 
 
-/* ============================================================
-   VARIABLES
-============================================================ */
+/* VARIABLES */
 :root {
-  --bg-dark: #050816;
-  --bg-section: #0b1020;
-  --accent: #f0b76b;
-  --accent-soft: rgba(240, 183, 107, 0.14);
+  --nav-height: 72px;
   --text-main: #f7f7f7;
   --text-muted: #a7afc7;
-  --border-soft: rgba(255, 255, 255, 0.08);
-  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
-  --nav-height: 60px;
+  --accent: #f0b76b;
 }
 
 
-/* ============================================================
-   TYPOGRAPHY
-============================================================ */
-
-h1, h2, h3, h4,
-.hero-title,
-.brand-name {
-  font-family: "Playfair Display", serif !important;
-  font-weight: 600;
-}
-
-body, p, li, a, span, small {
-  font-family: "Poppins", sans-serif;
-}
-
-
-/* ============================================================
-   CONTAINER
-============================================================ */
+/* CONTAINER */
 .container {
   width: min(1120px, 92vw);
   margin: auto;
 }
 
 
-/* ============================================================
-   HEADER (DESKTOP & BASE)
-============================================================ */
+/* HEADER (DESKTOP) */
 header {
   position: sticky;
   top: 0;
   z-index: 999;
   width: 100%;
-  background: rgba(5, 8, 22, 0.55);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
   display: flex;
   justify-content: center;
+  background: rgba(5, 8, 22, 0.55);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
 .nav {
@@ -88,57 +56,46 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 16px;
-  gap: 20px;
+  padding: 0 12px;
 }
 
 
-/* ============================================================
-   BRAND (LOGO + TEXT)
-============================================================ */
+/* BRAND */
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .brand-logo img {
-  height: 42px;
+  height: 40px;
   width: auto;
-  display: block;
 }
 
 .brand-name {
+  font-family: "Playfair Display", serif;
   font-size: 20px;
-  line-height: 1.05;
+  font-weight: 600;
   color: white;
 }
 
 .brand-sub {
-  font-family: "Poppins", sans-serif;
   font-size: 10px;
-  letter-spacing: 2px;
   opacity: 0.7;
   text-transform: uppercase;
-  display: block;
+  letter-spacing: 1.8px;
 }
 
 
-/* ============================================================
-   DESKTOP NAV LINKS
-============================================================ */
+/* NAV LINKS */
 .nav-links {
   display: flex;
   gap: 28px;
-  font-size: 0.92rem;
-  color: var(--text-muted);
 }
 
 .nav-links a {
-  text-decoration: none;
   color: var(--text-muted);
-  padding-bottom: 4px;
-  transition: 0.25s ease;
+  text-decoration: none;
 }
 
 .nav-links a:hover {
@@ -146,27 +103,69 @@ header {
 }
 
 
-/* ============================================================
-   DESKTOP CTA
-============================================================ */
-.nav-cta {
-  display: flex;
-  gap: 14px;
-  white-space: nowrap;
-}
-
+/* CTA */
 .nav-cta .btn-ghost {
   border: 1px solid rgba(255,255,255,0.25);
   padding: 10px 20px;
   border-radius: 50px;
-  color: var(--text-muted);
-  font-size: 0.9rem;
 }
 
 
 /* ============================================================
-   MOBILE TRIGGERS
+   📱 MOBILE HEADER — KEY FIXES
 ============================================================ */
+
+@media (max-width: 768px) {
+
+  :root {
+    --nav-height: 52px !important;
+  }
+
+  .nav {
+    padding: 0 8px;
+  }
+
+  .brand-logo img {
+    height: 30px !important;
+  }
+
+  .brand {
+    gap: 6px !important;
+    align-items: center !important;
+  }
+
+  .brand-name {
+    font-size: 16px !important;
+    margin-bottom: -2px !important;
+  }
+
+  .brand-sub {
+    font-size: 8px !important;
+    letter-spacing: 1px !important;
+    margin-top: -4px !important;
+  }
+
+  /* Reduce space below header */
+  .hero {
+    padding-top: 20px !important;
+  }
+
+  /* Hide desktop nav */
+  .nav-links,
+  .nav-cta {
+    display: none !important;
+  }
+
+  .nav-toggle {
+    display: flex !important;
+  }
+}
+
+
+/* ============================================================
+   TOGGLE BUTTON
+============================================================ */
+
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -179,114 +178,4 @@ header {
   height: 2px;
   background: white;
   border-radius: 2px;
-}
-
-
-/* ============================================================
-   HERO SECTION
-============================================================ */
-.hero {
-  padding: 80px 0 60px;
-}
-
-.hero-title {
-  font-size: clamp(2.2rem, 4vw, 3rem);
-  margin-bottom: 14px;
-}
-
-.hero-highlight {
-  background: linear-gradient(90deg, #ffe5ba, #f0b76b, #ffdf9c);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-
-/* ============================================================
-   BUTTONS
-============================================================ */
-.btn {
-  border-radius: 999px;
-  padding: 10px 22px;
-  font-size: 0.9rem;
-  cursor: pointer;
-}
-
-.btn-primary {
-  background: radial-gradient(circle at 10% 20%, #ffe6c0 0, #f0b76b 35%, #b9782f 100%);
-  color: #1c1408;
-}
-
-.btn-ghost {
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.18);
-  color: var(--text-muted);
-}
-
-
-/* ============================================================
-   FOOTER
-============================================================ */
-.disclaimer {
-  background: rgba(5, 8, 22, 0.96);
-  border-top: 1px solid rgba(255,255,255,0.06);
-  padding: 32px 0 22px;
-  text-align: center;
-}
-
-.footer-bottom {
-  margin-top: 18px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(255,255,255,0.08);
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-
-/* ========== FINAL HEADER TUNING (MOBILE) ========== */
-@media (max-width: 1024px) {
-
-  :root {
-    --nav-height: 50px !important;
-  }
-
-  header {
-    padding: 0 !important;
-  }
-
-  .nav {
-    height: 50px !important;
-    padding: 0 12px !important;
-    gap: 8px !important;
-  }
-
-  /* Reduce logo further */
-  .brand-logo img {
-    height: 28px !important;
-  }
-
-  /* Tighten brand block */
-  .brand {
-    gap: 4px !important;
-  }
-
-  /* Adjust brand name */
-  .brand-name {
-    font-size: 16px !important;
-    line-height: 1 !important;
-    margin: 0 !important;
-  }
-
-  /* Subtitle smaller + closer */
-  .brand-sub {
-    font-size: 8px !important;
-    letter-spacing: 1.2px !important;
-    margin-top: -1px !important;
-    opacity: 0.65 !important;
-  }
-
-  /* Remove extra space above hero */
-  .hero {
-    padding-top: 20px !important;
-  }
 }
