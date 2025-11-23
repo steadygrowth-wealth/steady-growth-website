@@ -1,5 +1,5 @@
 /* ============================================================
-   MOBILE MENU — FULLSCREEN OVERLAY (FIXED VERSION)
+   MOBILE MENU — FULLSCREEN OVERLAY (PREMIUM GLASS)
 ============================================================ */
 
 .nav-toggle {
@@ -13,37 +13,43 @@
   width: 22px;
   height: 2px;
   background: white;
+  border-radius: 2px;
 }
 
-/* Fullscreen container */
+/* FULLSCREEN MENU */
 .mobile-menu {
   position: fixed;
   inset: 0;
   width: 100vw;
   min-height: 100vh;
-  background: linear-gradient(135deg, #050816, #0b1020);
-  backdrop-filter: blur(24px);
+
+  /* PREMIUM GLASS + GRADIENT */
+  background: linear-gradient(160deg, rgba(5,8,22,0.75), rgba(11,16,32,0.9), rgba(240,183,107,0.05));
+  backdrop-filter: blur(26px);
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 32px;
+
   opacity: 0;
   pointer-events: none;
   transform: scale(1.05);
   transition: opacity 0.45s ease, transform 0.45s ease;
+
   z-index: 9999;
   padding: 40px 26px;
 }
 
-/* Open state */
+/* OPEN STATE */
 .mobile-menu.open {
   opacity: 1;
   pointer-events: auto;
   transform: scale(1);
 }
 
-/* Disable scrolling when open */
+/* DISABLE SCROLL WHEN OPEN */
 html.menu-open, body.menu-open {
   overflow: hidden !important;
   position: fixed;
@@ -51,9 +57,7 @@ html.menu-open, body.menu-open {
   height: 100vh;
 }
 
-/* -------------------------
-   NAV LINKS
--------------------------- */
+/* ================= NAV LINKS ================= */
 .mobile-nav-links {
   display: flex;
   flex-direction: column;
@@ -63,10 +67,10 @@ html.menu-open, body.menu-open {
 
 .mobile-nav-links a {
   font-family: "Playfair Display", serif;
-  font-size: 1.6rem;
-  padding: 14px 0;
+  font-size: 1.7rem;
+  padding: 16px 0;
   width: 100%;
-  max-width: 350px;
+  max-width: 360px;
   text-align: center;
   color: white;
   border-bottom: 1px solid rgba(240,183,107,0.18);
@@ -75,13 +79,13 @@ html.menu-open, body.menu-open {
   transition: all 0.35s ease;
 }
 
-/* Animate on open */
+/* FADE-IN ANIMATION */
 .mobile-menu.open .mobile-nav-links a {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* CTA button */
+/* ================= CTA ================= */
 .menu-cta {
   margin-top: 40px;
   width: 80%;
@@ -91,6 +95,10 @@ html.menu-open, body.menu-open {
   opacity: 0;
   transform: translateY(20px);
   transition: 0.5s ease;
+  border-radius: 50px;
+  background: linear-gradient(90deg, #f2c176, #d9923d);
+  color: #1b1407;
+  font-weight: 600;
 }
 
 .mobile-menu.open .menu-cta {
@@ -98,15 +106,15 @@ html.menu-open, body.menu-open {
   transform: translateY(0);
 }
 
-/* Desktop hide mobile menu */
-@media (min-width: 769px) {
+/* ================= RESPONSIVE VISIBILITY ================= */
+
+@media(min-width: 769px) {
   .mobile-menu, .nav-toggle {
     display: none !important;
   }
 }
 
-/* Mobile hide desktop nav */
-@media (max-width: 768px) {
+@media(max-width: 768px) {
   .nav-links, .nav-cta {
     display: none !important;
   }
