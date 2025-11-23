@@ -1,15 +1,12 @@
 /* ============================================================
-   GOOGLE FONTS
-   (Fonts loaded from Google, applied globally)
+   GOOGLE FONTS (Loaded from Google)
 ============================================================ */
-
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
 
 
 /* ============================================================
    GLOBAL RESET + BASE
 ============================================================ */
-
 * {
   margin: 0;
   padding: 0;
@@ -32,7 +29,6 @@ body {
 /* ============================================================
    VARIABLES
 ============================================================ */
-
 :root {
   --bg-dark: #050816;
   --bg-section: #0b1020;
@@ -47,26 +43,24 @@ body {
 
 
 /* ============================================================
-   GLOBAL TYPOGRAPHY
+   TYPOGRAPHY
 ============================================================ */
 
 h1, h2, h3, h4,
 .hero-title,
-.brand-name,
-.section-title {
+.brand-name {
   font-family: "Playfair Display", serif !important;
   font-weight: 600;
 }
 
-p, li, a, span, small {
+body, p, li, a, span, small {
   font-family: "Poppins", sans-serif;
 }
 
 
 /* ============================================================
-   LAYOUT CONTAINER
+   CONTAINER
 ============================================================ */
-
 .container {
   width: min(1120px, 92vw);
   margin: auto;
@@ -74,9 +68,8 @@ p, li, a, span, small {
 
 
 /* ============================================================
-   HEADER (DESKTOP + MOBILE BASE)
+   HEADER (DESKTOP & BASE)
 ============================================================ */
-
 header {
   position: sticky;
   top: 0;
@@ -95,15 +88,14 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 36px;
   padding: 0 16px;
+  gap: 20px;
 }
 
 
 /* ============================================================
-   BRAND (LOGO + NAME)
+   BRAND (LOGO + TEXT)
 ============================================================ */
-
 .brand {
   display: flex;
   align-items: center;
@@ -117,9 +109,7 @@ header {
 }
 
 .brand-name {
-  font-family: "Playfair Display", serif !important;
   font-size: 20px;
-  font-weight: 600;
   line-height: 1.05;
   color: white;
 }
@@ -135,9 +125,8 @@ header {
 
 
 /* ============================================================
-   NAV LINKS (DESKTOP)
+   DESKTOP NAV LINKS
 ============================================================ */
-
 .nav-links {
   display: flex;
   gap: 28px;
@@ -158,9 +147,8 @@ header {
 
 
 /* ============================================================
-   CTA BUTTONS (DESKTOP)
+   DESKTOP CTA
 ============================================================ */
-
 .nav-cta {
   display: flex;
   gap: 14px;
@@ -176,18 +164,9 @@ header {
 }
 
 
-/* Hide CTA on mobile */
-@media(max-width: 768px) {
-  .nav-cta {
-    display: none !important;
-  }
-}
-
-
 /* ============================================================
-   MOBILE HEADER BEHAVIOR
+   MOBILE TRIGGERS
 ============================================================ */
-
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -202,21 +181,10 @@ header {
   border-radius: 2px;
 }
 
-/* Hide desktop nav on mobile */
-@media(max-width: 768px) {
-  .nav-links {
-    display: none !important;
-  }
-  .nav-toggle {
-    display: flex;
-  }
-}
-
 
 /* ============================================================
-   HERO
+   HERO SECTION
 ============================================================ */
-
 .hero {
   padding: 80px 0 60px;
 }
@@ -224,7 +192,6 @@ header {
 .hero-title {
   font-size: clamp(2.2rem, 4vw, 3rem);
   margin-bottom: 14px;
-  font-weight: 600;
 }
 
 .hero-highlight {
@@ -237,7 +204,6 @@ header {
 /* ============================================================
    BUTTONS
 ============================================================ */
-
 .btn {
   border-radius: 999px;
   padding: 10px 22px;
@@ -260,7 +226,6 @@ header {
 /* ============================================================
    FOOTER
 ============================================================ */
-
 .disclaimer {
   background: rgba(5, 8, 22, 0.96);
   border-top: 1px solid rgba(255,255,255,0.06);
@@ -278,81 +243,53 @@ header {
 }
 
 
-
-
-/* =========== MOBILE HEADER REFINEMENT =========== */
-@media (max-width: 768px) {
-
-  /* Reduce header height */
-  :root {
-    --nav-height: 58px;
-  }
-
-  /* Align brand text tighter */
-  .brand {
-    gap: 8px;
-  }
-
-  .brand-name {
-    font-size: 18px;
-    line-height: 1.1;
-  }
-
-  .brand-sub {
-    font-size: 9px;
-    letter-spacing: 1.4px;
-    margin-top: 2px;
-  }
-
-  .brand-logo img {
-    height: 38px;
-  }
-
-  /* Reduce top padding so hero starts higher */
-  .hero {
-    padding-top: 40px;
-  }
-}
-
-
-
-/* ====================== FIX: REAL MOBILE BREAKPOINT ====================== */
+/* ============================================================
+   📱 MOBILE HEADER (COMPACT, PREMIUM)
+============================================================ */
 @media (max-width: 1024px) {
 
-  /* Reduce header height */
   :root {
     --nav-height: 58px !important;
   }
 
-  /* Compact brand spacing */
+  .nav {
+    padding: 0 14px !important;
+    gap: 10px !important;
+  }
+
   .brand {
     gap: 6px !important;
     align-items: center !important;
   }
 
-  /* Brand title (Playfair) */
+  .brand-logo img {
+    height: 34px !important;
+  }
+
   .brand-name {
     font-size: 18px !important;
-    line-height: 1.05 !important;
+    line-height: 1 !important;
     margin: 0 !important;
   }
 
-  /* Subtitle (Poppins) */
   .brand-sub {
     font-size: 9px !important;
     letter-spacing: 1.4px !important;
-    margin-top: 0px !important;
-    opacity: 0.7 !important;
+    margin-top: 0 !important;
   }
 
-  /* Logo sizing */
-  .brand-logo img {
-    height: 34px !important;
-    width: auto !important;
-  }
-
-  /* Reduce hero gap below header */
   .hero {
     padding-top: 32px !important;
+  }
+
+  /* Hide desktop nav */
+  .nav-links,
+  .nav-cta {
+    display: none !important;
+  }
+
+  /* Show menu toggle */
+  .nav-toggle {
+    display: flex !important;
   }
 }
