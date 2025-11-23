@@ -1,6 +1,6 @@
-/* =========================
-   ABOUT PAGE – LUXURY STYLE (OPTIMIZED SPACING)
-========================= */
+/* =========================================
+   ABOUT PAGE – PREMIUM LUXURY DESIGN
+========================================= */
 
 .page-about {
   background: radial-gradient(circle at top left, rgba(240, 183, 107, 0.06), transparent 55%),
@@ -9,71 +9,69 @@
   color: #f7f7ff;
 }
 
-/* --------------------------------------
+/* -----------------------------------------
    HERO SECTION
--------------------------------------- */
-
+------------------------------------------ */
 .page-about .hero-premium {
-  padding: 120px 0 80px;
+  padding: 100px 0 72px;
   background:
-    radial-gradient(circle at top left, rgba(240, 183, 107, 0.18), transparent 55%),
-    linear-gradient(135deg, #050816 0%, #02030a 55%, #050816 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    radial-gradient(circle at 15% 10%, rgba(240, 183, 107, 0.22), transparent 60%),
+    linear-gradient(135deg, #050816 0%, #02030a 60%, #050816 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .page-about .hero-inner {
   max-width: 880px;
   margin: 0 auto;
-  text-align: left;
-  padding: 0 20px;
+  text-align: center;
 }
 
 .page-about .hero-tag {
-  margin-bottom: 22px;
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: rgba(240,183,107,0.12);
+  border: 1px solid rgba(240,183,107,0.4);
+  margin-bottom: 20px;
+  color: rgba(255,255,255,0.85);
 }
 
 .page-about .hero-title-lg {
   font-family: "Playfair Display", serif;
-  font-size: 2.7rem;
-  margin-bottom: 22px;
+  font-size: 2.6rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
 }
 
 .page-about .hero-lead {
+  max-width: 700px;
+  margin: 0 auto;
   font-size: 1.05rem;
   line-height: 1.7;
-  max-width: 680px;
+  color: rgba(232,235,245,0.85);
 }
 
 
-/* --------------------------------------
-   MAIN CONTENT SPACING
--------------------------------------- */
+
+/* -----------------------------------------
+   CONTENT GRID
+------------------------------------------ */
 
 .page-about .section-padded {
-  padding: 110px 0 80px;
+  padding: 80px 0 60px;
 }
-
-.page-about .about-section .section-title {
-  margin-bottom: 18px;
-  font-size: 1.6rem;
-}
-
-.page-about .about-section .section-desc {
-  margin-bottom: 36px;
-  max-width: 600px;
-}
-
-
-/* --------------------------------------
-   GRID LAYOUT
--------------------------------------- */
 
 .page-about .about-grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 60px 90px;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 64px 80px;
   align-items: flex-start;
-  margin-top: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 @media (max-width: 900px) {
@@ -83,77 +81,147 @@
   }
 }
 
-
-/* --------------------------------------
-   CARDS
--------------------------------------- */
-
-.page-about .about-card {
-  margin-top: 40px;
-  padding: 38px 30px;
-  border-radius: 20px;
-  background: rgba(7, 10, 22, 0.96);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.75);
-}
-
-.page-about .about-card-intro {
-  margin-bottom: 18px;
-  line-height: 1.7;
-}
-
-
-/* --------------------------------------
-   BULLET LIST STYLING
--------------------------------------- */
-
-.page-about .styled-list li {
-  margin-bottom: 14px;
-  font-size: 1rem;
-  line-height: 1.7;
-}
-
-
-/* --------------------------------------
-   CTA SECTION (SPACING FIX)
--------------------------------------- */
-
-.page-about .section-cta-gold {
-  padding: 120px 0 120px;
-}
-
-.page-about .cta-title {
-  font-size: 1.8rem;
+.page-about .section-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.6rem;
   margin-bottom: 16px;
 }
 
-.page-about .cta-subtitle {
+.page-about .section-desc {
+  font-size: 1rem;
+  line-height: 1.75;
+  max-width: 560px;
+  color: rgba(226,230,245,0.9);
+}
+
+
+
+/* -----------------------------------------
+   CARDS
+------------------------------------------ */
+
+.page-about .about-card {
+  margin-top: 30px;
+  padding: 32px;
+  border-radius: 20px;
+  background: rgba(8, 10, 22, 0.92);
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 28px 55px rgba(0, 0, 0, 0.75);
+}
+
+.page-about .about-card-primary {
+  border-image: linear-gradient(135deg, #c88832, #f0b76b, #ffcf81) 1;
+}
+
+.page-about .about-card-secondary {
+  background: linear-gradient(145deg, rgba(240,183,107,0.08), rgba(5,8,22,0.90));
+  border-color: rgba(240,183,107,0.35);
+}
+
+.page-about .about-card-intro {
+  font-size: 0.95rem;
+  margin: 12px 0 18px;
+  color: rgba(220,225,240,0.9);
+}
+
+
+
+/* -----------------------------------------
+   BULLETS
+------------------------------------------ */
+
+.page-about .styled-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+}
+
+.page-about .styled-list li {
+  position: relative;
+  padding-left: 26px;
   font-size: 1rem;
   line-height: 1.7;
-  margin-bottom: 48px;
+  margin-bottom: 12px;
+  color: rgba(226,230,245,0.95);
 }
 
-/* button spacing */
-.page-about .btn-primary.btn-large {
-  margin-top: 44px;
-  padding: 14px 36px;
+.page-about .styled-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.58em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c88832, #f0b76b, #ffcf81);
+  box-shadow: 0 0 0 4px rgba(240,183,107,0.16);
+}
+
+
+
+/* -----------------------------------------
+   CTA – FULLY REDESIGNED
+------------------------------------------ */
+
+.page-about .section-cta-gold {
+  padding: 100px 0;
+  text-align: center;
+  background:
+    radial-gradient(circle at top center, rgba(240, 183, 107, 0.22), transparent 65%),
+    linear-gradient(135deg, #080c18 0%, #050816 60%, #02030a 100%);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  margin-top: 60px;
+}
+
+.page-about .cta-inner {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.page-about .cta-title {
+  font-family: "Playfair Display", serif;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: #f8f1e6;
+}
+
+.page-about .cta-subtitle {
   font-size: 1.05rem;
+  line-height: 1.65;
+  color: rgba(230,230,245,0.85);
+  margin-bottom: 42px;
+}
+
+.page-about .btn-primary.btn-large {
+  padding: 14px 36px;
   border-radius: 999px;
+  font-size: 1.05rem;
+  background-image: linear-gradient(135deg, #c88832, #f0b76b, #ffcf81);
+  color: #1a1206;
+  border: none;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.page-about .btn-primary.btn-large:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 38px rgba(0,0,0,0.75);
 }
 
 
-/* --------------------------------------
-   FOOTER
--------------------------------------- */
+
+/* -----------------------------------------
+   FOOTER SPACING
+------------------------------------------ */
 
 .page-about .disclaimer {
-  margin-top: 80px;
+  margin-top: 60px;
+  padding: 40px 0;
+  border-top: 1px solid rgba(255,255,255,0.05);
 }
 
 .page-about .disclaimer-text {
   font-size: 0.85rem;
-  line-height: 1.7;
-  max-width: 900px;
-  margin: auto;
-  padding-bottom: 20px;
+  color: rgba(210,215,235,0.9);
 }
