@@ -146,7 +146,7 @@
    CTA SECTION — CONSISTENT WITH SERVICES
 ========================================= */
 
-.page-process .section-cta-gold {
+.page-about .section-cta-gold {
   padding: 72px 0 78px;
   margin-top: 80px;
   background:
@@ -156,26 +156,26 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.page-process .cta-inner {
+.page-about .cta-inner {
   max-width: 700px;
   margin: 0 auto;
   text-align: center;
 }
 
-.page-process .cta-title {
+.page-about .cta-title {
   font-family: "Playfair Display", serif;
   font-size: 1.5rem;
   margin-bottom: 8px;
 }
 
-.page-process .cta-subtitle {
+.page-about .cta-subtitle {
   font-size: 0.95rem;
   color: rgba(221, 226, 240, 0.9);
   margin-bottom: 24px;
 }
 
 /* CTA Button */
-.page-process .btn-primary.btn-large {
+.page-about .btn-primary.btn-large {
   padding: 12px 30px;
   border-radius: 999px;
   font-size: 0.96rem;
@@ -187,7 +187,7 @@
   transition: 0.25s ease;
 }
 
-.page-process .btn-primary.btn-large:hover {
+.page-about .btn-primary.btn-large:hover {
   transform: translateY(-2px);
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.85);
 }
