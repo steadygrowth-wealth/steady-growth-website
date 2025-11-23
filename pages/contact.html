@@ -13,31 +13,177 @@
   <link rel="stylesheet" href="../styles/mobile-menu.css">
   <link rel="stylesheet" href="../styles/contact.css">
 
-  <!-- Simple form-specific styling -->
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../assets/img/logo.png">
+
+  <!-- Page-specific premium styling -->
   <style>
-    .phone-row {
+    /* Overall contact section tweaks */
+    .contact-section {
+      padding: 60px 16px 80px;
+    }
+
+    .contact-wrapper {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
+      gap: 28px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      .contact-wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Left info card */
+    .contact-card {
+      background: linear-gradient(135deg, rgba(12, 16, 32, 0.96), rgba(6, 8, 20, 0.98));
+      border-radius: 22px;
+      padding: 24px 22px;
+      border: 1px solid rgba(240, 183, 107, 0.2);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.55);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at top left, rgba(240, 183, 107, 0.12), transparent 55%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .contact-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .contact-name {
+      font-family: "Playfair Display", serif;
+      font-size: 1.4rem;
+      margin-bottom: 4px;
+    }
+
+    .contact-role {
+      font-size: 0.9rem;
+      color: var(--text-muted, #b0b5bf);
+      margin-bottom: 14px;
+    }
+
+    .contact-description {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text-muted, #b7bcc8);
+      margin-bottom: 18px;
+    }
+
+    .contact-channels {
       display: flex;
+      flex-direction: column;
       gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
+      font-size: 0.9rem;
     }
 
-    .phone-code-select {
-      flex: 0 0 130px;
+    .channel-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
 
-    .phone-input {
-      flex: 1 1 160px;
+    .channel-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: rgba(240, 183, 107, 0.85);
     }
 
-    .phone-code-select select,
+    .channel-value {
+      color: #e4e7f0;
+      text-decoration: none;
+    }
+
+    .channel-value:hover {
+      text-decoration: underline;
+    }
+
+    /* Premium form card (right side) */
+    .premium-contact-form {
+      background: radial-gradient(circle at top, rgba(240,183,107,0.12), transparent 55%),
+                  linear-gradient(145deg, #050816, #060918, #050816);
+      border-radius: 24px;
+      padding: 26px 22px 28px;
+      border: 1px solid rgba(240, 183, 107, 0.4);
+      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.7);
+    }
+
+    .premium-contact-form .contact-name {
+      font-size: 1.3rem;
+      margin-bottom: 4px;
+    }
+
+    .premium-contact-form .contact-role {
+      font-size: 0.9rem;
+      color: var(--text-muted, #b4b8c3);
+    }
+
+    .form-luxury {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .form-group.full {
+      width: 100%;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      margin-bottom: 6px;
+      color: #e9ecf5;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .form-luxury input,
+    .form-luxury textarea,
     .form-luxury select {
-      background-color: #050816; /* dark dropdown */
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #252a3a;
+      background: rgba(9, 12, 28, 0.95);
+      padding: 10px 11px;
+      font-size: 0.9rem;
+      color: #f5f6ff;
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .form-luxury textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .form-luxury input:focus,
+    .form-luxury textarea:focus,
+    .form-luxury select:focus {
+      border-color: rgba(240, 183, 107, 0.85);
+      box-shadow: 0 0 0 1px rgba(240, 183, 107, 0.4);
+      background: #050816;
+    }
+
+    /* Dark dropdown styling */
+    .form-luxury select,
+    .phone-code-select select {
+      background-color: #050816;
       color: #ffffff;
       border: 1px solid #333;
-      border-radius: 8px;
-      padding: 10px 12px;
-      font-size: 0.9rem;
     }
 
     .form-luxury select option {
@@ -45,15 +191,59 @@
       color: #ffffff;
     }
 
-    .form-luxury input,
-    .form-luxury textarea {
+    /* Phone row single column */
+    .phone-row {
+      display: block;
+    }
+
+    .phone-code-select,
+    .phone-input {
       width: 100%;
+    }
+
+    .phone-code-select {
+      margin-bottom: 10px;
+    }
+
+    .form-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      font-size: 0.85rem;
+    }
+
+    .form-options label {
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .form-options input[type="radio"] {
+      margin-right: 6px;
+      transform: translateY(1px);
+    }
+
+    .btn.btn-primary.btn-large {
+      width: 100%;
+      justify-content: center;
+      margin-top: 8px;
+      font-size: 0.95rem;
+      padding-top: 12px;
+      padding-bottom: 12px;
     }
 
     .error-message {
       margin-top: 4px;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: #ffb3b3;
+      min-height: 0.9em;
+    }
+
+    @media (max-width: 600px) {
+      .contact-card,
+      .premium-contact-form {
+        padding: 20px 18px 22px;
+      }
     }
   </style>
 </head>
@@ -73,7 +263,7 @@
         <div class="brand-name">Steady Growth</div>
         <div class="brand-sub">Mutual Fund Distribution</div>
       </div>
-    </a>
+      </a>
 
     <!-- DESKTOP NAV -->
     <nav class="nav-links">
@@ -138,7 +328,7 @@
 <section class="contact-section">
   <div class="contact-wrapper">
 
-    <!-- Contact Card -->
+    <!-- Contact Card (Left) -->
     <div class="contact-card">
       <h2 class="contact-name">Ankit Chakraborty</h2>
       <div class="contact-role">Mutual Fund Distributor</div>
@@ -175,7 +365,7 @@
 
 
 
-    <!-- ========================= FORM CARD (SINGLE COLUMN) ========================= -->
+    <!-- Premium Form Card (Right) -->
     <div class="contact-card premium-contact-form">
 
       <h2 class="contact-name">Get Started</h2>
@@ -214,7 +404,6 @@
               <select id="countryCode" name="country_code" required>
                 <!-- Default India -->
                 <option value="+91" data-min="10" data-max="10" selected>🇮🇳 India (+91)</option>
-                <!-- A reasonably broad global list (you can add more as needed) -->
                 <option value="+1" data-min="10" data-max="10">🇺🇸 United States (+1)</option>
                 <option value="+44" data-min="10" data-max="11">🇬🇧 United Kingdom (+44)</option>
                 <option value="+61" data-min="9" data-max="9">🇦🇺 Australia (+61)</option>
@@ -235,21 +424,16 @@
                 <option value="+45" data-min="8" data-max="8">🇩🇰 Denmark (+45)</option>
                 <option value="+32" data-min="9" data-max="9">🇧🇪 Belgium (+32)</option>
                 <option value="+43" data-min="10" data-max="11">🇦🇹 Austria (+43)</option>
-                <option value="+352" data-min="9" data-max="9">🇱🇺 Luxembourg (+352)</option>
                 <option value="+353" data-min="9" data-max="9">🇮🇪 Ireland (+353)</option>
                 <option value="+62" data-min="9" data-max="11">🇮🇩 Indonesia (+62)</option>
                 <option value="+63" data-min="9" data-max="10">🇵🇭 Philippines (+63)</option>
                 <option value="+66" data-min="9" data-max="9">🇹🇭 Thailand (+66)</option>
                 <option value="+86" data-min="11" data-max="11">🇨🇳 China (+86)</option>
                 <option value="+852" data-min="8" data-max="8">🇭🇰 Hong Kong (+852)</option>
-                <option value="+853" data-min="8" data-max="8">🇲🇴 Macao (+853)</option>
-                <option value="+65" data-min="8" data-max="8">🇸🇬 Singapore (+65)</option>
                 <option value="+64" data-min="8" data-max="9">🇳🇿 New Zealand (+64)</option>
                 <option value="+55" data-min="10" data-max="11">🇧🇷 Brazil (+55)</option>
                 <option value="+54" data-min="10" data-max="10">🇦🇷 Argentina (+54)</option>
                 <option value="+57" data-min="10" data-max="10">🇨🇴 Colombia (+57)</option>
-                <option value="+51" data-min="9" data-max="9">🇵🇪 Peru (+51)</option>
-                <option value="+56" data-min="9" data-max="9">🇨🇱 Chile (+56)</option>
                 <option value="+52" data-min="10" data-max="10">🇲🇽 Mexico (+52)</option>
                 <option value="+234" data-min="10" data-max="11">🇳🇬 Nigeria (+234)</option>
                 <option value="+27" data-min="9" data-max="9">🇿🇦 South Africa (+27)</option>
@@ -263,7 +447,6 @@
                 <option value="+880" data-min="10" data-max="10">🇧🇩 Bangladesh (+880)</option>
                 <option value="+977" data-min="10" data-max="10">🇳🇵 Nepal (+977)</option>
                 <option value="+92" data-min="10" data-max="11">🇵🇰 Pakistan (+92)</option>
-                <!-- Fallback generic option -->
                 <option value="+00" data-min="6" data-max="15">🌍 Other (+..)</option>
               </select>
             </div>
@@ -305,7 +488,7 @@
           <textarea id="message" name="message" rows="5" placeholder="Tell us more…"></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-large" style="margin-top: 20px;">
+        <button type="submit" class="btn btn-primary btn-large">
           Request a Consultation →
         </button>
 
@@ -372,7 +555,7 @@ form.addEventListener('submit', function (e) {
     if (el) el.textContent = '';
   });
 
-  // Basic required checks (browser also does this, but we add messages)
+  // Basic required checks
   const name = document.getElementById('name');
   const city = document.getElementById('city');
   const goal = document.getElementById('goal');
@@ -395,7 +578,7 @@ form.addEventListener('submit', function (e) {
     valid = false;
   }
 
-  // Phone validation
+  // Phone validation (per country)
   let phoneVal = phoneInput.value.replace(/[\s\-]/g, '');
   const selectedOption = countryCodeSelect.options[countryCodeSelect.selectedIndex];
   const minLen = parseInt(selectedOption.dataset.min || '6', 10);
