@@ -8,7 +8,7 @@
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="./assets/img/logo.png">
-  
+
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -16,14 +16,17 @@
   <link rel="stylesheet" href="./styles/global.css">
   <link rel="stylesheet" href="./styles/mobile-menu.css">
   <link rel="stylesheet" href="./styles/home.css">
+
 </head>
 
 <body class="page-home">
+
 
 <!-- ========================= HEADER ========================= -->
 <header>
   <div class="container nav">
     
+    <!-- BRAND -->
     <a href="./index.html" class="brand">
       <div class="brand-logo">
         <img src="./assets/img/logo.png" alt="Steady Growth Logo">
@@ -34,6 +37,7 @@
       </div>
     </a>
 
+    <!-- DESKTOP NAV -->
     <nav class="nav-links">
       <a href="./pages/about.html">About</a>
       <a href="./pages/services.html">Services</a>
@@ -42,10 +46,12 @@
       <a href="./pages/contact.html">Contact</a>
     </nav>
 
+    <!-- CTA -->
     <div class="nav-cta">
       <a href="./pages/contact.html" class="btn btn-ghost">Request a Call</a>
     </div>
 
+    <!-- MOBILE MENU ICON -->
     <div class="nav-toggle" id="navToggle">
       <span></span><span></span><span></span>
     </div>
@@ -54,9 +60,7 @@
 
   <!-- MOBILE MENU -->
   <div class="mobile-menu" id="mobileMenu">
-    <div class="menu-bg-glow"></div>
     <div class="menu-close" id="menuClose">✕</div>
-
     <nav class="mobile-nav-links">
       <a href="./pages/about.html">About</a>
       <a href="./pages/services.html">Services</a>
@@ -64,72 +68,114 @@
       <a href="./pages/faq.html">FAQs</a>
       <a href="./pages/contact.html">Contact</a>
     </nav>
-
-    <a href="./pages/contact.html" class="btn btn-primary menu-cta">Request a Call</a>
   </div>
 </header>
 
 
 
+
 <!-- ========================= HERO ========================= -->
-<section class="hero" id="home" style="padding: 120px 0;">
-  <div class="container hero-grid">
-    <div>
-      <div class="eyebrow">Steady Growth – Long-Term Wealth, One SIP at a Time</div>
-      <h1 class="hero-title">
-        Premium, goal-based <span class="hero-highlight">Mutual Fund Distribution</span> for serious investors.
-      </h1>
+<main>
+  <section class="hero" id="home">
+    <div class="container hero-grid">
 
-      <p class="hero-subtitle">
-        I help individuals, NRIs and families grow wealth through disciplined SIPs & diversified portfolios — without speculation.
-      </p>
+      <!-- LEFT SIDE TEXT -->
+      <div>
+        <div class="eyebrow">Steady Growth – Long-Term Wealth, One SIP at a Time</div>
 
-      <div class="hero-cta">
-        <a href="https://api.whatsapp.com/send?phone=919211310914" class="btn btn-primary">Talk on WhatsApp</a>
-        <a href="./pages/services.html" class="btn btn-primary">View Services</a>
+        <h1 class="hero-title">
+          Premium, goal-based <span class="hero-highlight">Mutual Fund Distribution</span> for serious investors.
+        </h1>
+
+        <p class="hero-subtitle">
+          I work with professionals, business owners, NRIs and HNIs to build wealth gradually through disciplined SIPs
+          and diversified mutual fund portfolios — without noise, speculation or “get rich quick” promises.
+        </p>
+
+        <div class="hero-points">
+          <div class="pill"><div class="pill-dot"></div><span>SEBI / AMFI compliant distribution</span></div>
+          <div class="pill"><div class="pill-dot"></div><span>Goal-based SIP &amp; lump sum planning</span></div>
+          <div class="pill"><div class="pill-dot"></div><span>Execution via NJ Wealth platform</span></div>
+        </div>
+
+        <!-- FIXED SPACING -->
+        <div class="hero-cta" style="margin-top:24px;">
+          <a href="https://api.whatsapp.com/send?phone=919211310914&text=Hi,+I+need+assistance+in+starting+my+investment+journey." class="btn btn-primary">Talk on WhatsApp</a>
+          <a href="./pages/services.html" class="btn btn-primary">View Services</a>
+        </div>
       </div>
+
+
+
+      <!-- RIGHT SIDE PROFILE CARD -->
+      <div>
+        <div class="hero-card">
+          <div class="badge">
+            <span>✔</span> Registered Mutual Fund Distributor
+          </div>
+
+          <div class="profile">
+            <div class="profile-photo">
+              <img src="./assets/img/profile.jpg" alt="Profile Photo">
+            </div>
+            <div class="profile-text">
+              <h3>Ankit Chakraborty</h3>
+              <p>Individual Mutual Fund Distributor</p>
+            </div>
+          </div>
+
+          <p class="tagline-small">
+            Helping individuals invest with discipline, clarity & long-term alignment.
+          </p>
+        </div>
+      </div>
+
     </div>
-  </div>
-</section>
+  </section>
 
 
 
-<!-- ========================= SECTION: SIP READINESS ========================= -->
-<section class="section-readiness" style="padding:90px 0; text-align:center;">
+
+<!-- ========================= SIP READINESS SECTION ========================= -->
+<section class="container" style="padding:60px 0; text-align:center;">
   <h2 class="section-title">Check Your SIP Readiness</h2>
-
-  <p style="margin-bottom:32px;">
-    Understand whether you're financially prepared to begin disciplined investing — before taking action.
+  <p class="section-subtitle" style="margin-bottom:24px;">
+    Understand how prepared you are to begin your investment journey.
   </p>
-
-  <a href="./readiness.html" class="btn btn-primary">Check SIP Readiness →</a>
+  <a href="./readiness.html" class="btn btn-primary btn-large">
+    Start Readiness Check →
+  </a>
 </section>
 
 
 
-<!-- ========================= SECTION: RISK PROFILE ========================= -->
-<section class="section-risk" style="padding:90px 0; text-align:center;">
+<!-- ========================= RISK PROFILE SECTION ========================= -->
+<section class="container" style="padding:60px 0; text-align:center;">
   <h2 class="section-title">Know Your Risk Profile</h2>
-
-  <p style="margin-bottom:32px;">
-    Your investment strategy must align with your comfort level, risk capacity, and long-term goals.
+  <p class="section-subtitle" style="margin-bottom:24px;">
+    Identify your comfort and capacity toward market fluctuations.
   </p>
-
-  <a href="./risk.html" class="btn btn-primary">Assess Risk Profile →</a>
+  <a href="./pages/process.html" class="btn btn-primary btn-large">
+    Take Risk Assessment →
+  </a>
 </section>
 
 
 
-<!-- ========================= SECTION: CONTACT CTA ========================= -->
-<section class="section-contact-cta" style="padding:90px 0; text-align:center;">
-  <h2 class="section-title">Need Help?</h2>
 
-  <p style="margin-bottom:32px;">
-    Have questions about investing? Let's connect.
+<!-- ========================= CONTACT CTA ========================= -->
+<section class="container" style="padding:60px 0; text-align:center;">
+  <h2 class="section-title">Need Guidance Before Starting?</h2>
+  <p class="section-subtitle" style="margin-bottom:24px;">
+    Let’s connect and plan your investment approach together.
   </p>
-
-  <a href="./pages/contact.html" class="btn btn-primary">Contact Me →</a>
+  <a href="./pages/contact.html" class="btn btn-primary btn-large">
+    Request a Call →
+  </a>
 </section>
+
+</main>
+
 
 
 
@@ -137,22 +183,20 @@
 <footer class="disclaimer">
   <div class="container">
     <p class="disclaimer-text">
-      <strong>Disclaimer:</strong> Mutual Fund investments are subject to market risks. Please read scheme documents before investing.
-    </p>
-
-    <p class="disclaimer-text">
-      Steady Growth acts as a Mutual Fund Distributor and facilitates investments via NJ Wealth & AMCs.
+      <strong>Disclaimer:</strong> Mutual Fund investments are subject to market risks. Please read all scheme-related
+      documents carefully before investing.
     </p>
 
     <div class="footer-bottom">
-      <span>© <span id="year"></span> Steady Growth. All rights reserved.</span>
-      <span>Designed for disciplined, long-term investing.</span>
+      © <span id="year"></span> Steady Growth. All rights reserved.
     </div>
   </div>
 </footer>
 
 
 
+
+<!-- ========================= SCRIPT ========================= -->
 <script>
 const navToggle = document.getElementById("navToggle");
 const mobileMenu = document.getElementById("mobileMenu");
@@ -160,21 +204,18 @@ const menuClose = document.getElementById("menuClose");
 
 navToggle.addEventListener("click", () => {
   mobileMenu.classList.add("open");
-  document.body.classList.add("menu-open");
 });
 
 menuClose.addEventListener("click", () => {
   mobileMenu.classList.remove("open");
-  document.body.classList.remove("menu-open");
 });
 
-document.querySelectorAll(".mobile-nav-links a").forEach(link => {
-  link.addEventListener("click", () => {
-    mobileMenu.classList.remove("open");
-    document.body.classList.remove("menu-open");
-  });
-});
+// Auto Year
+document.getElementById("year").textContent = new Date().getFullYear();
 </script>
+
+
+
 
 </body>
 </html>
