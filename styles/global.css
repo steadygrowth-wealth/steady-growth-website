@@ -276,3 +276,40 @@ header {
   justify-content: space-between;
   flex-wrap: wrap;
 }
+
+
+
+
+/* =========== MOBILE HEADER REFINEMENT =========== */
+@media (max-width: 768px) {
+
+  /* Reduce header height */
+  :root {
+    --nav-height: 58px;
+  }
+
+  /* Align brand text tighter */
+  .brand {
+    gap: 8px;
+  }
+
+  .brand-name {
+    font-size: 18px;
+    line-height: 1.1;
+  }
+
+  .brand-sub {
+    font-size: 9px;
+    letter-spacing: 1.4px;
+    margin-top: 2px;
+  }
+
+  .brand-logo img {
+    height: 38px;
+  }
+
+  /* Reduce top padding so hero starts higher */
+  .hero {
+    padding-top: 40px;
+  }
+}
