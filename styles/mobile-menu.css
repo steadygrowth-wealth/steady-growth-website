@@ -1,71 +1,106 @@
-/* Toggle shown only on mobile */
+/* ============================================================
+   MOBILE MENU TOGGLE (shown only on mobile)
+============================================================ */
 @media (max-width: 768px) {
-  .nav-toggle { display: flex !important; }
+  .nav-toggle {
+    display: flex !important;
+  }
 }
 
-/* Fullscreen mobile menu */
+/* ============================================================
+   FULLSCREEN MOBILE MENU
+============================================================ */
 .mobile-menu {
   position: fixed;
   inset: 0;
   background: rgba(5, 8, 22, 0.96);
   backdrop-filter: blur(18px);
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   gap: 28px;
   opacity: 0;
   pointer-events: none;
   transform: translateY(20px);
   transition: all 0.4s ease;
+
   z-index: 9999;
 }
 
+/* Open State */
 .mobile-menu.open {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
 }
 
-/* Nav links */
-.mobile-nav-links a {
-  font-family: "Playfair Display", serif;
-  font-size: 1.5rem;
-  padding: 14px 0;
+/* Close button */
+.menu-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-size: 2rem;
   color: white;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  cursor: pointer;
+  z-index: 10000;
 }
 
-/* CTA inside menu */
+/* ============================================================
+   FORCE COLUMN LAYOUT INSIDE MOBILE MENU
+============================================================ */
+.mobile-menu nav {
+  all: unset;                   /* Remove desktop nav inheritance */
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  width: 100% !important;
+  gap: 16px !important;
+}
+
+/* ============================================================
+   MOBILE MENU LINKS
+============================================================ */
+.mobile-menu .mobile-nav-links a {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+
+  font-family: "Playfair Display", serif;
+  font-size: 1.5rem;
+  padding: 14px 0 !important;
+
+  color: white !important;
+  text-decoration: none !important;
+
+  border-bottom: 1px solid rgba(255,255,255,0.12) !important;
+  margin: 0 !important;
+}
+
+/* Hover Effect */
+.mobile-menu .mobile-nav-links a:hover {
+  color: #f0b76b !important;
+}
+
+/* ============================================================
+   CTA INSIDE MENU (if used later)
+============================================================ */
 .menu-cta {
   margin-top: 20px;
   padding: 14px 36px;
   font-size: 1rem;
 }
 
-/* Hide menu on desktop */
+/* ============================================================
+   HIDE MOBILE MENU ON DESKTOP
+============================================================ */
 @media (min-width: 769px) {
-  .mobile-menu, .nav-toggle { display: none !important; }
-}
-
-
-
-
-
-/* Force mobile menu links to stack vertically */
-.mobile-menu .mobile-nav-links {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  width: 100% !important;
-  gap: 10px;
-}
-
-.mobile-menu .mobile-nav-links a {
-  display: block !important;
-  width: 100% !important;
-  text-align: center !important;
-  margin: 0 !important;
-  padding: 14px 0 !important;
-  border-bottom: 1px solid rgba(255,255,255,0.15) !important;
+  .mobile-menu,
+  .nav-toggle {
+    display: none !important;
+  }
 }
