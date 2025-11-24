@@ -47,3 +47,25 @@
 @media (min-width: 769px) {
   .mobile-menu, .nav-toggle { display: none !important; }
 }
+
+
+
+
+
+/* Force mobile menu links to stack vertically */
+.mobile-menu .mobile-nav-links {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  width: 100% !important;
+  gap: 10px;
+}
+
+.mobile-menu .mobile-nav-links a {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  margin: 0 !important;
+  padding: 14px 0 !important;
+  border-bottom: 1px solid rgba(255,255,255,0.15) !important;
+}
