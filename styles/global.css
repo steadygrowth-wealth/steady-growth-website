@@ -366,3 +366,25 @@ header {
     height: auto;
   }
 }
+
+
+/* ============================================================
+   MOBILE HEADER SAFE PADDING (BRAND + HAMBURGER INSIDE)
+============================================================ */
+@media (max-width: 768px) {
+
+  header .nav {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  /* Ensure logo never touches the edge */
+  .brand-logo img {
+    margin-left: 4px !important;
+  }
+
+  /* Ensure hamburger stays inside comfortably */
+  .nav-toggle {
+    margin-right: 4px !important;
+  }
+}
