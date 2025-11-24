@@ -57,16 +57,13 @@ body.menu-open {
 }
 
 /* ============================================================
-   HIDE DESKTOP CTA ENTIRELY ON MOBILE
+   HIDE DESKTOP CTA ONLY ON MOBILE
 ============================================================ */
-.nav-cta,
-.nav-cta * {
-  display: none !important;
-}
-
-/* ALSO hide CTA when the menu is open */
-.mobile-menu.open ~ .nav-cta {
-  display: none !important;
+@media (max-width: 1024px) {
+  .nav-cta,
+  .nav-cta * {
+    display: none !important;
+  }
 }
 
 /* ============================================================
@@ -102,7 +99,7 @@ body.menu-open {
   justify-content: center !important;
 
   width: 100% !important;
-  gap: 22px !important;
+  gap: 20px !important;
   padding: 0 32px !important;
 }
 
@@ -130,12 +127,26 @@ body.menu-open {
 }
 
 /* ============================================================
-   OPTIONAL CTA INSIDE MENU (IF YOU ADD ANY)
+   GHOST CTA BUTTON (BOTTOM OF MENU)
 ============================================================ */
-.menu-cta {
-  margin-top: 24px;
-  padding: 14px 36px;
-  font-size: 1rem;
+.menu-cta-ghost {
+  padding: 10px 26px !important;
+
+  border: 1px solid rgba(255,255,255,0.25) !important;
+  border-radius: 50px !important;
+
+  color: var(--text-muted) !important;
+  font-size: 1rem !important;
+  text-align: center !important;
+
+  display: inline-block !important;
+  margin-top: 6px !important;  /* Balanced with gap */
+  transition: 0.25s ease !important;
+}
+
+.menu-cta-ghost:hover {
+  color: #fff !important;
+  border-color: #f0b76b !important;
 }
 
 /* ============================================================
@@ -147,46 +158,3 @@ body.menu-open {
     display: none !important;
   }
 }
-
-
-
-
-/* Ghost CTA button inside hamburger */
-.menu-cta-ghost {
-  margin-top: 18px;
-  padding: 12px 28px !important;
-
-  border: 1px solid rgba(255,255,255,0.25) !important;
-  border-radius: 50px !important;
-
-  color: var(--text-muted) !important;
-  font-size: 1rem !important;
-  text-align: center !important;
-  width: auto !important;
-
-  transition: 0.25s ease !important;
-}
-
-.menu-cta-ghost:hover {
-  color: #fff !important;
-  border-color: #f0b76b !important;
-}
-
-
-
-.menu-cta-ghost {
-  margin-top: 20px;
-  padding: 12px 28px !important;
-  border: 1px solid rgba(255,255,255,0.25) !important;
-  border-radius: 50px !important;
-  color: var(--text-muted) !important;
-  text-align: center !important;
-  display: inline-block !important;
-  transition: 0.25s ease !important;
-}
-
-.menu-cta-ghost:hover {
-  color: #fff !important;
-  border-color: #f0b76b !important;
-}
-
