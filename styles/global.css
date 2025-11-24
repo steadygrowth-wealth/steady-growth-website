@@ -5,12 +5,16 @@
 
 
 /* ============================================================
-   GLOBAL RESET + BASE
+   RESET + BASE
 ============================================================ */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden !important;
 }
 
 html {
@@ -22,7 +26,6 @@ body {
   background: radial-gradient(circle at top, #141b35 0%, #050816 55%);
   color: var(--text-main);
   line-height: 1.6;
-  overflow-x: hidden;
 }
 
 
@@ -32,12 +35,16 @@ body {
 :root {
   --bg-dark: #050816;
   --bg-section: #0b1020;
+
   --accent: #f0b76b;
   --accent-soft: rgba(240, 183, 107, 0.14);
+
   --text-main: #f7f7f7;
   --text-muted: #a7afc7;
+
   --border-soft: rgba(255, 255, 255, 0.08);
   --shadow-soft: 0 18px 45px rgba(0,0,0,0.55);
+
   --nav-height: 72px;
 }
 
@@ -45,12 +52,13 @@ body {
 /* ============================================================
    TYPOGRAPHY
 ============================================================ */
-
-h1, h2, h3, h4,
-.hero-title,
-.brand-name {
+h1, h2, h3, h4 {
   font-family: "Playfair Display", serif !important;
   font-weight: 600;
+}
+
+.brand-name {
+  font-family: "Playfair Display", serif !important;
 }
 
 p, li, a, span, small {
@@ -61,7 +69,6 @@ p, li, a, span, small {
 /* ============================================================
    CONTAINER
 ============================================================ */
-
 .container {
   width: min(1120px, 92vw);
   margin: auto;
@@ -69,13 +76,12 @@ p, li, a, span, small {
 
 
 /* ============================================================
-   HEADER (DESKTOP)
+   HEADER
 ============================================================ */
-
 header {
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 9999;
   width: 100%;
   background: rgba(5, 8, 22, 0.55);
   backdrop-filter: blur(16px);
@@ -90,66 +96,54 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 16px;
-  gap: 24px;
+  padding-inline: 16px;
 }
 
 
 /* ============================================================
-   BRAND (CLICKABLE)
+   BRAND
 ============================================================ */
-
 .brand {
   display: flex;
   align-items: center;
   gap: 12px;
-
-  /* NEW — make it act like a button */
-  cursor: pointer;
   text-decoration: none;
   color: inherit;
 }
 
-.brand:hover {
-  opacity: 0.85;
-  transition: 0.2s ease;
-}
-
 .brand-logo img {
   height: 42px;
-  width: auto;
 }
 
 .brand-name {
   font-size: 20px;
   font-weight: 600;
-  line-height: 1.05;
   color: white;
+  line-height: 1.05;
 }
 
 .brand-sub {
   font-size: 10px;
   letter-spacing: 2px;
-  opacity: 0.7;
+  opacity: 0.75;
   text-transform: uppercase;
   display: block;
+  margin-top: 2px;
 }
 
 
 /* ============================================================
-   DESKTOP NAV LINKS
+   NAV LINKS (DESKTOP)
 ============================================================ */
-
 .nav-links {
   display: flex;
   gap: 28px;
-  color: var(--text-muted);
 }
 
 .nav-links a {
   text-decoration: none;
   color: var(--text-muted);
-  padding-bottom: 4px;
+  padding-bottom: 3px;
   transition: 0.25s ease;
 }
 
@@ -159,13 +153,11 @@ header {
 
 
 /* ============================================================
-   CTA (DESKTOP)
+   DESKTOP CTA
 ============================================================ */
-
 .nav-cta {
   display: flex;
   gap: 14px;
-  white-space: nowrap;
 }
 
 .nav-cta .btn-ghost {
@@ -178,9 +170,8 @@ header {
 
 
 /* ============================================================
-   MENU TOGGLE (HIDDEN DESKTOP)
+   MOBILE MENU TOGGLE
 ============================================================ */
-
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -197,34 +188,14 @@ header {
 
 
 /* ============================================================
-   HERO SECTION
-============================================================ */
-
-.hero {
-  padding: 80px 0 60px;
-}
-
-.hero-title {
-  font-size: clamp(2.2rem, 4vw, 3rem);
-  margin-bottom: 14px;
-}
-
-.hero-highlight {
-  background: linear-gradient(90deg, #ffe5ba, #f0b76b, #ffdf9c);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-
-/* ============================================================
    BUTTONS
 ============================================================ */
-
 .btn {
   border-radius: 999px;
   padding: 10px 22px;
   font-size: 0.9rem;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .btn-primary {
@@ -240,11 +211,39 @@ header {
 
 
 /* ============================================================
+   HERO
+============================================================ */
+.hero-title {
+  font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+  margin-bottom: 14px;
+}
+
+.hero-highlight {
+  background: linear-gradient(90deg, #ffe5ba, #f0b76b, #ffdf9c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Fix CTA buttons overflowing horizontally */
+.hero-cta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+
+.hero-cta .btn {
+  flex: 1 1 auto;
+  text-align: center;
+  min-width: 0;
+}
+
+
+/* ============================================================
    FOOTER
 ============================================================ */
-
 .disclaimer {
-  background: rgba(5, 8, 22, 0.96);
+  background: #050816;
   border-top: 1px solid rgba(255,255,255,0.06);
   padding: 32px 0 22px;
   text-align: center;
@@ -261,53 +260,69 @@ header {
 
 
 /* ============================================================
-   📱 MOBILE HEADER — COMPACT PREMIUM VERSION
+   MOBILE RESPONSIVE FIXES
 ============================================================ */
-
 @media (max-width: 1024px) {
 
   :root {
-    --nav-height: 52px !important;
-  }
-
-  .nav {
-    padding: 0 10px !important;
-    gap: 10px !important;
+    --nav-height: 58px;
   }
 
   .brand-logo img {
-    height: 30px !important;
-  }
-
-  .brand {
-    gap: 6px !important;
-    align-items: center !important;
+    height: 32px;
   }
 
   .brand-name {
-    font-size: 16px !important;
-    line-height: 1 !important;
-    margin-bottom: 0px !important;
+    font-size: 16px;
   }
 
   .brand-sub {
-    font-size: 8px !important;
-    letter-spacing: 1.2px !important;
-    margin-top: 2px !important;
+    font-size: 8px;
+    margin-top: 3px;
+    letter-spacing: 1px;
   }
 
-  .hero {
-    padding-top: 24px !important;
-  }
-
-  /* Hide desktop nav */
   .nav-links,
   .nav-cta {
     display: none !important;
   }
 
-  /* Show mobile toggle */
   .nav-toggle {
     display: flex !important;
+  }
+
+  /* Prevent any content from overflowing */
+  .hero-grid,
+  .hero-cta,
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Reduce CTA button size to always fit horizontally */
+  .hero-cta .btn {
+    padding: 10px 14px !important;
+    font-size: 0.82rem !important;
+  }
+}
+
+/* EVEN SMALLER DEVICES */
+@media (max-width: 380px) {
+  .hero-cta {
+    gap: 8px;
+  }
+
+  .hero-cta .btn {
+    padding: 8px 10px !important;
+    font-size: 0.78rem !important;
+  }
+
+  .brand-name {
+    font-size: 15px !important;
+  }
+
+  .brand-sub {
+    font-size: 7px !important;
   }
 }
