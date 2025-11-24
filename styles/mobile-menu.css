@@ -9,13 +9,11 @@
 
 /* ============================================================
    FIX HEADER STACKING CONTEXT
-   (Ensures mobile menu can appear above it)
 ============================================================ */
 header {
-  position: relative !important;   /* breaks sticky stacking */
+  position: relative !important; 
   z-index: 10 !important;
 }
-
 
 /* ============================================================
    FULLSCREEN MOBILE MENU OVERLAY
@@ -30,7 +28,7 @@ header {
   width: 100vw !important;
   height: 100vh !important;
 
-  background: rgba(5, 8, 22, 0.96) !important;
+  background: #050816 !important;  /* fully opaque */
   backdrop-filter: blur(18px);
 
   display: flex !important;
@@ -42,7 +40,7 @@ header {
   transform: translateY(20px);
   transition: all 0.35s ease;
 
-  z-index: 999999999 !important; /* ALWAYS on top */
+  z-index: 999999999 !important;
 }
 
 /* OPEN STATE */
@@ -52,10 +50,23 @@ header {
   transform: translateY(0) !important;
 }
 
-/* Disable scrolling when menu is open */
+/* Disable scrolling */
 body.menu-open {
   overflow: hidden !important;
   height: 100vh !important;
+}
+
+/* ============================================================
+   HIDE DESKTOP CTA ENTIRELY ON MOBILE
+============================================================ */
+.nav-cta,
+.nav-cta * {
+  display: none !important;
+}
+
+/* ALSO hide CTA when the menu is open */
+.mobile-menu.open ~ .nav-cta {
+  display: none !important;
 }
 
 /* ============================================================
@@ -71,15 +82,14 @@ body.menu-open {
   z-index: 1000000000 !important;
 }
 
-
 /* ============================================================
-   MENU NAVIGATION (REMOVES DESKTOP INHERITANCE)
+   REMOVE DESKTOP NAV STYLE INHERITANCE
 ============================================================ */
 .mobile-menu nav {
   all: unset !important;
 }
 
-/* CENTER MENU VERTICALLY */
+/* Center menu list */
 .mobile-menu .mobile-nav-links {
   position: absolute !important;
   top: 50% !important;
@@ -92,10 +102,9 @@ body.menu-open {
   justify-content: center !important;
 
   width: 100% !important;
-  gap: 20px !important;
+  gap: 22px !important;
   padding: 0 32px !important;
 }
-
 
 /* ============================================================
    MENU LINKS
@@ -113,7 +122,6 @@ body.menu-open {
 
   color: white !important;
   border-bottom: 1px solid rgba(255,255,255,0.14) !important;
-
   transition: 0.25s ease !important;
 }
 
@@ -121,9 +129,8 @@ body.menu-open {
   color: #f0b76b !important;
 }
 
-
 /* ============================================================
-   OPTIONAL CTA INSIDE MENU
+   OPTIONAL CTA INSIDE MENU (IF YOU ADD ANY)
 ============================================================ */
 .menu-cta {
   margin-top: 24px;
@@ -131,9 +138,8 @@ body.menu-open {
   font-size: 1rem;
 }
 
-
 /* ============================================================
-   HIDE MOBILE MENU ON DESKTOP
+   HIDE ENTIRE MOBILE MENU ON DESKTOP
 ============================================================ */
 @media (min-width: 769px) {
   .mobile-menu,
