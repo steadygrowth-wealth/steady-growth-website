@@ -331,32 +331,36 @@ header {
 
 
 /* ============================================================
-   MOBILE SAFE MARGINS — DO NOT AFFECT HEADER OR HAMBURGER
+   MOBILE SAFE MARGINS — PREMIUM LOOK WITHOUT BREAKING HAMBURGER
 ============================================================ */
 
 @media (max-width: 768px) {
 
-  /* Do NOT touch body — keep mobile menu intact */
-  body {
-    overflow-x: hidden !important;
+  /* Keep full-width behaviour for header and mobile menu */
+  header,
+  .nav,
+  .mobile-menu,
+  .mobile-nav-links {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
-  /* Apply safe margins only to content sections */
-  main, 
-  section,
+  /* Apply premium safe margins ONLY to real page content */
+  main,
+  section:not(.mobile-menu),
   .hero,
-  .container:not(.nav) {
-    padding-left: 16px;
-    padding-right: 16px;
+  .container:not(.nav):not(.mobile-menu):not(.mobile-nav-links) {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 
-  /* Ensure containers don't exceed screen */
+  /* Make sure containers never overflow */
   .container {
     max-width: 100% !important;
     overflow-x: hidden !important;
   }
 
-  /* Ensure images never overflow */
+  /* Never overflow media */
   img, video, svg {
     max-width: 100%;
     height: auto;
