@@ -403,7 +403,9 @@
 =================================================== */
 const pages = document.querySelectorAll(".page");
 let rp = JSON.parse(localStorage.getItem("rp") || "{}");
-let current = Number(localStorage.getItem("rp_page") || 1);
+let stored = parseInt(localStorage.getItem("rp_page"), 10);
+let current = (!stored || stored < 1 || stored > 7) ? 1 : stored;
+
 
 if (current >= 7) {
   localStorage.clear();
