@@ -736,7 +736,7 @@ document.querySelectorAll(".q-box").forEach(qbox => {
   // Restore previous answer
   if (rpAnswers[qid]) {
     optButtons.forEach(b => {
-      if (Number(b.dataset.score) === rpAnswers[qid]) {
+      if (Number(b.dataset.score) === Number(rpAnswers[qid])) {
         b.classList.add("selected");
       }
     });
