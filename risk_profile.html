@@ -482,7 +482,10 @@ function updateNextVisibility() {
 
   let allAnswered = true;
   questions.forEach(q => {
-    if (!rp[q.dataset.qid]) allAnswered = false;
+    if (!rp[q.dataset.qid] || rp[q.dataset.qid] < 1 || rp[q.dataset.qid] > 5) {
+    allAnswered = false;
+}
+
   });
 
   const next = section.querySelector(".next-btn");
