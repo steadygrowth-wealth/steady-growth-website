@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <!-- External CSS -->
   <link rel="stylesheet" href="risk_profile.css" />
@@ -19,50 +19,50 @@
     <div id="progressBarFill"></div>
   </div>
 
-  <div class="wrap">
-    <div class="card" id="mainCard">
+  <div class="container">
+    <div class="card">
 
       
 
       <!-- ========== SECTION 1 — OBJECTIVE & MOTIVATION ========== -->
-      <div class="section-page" data-page="1">
-        <h2>1. Investment Objective & Motivation</h2>
-        <p class="subtitle">Why you invest and what you expect from your money.</p>
+      <div class="page" data-page="1">
+        <h2 class="page-title">1. Investment Objective & Motivation</h2>
+        <p class="page-sub">Why you invest and what you expect from your money.</p>
 
         <!-- Q1 -->
-        <div class="q-box" data-qid="q1">
+        <div class="question" data-qid="q1">
           <div class="q-title">Primary purpose of investing</div>
           <div class="q-desc">Choose the option that best reflects your main intention.</div>
-          <div class="opt-row">
-            <div class="opt-btn" data-score="1">Preserve capital with low risk</div>
-            <div class="opt-btn" data-score="2">Earn moderate returns with stability</div>
-            <div class="opt-btn" data-score="3">Balance growth & safety</div>
-            <div class="opt-btn" data-score="4">Long-term wealth creation with higher growth</div>
-            <div class="opt-btn" data-score="5">Maximise returns aggressively</div>
+          <div class="options">
+            <div class="option" data-score="1">Preserve capital with low risk</div>
+            <div class="option" data-score="2">Earn moderate returns with stability</div>
+            <div class="option" data-score="3">Balance growth & safety</div>
+            <div class="option" data-score="4">Long-term wealth creation with higher growth</div>
+            <div class="option" data-score="5">Maximise returns aggressively</div>
           </div>
         </div>
 
         <!-- Q2 -->
         <div class="q-box" data-qid="q2">
           <div class="q-title">Which statement best matches your investing mindset?</div>
-          <div class="opt-row">
-            <div class="opt-btn" data-score="1">I cannot tolerate loss; capital protection matters most</div>
-            <div class="opt-btn" data-score="2">I want stability but some growth</div>
-            <div class="opt-btn" data-score="3">I’m okay with moderate growth and moderate risk</div>
-            <div class="opt-btn" data-score="4">I want strong growth even if returns fluctuate</div>
-            <div class="opt-btn" data-score="5">I’m willing to take high risks for superior growth</div>
+          <div class="options">
+            <div class="option" data-score="1">I cannot tolerate loss; capital protection matters most</div>
+            <div class="option" data-score="2">I want stability but some growth</div>
+            <div class="option" data-score="3">I’m okay with moderate growth and moderate risk</div>
+            <div class="option" data-score="4">I want strong growth even if returns fluctuate</div>
+            <div class="option" data-score="5">I’m willing to take high risks for superior growth</div>
           </div>
         </div>
 
         <!-- Q3 -->
         <div class="q-box" data-qid="q3">
           <div class="q-title">What kind of returns would satisfy you over the long term?</div>
-          <div class="opt-row">
-            <div class="opt-btn" data-score="1">4–6% per year (FD-like)</div>
-            <div class="opt-btn" data-score="2">6–9% per year</div>
-            <div class="opt-btn" data-score="3">9–12% per year</div>
-            <div class="opt-btn" data-score="4">12–15% per year</div>
-            <div class="opt-btn" data-score="5">15%+ per year</div>
+          <div class="options">
+            <div class="option" data-score="1">4–6% per year (FD-like)</div>
+            <div class="option" data-score="2">6–9% per year</div>
+            <div class="option" data-score="3">9–12% per year</div>
+            <div class="option" data-score="4">12–15% per year</div>
+            <div class="option" data-score="5">15%+ per year</div>
           </div>
         </div>
 
@@ -73,43 +73,43 @@
       </div>
 
       <!-- ========== SECTION 2 — RETURN EXPECTATION & GROWTH ORIENTATION ========== -->
-      <div class="section-page" data-page="2">
-        <h2>2. Return Expectation & Growth Orientation</h2>
-        <p class="subtitle">Your balance between stability and long-term growth.</p>
+      <div class="page" data-page="2">
+        <h2 class="page-title">2. Return Expectation & Growth Orientation</h2>
+        <p class="page-sub">Your balance between stability and long-term growth.</p>
 
         <!-- Q4 -->
         <div class="q-box" data-qid="q4">
           <div class="q-title">What matters more to you?</div>
-          <div class="opt-row">
-            <div class="opt-btn" data-score="1">Stability with minimal fluctuation</div>
-            <div class="opt-btn" data-score="2">Low fluctuation but decent returns</div>
-            <div class="opt-btn" data-score="3">Balanced returns and risk</div>
-            <div class="opt-btn" data-score="4">Higher returns even if temporary dips occur</div>
-            <div class="opt-btn" data-score="5">Maximum long-term growth</div>
+          <div class="options">
+            <div class="option" data-score="1">Stability with minimal fluctuation</div>
+            <div class="option" data-score="2">Low fluctuation but decent returns</div>
+            <div class="option" data-score="3">Balanced returns and risk</div>
+            <div class="option" data-score="4">Higher returns even if temporary dips occur</div>
+            <div class="option" data-score="5">Maximum long-term growth</div>
           </div>
         </div>
 
         <!-- Q5 -->
         <div class="q-box" data-qid="q5">
           <div class="q-title">Would you choose a fund with higher volatility if long-term return potential is high?</div>
-          <div class="opt-row">
-            <div class="opt-btn" data-score="1">Definitely not</div>
-            <div class="opt-btn" data-score="2">Probably not</div>
-            <div class="opt-btn" data-score="3">Not sure / depends</div>
-            <div class="opt-btn" data-score="4">Likely yes</div>
-            <div class="opt-btn" data-score="5">Definitely yes</div>
+          <div class="options">
+            <div class="option" data-score="1">Definitely not</div>
+            <div class="option" data-score="2">Probably not</div>
+            <div class="option" data-score="3">Not sure / depends</div>
+            <div class="option" data-score="4">Likely yes</div>
+            <div class="option" data-score="5">Definitely yes</div>
           </div>
         </div>
 
         <!-- Q6 -->
         <div class="q-box" data-qid="q6">
           <div class="q-title">What do you believe about equity markets?</div>
-          <div class="opt-row">
-            <div class="opt-btn" data-score="1">Too risky, should be avoided</div>
-            <div class="opt-btn" data-score="2">Useful but only for limited exposure</div>
-            <div class="opt-btn" data-score="3">Suitable for long-term wealth creation</div>
-            <div class="opt-btn" data-score="4">Essential for growth if goal is long term</div>
-            <div class="opt-btn" data-score="5">Best route to fast wealth creation</div>
+          <div class="options">
+            <div class="option" data-score="1">Too risky, should be avoided</div>
+            <div class="option" data-score="2">Useful but only for limited exposure</div>
+            <div class="option" data-score="3">Suitable for long-term wealth creation</div>
+            <div class="option" data-score="4">Essential for growth if goal is long term</div>
+            <div class="option" data-score="5">Best route to fast wealth creation</div>
           </div>
         </div>
 
@@ -120,55 +120,55 @@
       </div>
 
       <!-- ========== SECTION 3 — RISK TOLERANCE (PSYCHOLOGICAL COMFORT) ========== -->
-      <div class="section-page" data-page="3">
-        <h2>3. Risk Tolerance & Comfort with Volatility</h2>
-        <p class="subtitle">How you feel and behave when markets move.</p>
+      <div class="page" data-page="3">
+        <h2 class="page-title">3. Risk Tolerance & Comfort with Volatility</h2>
+        <p class="page-sub">How you feel and behave when markets move.</p>
 
         <!-- Q7 -->
         <div class="q-box" data-qid="q7">
           <div class="q-title">If your portfolio drops 10% in a month, how do you feel?</div>
-          <div class="opt-row">
-            <div class="opt-btn" data-score="1">Extremely stressed, want to exit</div>
-            <div class="opt-btn" data-score="2">Uncomfortable but may reduce allocation</div>
-            <div class="opt-btn" data-score="3">Neutral — I understand volatility happens</div>
-            <div class="opt-btn" data-score="4">Comfortable — I will continue investing</div>
-            <div class="opt-btn" data-score="5">Excited to invest more at lower prices</div>
+          <div class="options">
+            <div class="option" data-score="1">Extremely stressed, want to exit</div>
+            <div class="option" data-score="2">Uncomfortable but may reduce allocation</div>
+            <div class="option" data-score="3">Neutral — I understand volatility happens</div>
+            <div class="option" data-score="4">Comfortable — I will continue investing</div>
+            <div class="option" data-score="5">Excited to invest more at lower prices</div>
           </div>
         </div>
 
         <!-- Q8 -->
         <div class="q-box" data-qid="q8">
           <div class="q-title">If a fund underperforms for 1–2 years, what will you do?</div>
-          <div class="opt-row">
-            <div class="opt-btn" data-score="1">Exit quickly</div>
-            <div class="opt-btn" data-score="2">Consider shifting to safer funds</div>
-            <div class="opt-btn" data-score="3">Review and hold for some time</div>
-            <div class="opt-btn" data-score="4">Continue SIP as planned</div>
-            <div class="opt-btn" data-score="5">Increase exposure if long-term thesis is intact</div>
+          <div class="options">
+            <div class="option" data-score="1">Exit quickly</div>
+            <div class="option" data-score="2">Consider shifting to safer funds</div>
+            <div class="option" data-score="3">Review and hold for some time</div>
+            <div class="option" data-score="4">Continue SIP as planned</div>
+            <div class="option" data-score="5">Increase exposure if long-term thesis is intact</div>
           </div>
         </div>
 
         <!-- Q9 -->
         <div class="q-box" data-qid="q9">
           <div class="q-title">How often do you check your portfolio?</div>
-          <div class="opt-row">
-            <div class="opt-btn" data-score="1">Daily</div>
-            <div class="opt-btn" data-score="2">Weekly</div>
-            <div class="opt-btn" data-score="3">Monthly</div>
-            <div class="opt-btn" data-score="4">Quarterly</div>
-            <div class="opt-btn" data-score="5">Yearly / rarely</div>
+          <div class="options">
+            <div class="option" data-score="1">Daily</div>
+            <div class="option" data-score="2">Weekly</div>
+            <div class="option" data-score="3">Monthly</div>
+            <div class="option" data-score="4">Quarterly</div>
+            <div class="option" data-score="5">Yearly / rarely</div>
           </div>
         </div>
 
         <!-- Q10 -->
         <div class="q-box" data-qid="q10">
           <div class="q-title">How would you describe your personality financially?</div>
-          <div class="opt-row">
-            <div class="opt-btn" data-score="1">Very cautious</div>
-            <div class="opt-btn" data-score="2">Cautious</div>
-            <div class="opt-btn" data-score="3">Balanced</div>
-            <div class="opt-btn" data-score="4">Opportunistic</div>
-            <div class="opt-btn" data-score="5">High-risk taker</div>
+          <div class="options">
+            <div class="option" data-score="1">Very cautious</div>
+            <div class="option" data-score="2">Cautious</div>
+            <div class="option" data-score="3">Balanced</div>
+            <div class="option" data-score="4">Opportunistic</div>
+            <div class="option" data-score="5">High-risk taker</div>
           </div>
         </div>
 
@@ -179,55 +179,55 @@
       </div>
 
       <!-- ========== SECTION 4 — LOSS BEHAVIOUR & REACTIONS ========== -->
-      <div class="section-page" data-page="4">
-        <h2>4. Loss Behaviour & Market Reactions</h2>
-        <p class="subtitle">How you respond when others panic or markets move sharply.</p>
+      <div class="page" data-page="4">
+        <h2 class="page-title">4. Loss Behaviour & Market Reactions</h2>
+        <p class="page-sub">How you respond when others panic or markets move sharply.</p>
 
         <!-- Q11 -->
         <div class="q-box" data-qid="q11">
           <div class="q-title">If markets fall 25%, what is most likely?</div>
-          <div class="opt-row">
-            <div class="opt-btn" data-score="1">Stop SIP and withdraw investments</div>
-            <div class="opt-btn" data-score="2">Pause and wait without investing more</div>
-            <div class="opt-btn" data-score="3">Continue normally</div>
-            <div class="opt-btn" data-score="4">Continue and invest more gradually</div>
-            <div class="opt-btn" data-score="5">Invest aggressively to take advantage of lower prices</div>
+          <div class="options">
+            <div class="option" data-score="1">Stop SIP and withdraw investments</div>
+            <div class="option" data-score="2">Pause and wait without investing more</div>
+            <div class="option" data-score="3">Continue normally</div>
+            <div class="option" data-score="4">Continue and invest more gradually</div>
+            <div class="option" data-score="5">Invest aggressively to take advantage of lower prices</div>
           </div>
         </div>
 
         <!-- Q12 -->
         <div class="q-box" data-qid="q12">
           <div class="q-title">Have you ever panicked & exited an investment at a loss?</div>
-          <div class="opt-row">
-            <div class="opt-btn" data-score="1">Yes, multiple times</div>
-            <div class="opt-btn" data-score="2">Yes, once</div>
-            <div class="opt-btn" data-score="3">Maybe / not sure</div>
-            <div class="opt-btn" data-score="4">No, rarely</div>
-            <div class="opt-btn" data-score="5">Never</div>
+          <div class="options">
+            <div class="option" data-score="1">Yes, multiple times</div>
+            <div class="option" data-score="2">Yes, once</div>
+            <div class="option" data-score="3">Maybe / not sure</div>
+            <div class="option" data-score="4">No, rarely</div>
+            <div class="option" data-score="5">Never</div>
           </div>
         </div>
 
         <!-- Q13 -->
         <div class="q-box" data-qid="q13">
           <div class="q-title">When seeing others gain more in markets, do you feel pressure to chase returns?</div>
-          <div class="opt-row">
-            <div class="opt-btn" data-score="1">Very strongly</div>
-            <div class="opt-btn" data-score="2">Somewhat</div>
-            <div class="opt-btn" data-score="3">A little</div>
-            <div class="opt-btn" data-score="4">Rarely</div>
-            <div class="opt-btn" data-score="5">Not at all</div>
+          <div class="options">
+            <div class="option" data-score="1">Very strongly</div>
+            <div class="option" data-score="2">Somewhat</div>
+            <div class="option" data-score="3">A little</div>
+            <div class="option" data-score="4">Rarely</div>
+            <div class="option" data-score="5">Not at all</div>
           </div>
         </div>
 
         <!-- Q14 -->
         <div class="q-box" data-qid="q14">
           <div class="q-title">If a new trending fund rises sharply, what do you do?</div>
-          <div class="opt-row">
-            <div class="opt-btn" data-score="1">Want to switch immediately</div>
-            <div class="opt-btn" data-score="2">Consider switching partially</div>
-            <div class="opt-btn" data-score="3">Analyse but usually stay with plan</div>
-            <div class="opt-btn" data-score="4">Continue my plan confidently</div>
-            <div class="opt-btn" data-score="5">I prefer entering after corrections, not at peaks</div>
+          <div class="options">
+            <div class="option" data-score="1">Want to switch immediately</div>
+            <div class="option" data-score="2">Consider switching partially</div>
+            <div class="option" data-score="3">Analyse but usually stay with plan</div>
+            <div class="option" data-score="4">Continue my plan confidently</div>
+            <div class="option" data-score="5">I prefer entering after corrections, not at peaks</div>
           </div>
         </div>
 
@@ -238,43 +238,43 @@
       </div>
 
       <!-- ========== SECTION 5 — RISK CAPACITY (FINANCIAL ABILITY) ========== -->
-      <div class="section-page" data-page="5">
-        <h2>5. Risk Capacity & Financial Cushion</h2>
-        <p class="subtitle">Your ability to handle risk based on income and buffers.</p>
+      <div class="page" data-page="5">
+        <h2 class="page-title">5. Risk Capacity & Financial Cushion</h2>
+        <p class="page-sub">Your ability to handle risk based on income and buffers.</p>
 
         <!-- Q15 -->
         <div class="q-box" data-qid="q15">
           <div class="q-title">How stable is your income?</div>
-          <div class="opt-row">
-            <div class="opt-btn" data-score="1">Very unstable</div>
-            <div class="opt-btn" data-score="2">Somewhat unstable</div>
-            <div class="opt-btn" data-score="3">Moderately stable</div>
-            <div class="opt-btn" data-score="4">Stable</div>
-            <div class="opt-btn" data-score="5">Very stable and predictable</div>
+          <div class="options">
+            <div class="option" data-score="1">Very unstable</div>
+            <div class="option" data-score="2">Somewhat unstable</div>
+            <div class="option" data-score="3">Moderately stable</div>
+            <div class="option" data-score="4">Stable</div>
+            <div class="option" data-score="5">Very stable and predictable</div>
           </div>
         </div>
 
         <!-- Q16 -->
         <div class="q-box" data-qid="q16">
           <div class="q-title">Do you have emergency savings?</div>
-          <div class="opt-row">
-            <div class="opt-btn" data-score="1">No savings</div>
-            <div class="opt-btn" data-score="2">Less than 1 month of expenses</div>
-            <div class="opt-btn" data-score="3">1–3 months of expenses</div>
-            <div class="opt-btn" data-score="4">3–6 months of expenses</div>
-            <div class="opt-btn" data-score="5">More than 6 months of expenses</div>
+          <div class="options">
+            <div class="option" data-score="1">No savings</div>
+            <div class="option" data-score="2">Less than 1 month of expenses</div>
+            <div class="option" data-score="3">1–3 months of expenses</div>
+            <div class="option" data-score="4">3–6 months of expenses</div>
+            <div class="option" data-score="5">More than 6 months of expenses</div>
           </div>
         </div>
 
         <!-- Q17 -->
         <div class="q-box" data-qid="q17">
           <div class="q-title">If you lose your income temporarily, how long can you continue SIP comfortably?</div>
-          <div class="opt-row">
-            <div class="opt-btn" data-score="1">Less than 1 month</div>
-            <div class="opt-btn" data-score="2">1–3 months</div>
-            <div class="opt-btn" data-score="3">3–6 months</div>
-            <div class="opt-btn" data-score="4">6–12 months</div>
-            <div class="opt-btn" data-score="5">More than 12 months</div>
+          <div class="options">
+            <div class="option" data-score="1">Less than 1 month</div>
+            <div class="option" data-score="2">1–3 months</div>
+            <div class="option" data-score="3">3–6 months</div>
+            <div class="option" data-score="4">6–12 months</div>
+            <div class="option" data-score="5">More than 12 months</div>
           </div>
         </div>
 
@@ -285,43 +285,43 @@
       </div>
 
       <!-- ========== SECTION 6 — LIQUIDITY NEEDS & TIME HORIZON ========== -->
-      <div class="section-page" data-page="6">
-        <h2>6. Liquidity Needs & Time Horizon</h2>
-        <p class="subtitle">How long you can stay invested and how urgently you need funds.</p>
+      <div class="page" data-page="6">
+        <h2 class="page-title">6. Liquidity Needs & Time Horizon</h2>
+        <p class="page-sub">How long you can stay invested and how urgently you need funds.</p>
 
         <!-- Q18 -->
         <div class="q-box" data-qid="q18">
           <div class="q-title">How soon do you expect to need this invested money?</div>
-          <div class="opt-row">
-            <div class="opt-btn" data-score="1">Within 1 year</div>
-            <div class="opt-btn" data-score="2">1–3 years</div>
-            <div class="opt-btn" data-score="3">3–5 years</div>
-            <div class="opt-btn" data-score="4">5–10 years</div>
-            <div class="opt-btn" data-score="5">More than 10 years</div>
+          <div class="options">
+            <div class="option" data-score="1">Within 1 year</div>
+            <div class="option" data-score="2">1–3 years</div>
+            <div class="option" data-score="3">3–5 years</div>
+            <div class="option" data-score="4">5–10 years</div>
+            <div class="option" data-score="5">More than 10 years</div>
           </div>
         </div>
 
         <!-- Q19 -->
         <div class="q-box" data-qid="q19">
           <div class="q-title">If your goal maturity comes during a market crash, what will you do?</div>
-          <div class="opt-row">
-            <div class="opt-btn" data-score="1">Withdraw everything immediately</div>
-            <div class="opt-btn" data-score="2">Redeem gradually even if values are low</div>
-            <div class="opt-btn" data-score="3">Decide based on advice at that time</div>
-            <div class="opt-btn" data-score="4">Likely continue until markets recover</div>
-            <div class="opt-btn" data-score="5">Definitely continue and withdraw when valuations improve</div>
+          <div class="options">
+            <div class="option" data-score="1">Withdraw everything immediately</div>
+            <div class="option" data-score="2">Redeem gradually even if values are low</div>
+            <div class="option" data-score="3">Decide based on advice at that time</div>
+            <div class="option" data-score="4">Likely continue until markets recover</div>
+            <div class="option" data-score="5">Definitely continue and withdraw when valuations improve</div>
           </div>
         </div>
 
         <!-- Q20 -->
         <div class="q-box" data-qid="q20">
           <div class="q-title">How long are you comfortable staying invested to achieve your major goals?</div>
-          <div class="opt-row">
-            <div class="opt-btn" data-score="1">Short-term (less than 3 years)</div>
-            <div class="opt-btn" data-score="2">Medium term (3–5 years)</div>
-            <div class="opt-btn" data-score="3">5–7 years</div>
-            <div class="opt-btn" data-score="4">10+ years</div>
-            <div class="opt-btn" data-score="5">As long as required for long-term wealth creation</div>
+          <div class="options">
+            <div class="option" data-score="1">Short-term (less than 3 years)</div>
+            <div class="option" data-score="2">Medium term (3–5 years)</div>
+            <div class="option" data-score="3">5–7 years</div>
+            <div class="option" data-score="4">10+ years</div>
+            <div class="option" data-score="5">As long as required for long-term wealth creation</div>
           </div>
         </div>
 
@@ -332,9 +332,9 @@
       </div>
 
       <!-- ========== SECTION 7 — SUMMARY & LEAD CAPTURE ========== -->
-      <div class="section-page" data-page="7">
-        <h1>Your Investor Profile</h1>
-        <p class="subtitle">
+      <div class="page" data-page="7">
+        <h1 class="page-title">Your Investor Profile</h1>
+        <p class="page-sub">
           Based on your responses, here is an approximate view of your investing personality.
           This is not a label for life, but a starting point to align your mutual fund strategy with your behaviour and comfort level.
         </p>
@@ -394,149 +394,103 @@
     </div>
   </div>
 
+
+
+  
 <script>
+/* ===================================================
+   INITIAL SETUP
+=================================================== */
+const pages = document.querySelectorAll(".page");
+let rp = JSON.parse(localStorage.getItem("rp") || "{}");
+let current = Number(localStorage.getItem("rp_page") || 1);
 
-
-
-
-  /* ================= INITIAL SETUP ================= */
-const pages = document.querySelectorAll(".section-page");
-let currentPage = 0;
-let rpAnswers = JSON.parse(localStorage.getItem("rp_answers") || "{}");
-let storedPage = parseInt(localStorage.getItem("rp_page") || "0");
-
-if (storedPage >= 7) {
-  localStorage.removeItem("rp_answers");
-  localStorage.removeItem("rp_page");
-  storedPage = 0;
+if (current >= 7) {
+  localStorage.clear();
+  current = 1;
 }
 
-currentPage = storedPage;
-showPage(currentPage);
+showPage(current);
 
-/* ================= NAVIGATION ================= */
+/* ===================================================
+   NAVIGATION
+=================================================== */
 function showPage(n) {
   pages.forEach(p => p.classList.remove("active"));
-  const page = pages[n];
-  if (page) {
-    page.classList.add("active");
-    currentPage = n;
-    localStorage.setItem("rp_page", String(n));
+  document.querySelector(`.page[data-page="${n}"]`).classList.add("active");
 
-    updateProgressBar(n);
-
-    checkSectionCompletion();
-  }
+  current = n;
+  localStorage.setItem("rp_page", n);
+  updateProgressBar(n);
+  updateNextVisibility();
 }
 
-/* Next buttons */
+/* NEXT BUTTONS */
 document.querySelectorAll(".next-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
-    const qboxes = section.querySelectorAll(".q-box");
-    const unanswered = [...qboxes].filter(q => !rpAnswers[q.dataset.qid]);
-
-    if (unanswered.length > 0) {
-      const first = unanswered[0];
-      first.classList.add("attention");
-      setTimeout(() => first.classList.remove("attention"), 800);
-      return;
-    }
-    showPage(currentPage + 1);
-  });
+  btn.onclick = () => showPage(current + 1);
 });
 
-/* Back buttons */
-document.querySelectorAll(".prev-btn").forEach(btn => {
-  btn.addEventListener("click", () => showPage(currentPage - 1));
+/* BACK BUTTONS */
+document.querySelectorAll(".ghost:not([disabled])").forEach(btn => {
+  btn.onclick = () => showPage(current - 1);
 });
 
-/* ================= OPTION SELECTION ================= */
-document.querySelectorAll(".q-box").forEach(qbox => {
-  const qid = qbox.dataset.qid;
-  const optButtons = qbox.querySelectorAll(".opt-btn");
+/* ===================================================
+   OPTION SELECTION (Fully Fixed)
+=================================================== */
+document.querySelectorAll(".question").forEach(q => {
+  const qid = q.dataset.qid;
+  const options = q.querySelectorAll(".option");
 
-  /* FIXED RESTORE */
-  if (rpAnswers[qid]) {
-    optButtons.forEach(b => {
-      if (Number(b.dataset.score) === Number(rpAnswers[qid])) {
-        b.classList.add("selected");
+  /* Restore selection */
+  if (rp[qid]) {
+    options.forEach(o => {
+      if (Number(o.dataset.score) === Number(rp[qid])) {
+        o.classList.add("selected");
       }
     });
   }
 
-  optButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const score = Number(btn.dataset.score);
-      rpAnswers[qid] = score;
-      localStorage.setItem("rp_answers", JSON.stringify(rpAnswers));
+  options.forEach(opt => {
+    opt.onclick = () => {
+      /* remove only inside the same question */
+      options.forEach(o => o.classList.remove("selected"));
 
-      optButtons.forEach(b => b.classList.remove("selected"));
-      btn.classList.add("selected");
+      opt.classList.add("selected");
 
-      checkSectionCompletion();
-    });
+      rp[qid] = Number(opt.dataset.score);
+      localStorage.setItem("rp", JSON.stringify(rp));
+
+      updateNextVisibility();
+    };
   });
 });
 
-/* ================= NEXT BUTTON VISIBILITY ================= */
-function checkSectionCompletion() {
-  const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
-  const qboxes = section.querySelectorAll(".q-box");
-  const unanswered = [...qboxes].filter(q => !rpAnswers[q.dataset.qid]);
+/* ===================================================
+   NEXT BUTTON SHOW / HIDE
+=================================================== */
+function updateNextVisibility() {
+  const section = document.querySelector(`.page[data-page="${current}"]`);
+  const questions = section.querySelectorAll(".question");
 
-  const nextBtn = section.querySelector(".next-btn");
-  const finishBtn = document.getElementById("finishBtn");
-
-  if (nextBtn) nextBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
-  if (finishBtn && section.contains(finishBtn))
-    finishBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
-}
-
-/* ================= PROGRESS BAR ================= */
-function updateProgressBar(pageIndex) {
-  const totalPages = 7;
-  const percent = (pageIndex / (totalPages - 1)) * 100;
-  document.getElementById("progressBarFill").style.width = percent + "%";
-}
-
-/* ================= FINISH LOGIC ================= */
-const finishBtn = document.getElementById("finishBtn");
-if (finishBtn) {
-  finishBtn.addEventListener("click", () => {
-    const total = calcScore();
-    const profile = classifyProfile(total);
-    renderProfile(profile);
-    showPage(7);
-    localStorage.setItem("rp_page", "7");
+  let allAnswered = true;
+  questions.forEach(q => {
+    if (!rp[q.dataset.qid]) allAnswered = false;
   });
+
+  const next = section.querySelector(".next-btn");
+  if (next) next.style.display = allAnswered ? "inline-block" : "none";
 }
 
-function calcScore() {
-  let score = 0;
-  for (let i = 1; i <= 20; i++) score += Number(rpAnswers["q" + i] || 0);
-  return score;
+/* ===================================================
+   PROGRESS BAR
+=================================================== */
+function updateProgressBar(n) {
+  const total = 7;
+  const pct = ((n - 1) / (total - 1)) * 100;
+  document.getElementById("progressBarFill").style.width = pct + "%";
 }
-
-function classifyProfile(score) {
-  if (score <= 39)
-    return { category:"Conservative", tagline:"Capital protection matters most.", detail:"Prefers stability." };
-  if (score <= 59)
-    return { category:"Moderately Conservative", tagline:"Open to some risk.", detail:"Prefers stability with some growth." };
-  if (score <= 74)
-    return { category:"Balanced", tagline:"Comfortable with moderate fluctuation.", detail:"Balanced allocation suits you." };
-  if (score <= 89)
-    return { category:"Moderately Aggressive", tagline:"Comfortable with volatility.", detail:"Higher equity allocation works." };
-  return { category:"Aggressive", tagline:"Willing to take meaningful risk.", detail:"Equity-heavy portfolio suits you." };
-}
-
-function renderProfile(p) {
-  document.getElementById("profileBadge").textContent = "Investor Profile";
-  document.getElementById("profileLabel").textContent = p.category;
-  document.getElementById("profileTagline").textContent = p.tagline;
-  document.getElementById("profileDetail").textContent = p.detail;
-}
-
 </script>
+
 </body>
 </html>
