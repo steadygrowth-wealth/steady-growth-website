@@ -8,278 +8,17 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    :root {
-      --bg: radial-gradient(circle at top, #141b35 0, #050816 55%);
-      --card: rgba(6,10,28,0.94);
-      --muted: #a7afc7;
-      --accent: #f0b76b;
-      --accent-dark: #b9782f;
-      --fg: #ffffff;
-      --radius: 16px;
-      --border-soft: rgba(255,255,255,0.06);
-      --error: #ff6b6b;
-      --success: #4caf50;
-    }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: "Poppins", sans-serif;
-      background: var(--bg);
-      color: var(--fg);
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 24px 14px;
-    }
-
-    .wrap {
-      width: 100%;
-      max-width: 840px;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border-soft);
-      border-radius: var(--radius);
-      padding: 26px;
-      box-shadow: 0 18px 36px rgba(0,0,0,0.65);
-    }
-
-    h1, h2 {
-      font-family: "Playfair Display", serif;
-      margin: 0 0 6px 0;
-      color: #ffe5ba;
-    }
-
-    .subtitle {
-      font-size: 0.92rem;
-      color: var(--muted);
-      margin-bottom: 14px;
-    }
-
-    /* Section container */
-    .section-page {
-      display: none;
-      animation: fadeIn 0.25s ease forwards;
-    }
-    .section-page.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Question layout */
-    .q-box {
-      border: 1px solid var(--border-soft);
-      border-radius: 14px;
-      padding: 14px 16px;
-      margin-bottom: 14px;
-      background: rgba(255,255,255,0.02);
-      transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-    }
-
-    .q-title {
-      font-size: 1rem;
-      font-weight: 500;
-      margin-bottom: 4px;
-    }
-
-    .q-desc {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-
-    .opt-row {
-      display: grid;
-      gap: 8px;
-    }
-
-    .opt-btn {
-      border-radius: 10px;
-      border: 1px solid var(--border-soft);
-      background: rgba(255,255,255,0.02);
-      padding: 9px 11px;
-      font-size: 0.85rem;
-      color: var(--muted);
-      cursor: pointer;
-      text-align: left;
-      transition: all 0.18s ease;
-    }
-
-    .opt-btn:hover {
-      border-color: rgba(240,183,107,0.35);
-      transform: translateY(-1px);
-      color: #fff;
-    }
-
-    .opt-btn.selected {
-      background: linear-gradient(90deg, rgba(240,183,107,0.20), rgba(240,183,107,0.06));
-      border-color: var(--accent);
-      color: #1b1406;
-      font-weight: 600;
-    }
-
-    /* Attention highlight */
-    .attention {
-      border-color: var(--error) !important;
-      box-shadow: 0 0 12px rgba(255,107,107,0.5);
-      transform: translateY(-1px);
-    }
-
-    /* Navigation */
-    .nav-row {
-      margin-top: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      border-radius: 999px;
-      padding: 10px 20px;
-      border: 1px solid transparent;
-      cursor: pointer;
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-
-    .btn-primary {
-      background: radial-gradient(circle at 10% 20%, #ffe6c0 0, #f0b76b 35%, #b9782f 100%);
-      color: #1b1406;
-      border-color: rgba(240,183,107,0.45);
-    }
-
-    .btn-ghost {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.2);
-      color: var(--muted);
-    }
-
-    .btn-ghost:hover {
-      border-color: rgba(255,255,255,0.45);
-      color: #fff;
-    }
-
-    /* Summary */
-    .summary-box {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border-soft);
-      padding: 16px;
-      border-radius: 10px;
-      margin-bottom: 18px;
-    }
-
-    .profile-label {
-      font-size: 1.2rem;
-      font-weight: 600;
-      text-align: center;
-      margin-bottom: 6px;
-      color: #fff;
-    }
-
-    .profile-tagline {
-      font-size: 0.92rem;
-      color: var(--muted);
-      text-align: center;
-      margin-bottom: 10px;
-    }
-
-    .profile-detail {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .badge-inline {
-      display: inline-block;
-      font-size: 0.75rem;
-      padding: 3px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(240,183,107,0.4);
-      color: var(--accent);
-      background: rgba(240,183,107,0.08);
-      margin-bottom: 8px;
-    }
-
-    /* Lead capture form */
-    .lead-form {
-      margin-top: 12px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      padding-top: 14px;
-    }
-
-    .field-group {
-      margin-bottom: 10px;
-    }
-
-    label {
-      display: block;
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-bottom: 3px;
-    }
-
-    input[type="text"],
-    input[type="tel"],
-    input[type="email"] {
-      width: 100%;
-      padding: 9px 10px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(6,10,28,0.85);
-      color: #fff;
-      font-size: 0.85rem;
-      outline: none;
-      transition: border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-    }
-
-    input::placeholder {
-      color: rgba(167,175,199,0.7);
-    }
-
-    input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(240,183,107,0.4);
-      background: rgba(6,10,28,0.95);
-    }
-
-    .small-note {
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-
-    .status-msg {
-      margin-top: 8px;
-      font-size: 0.8rem;
-      display: none;
-    }
-
-    .status-ok {
-      color: var(--success);
-    }
-
-    .status-err {
-      color: var(--error);
-    }
-
-    @media (max-width: 640px) {
-      .card {
-        padding: 18px;
-      }
-    }
-  </style>
+  <!-- External CSS -->
+  <link rel="stylesheet" href="risk_profile.css" />
 </head>
 
 <body>
+
+  <!-- FIXED PROGRESS BAR -->
+  <div id="progressBarContainer">
+    <div id="progressBarFill"></div>
+  </div>
+
   <div class="wrap">
     <div class="card" id="mainCard">
 
@@ -656,15 +395,16 @@
   </div>
 
 <script>
-/* ---------------------------------------
-   INITIAL SETUP & LOCAL STORAGE
-----------------------------------------*/
+
+
+
+
+  /* ================= INITIAL SETUP ================= */
 const pages = document.querySelectorAll(".section-page");
 let currentPage = 0;
 let rpAnswers = JSON.parse(localStorage.getItem("rp_answers") || "{}");
 let storedPage = parseInt(localStorage.getItem("rp_page") || "0");
 
-// If previously completed (page 7), reset on next visit
 if (storedPage >= 7) {
   localStorage.removeItem("rp_answers");
   localStorage.removeItem("rp_page");
@@ -674,9 +414,7 @@ if (storedPage >= 7) {
 currentPage = storedPage;
 showPage(currentPage);
 
-/* ---------------------------------------
-   NAVIGATION
-----------------------------------------*/
+/* ================= NAVIGATION ================= */
 function showPage(n) {
   pages.forEach(p => p.classList.remove("active"));
   const page = pages[n];
@@ -685,55 +423,40 @@ function showPage(n) {
     currentPage = n;
     localStorage.setItem("rp_page", String(n));
 
-    // Smooth scroll to section top on mobile
-    if (window.innerWidth <= 900) {
-      setTimeout(() => {
-        page.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 120);
-    }
+    updateProgressBar(n);
 
-    checkSectionCompletion();  // update Next/Finish visibility
+    checkSectionCompletion();
   }
 }
 
-const startBtn = document.getElementById("startBtn");
-if (startBtn) {
-  startBtn.addEventListener("click", () => showPage(1));
-}
-
-// Next with validation
+/* Next buttons */
 document.querySelectorAll(".next-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
-    if (!section) return;
     const qboxes = section.querySelectorAll(".q-box");
     const unanswered = [...qboxes].filter(q => !rpAnswers[q.dataset.qid]);
 
     if (unanswered.length > 0) {
       const first = unanswered[0];
       first.classList.add("attention");
-      first.scrollIntoView({ behavior: "smooth", block: "center" });
       setTimeout(() => first.classList.remove("attention"), 800);
       return;
     }
-
     showPage(currentPage + 1);
   });
 });
 
-// Back
+/* Back buttons */
 document.querySelectorAll(".prev-btn").forEach(btn => {
   btn.addEventListener("click", () => showPage(currentPage - 1));
 });
 
-/* ---------------------------------------
-   OPTION SELECTION LOGIC
-----------------------------------------*/
+/* ================= OPTION SELECTION ================= */
 document.querySelectorAll(".q-box").forEach(qbox => {
   const qid = qbox.dataset.qid;
   const optButtons = qbox.querySelectorAll(".opt-btn");
 
-  // Restore previous answer
+  /* FIXED RESTORE */
   if (rpAnswers[qid]) {
     optButtons.forEach(b => {
       if (Number(b.dataset.score) === Number(rpAnswers[qid])) {
@@ -744,204 +467,76 @@ document.querySelectorAll(".q-box").forEach(qbox => {
 
   optButtons.forEach(btn => {
     btn.addEventListener("click", () => {
-      const score = Number(btn.dataset.score) || 0;
+      const score = Number(btn.dataset.score);
       rpAnswers[qid] = score;
       localStorage.setItem("rp_answers", JSON.stringify(rpAnswers));
 
-      // visual state
       optButtons.forEach(b => b.classList.remove("selected"));
       btn.classList.add("selected");
-
-      // Scroll to next question (mobile)
-      if (window.innerWidth <= 900) {
-        setTimeout(() => {
-          const nextQ = qbox.nextElementSibling && qbox.nextElementSibling.classList.contains("q-box")
-            ? qbox.nextElementSibling
-            : null;
-          if (nextQ) {
-            nextQ.scrollIntoView({ behavior: "smooth", block: "center" });
-          }
-        }, 100);
-      }
 
       checkSectionCompletion();
     });
   });
 });
 
-/* ---------------------------------------
-   SHOW/HIDE NEXT OR FINISH
-----------------------------------------*/
+/* ================= NEXT BUTTON VISIBILITY ================= */
 function checkSectionCompletion() {
   const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
-  if (!section) return;
-
   const qboxes = section.querySelectorAll(".q-box");
   const unanswered = [...qboxes].filter(q => !rpAnswers[q.dataset.qid]);
 
   const nextBtn = section.querySelector(".next-btn");
   const finishBtn = document.getElementById("finishBtn");
 
-  if (nextBtn) {
-    nextBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
-  }
-
-  if (finishBtn && section.contains(finishBtn)) {
+  if (nextBtn) nextBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
+  if (finishBtn && section.contains(finishBtn))
     finishBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
-  }
 }
 
-/* ---------------------------------------
-   FINISH → CALCULATE PROFILE
-----------------------------------------*/
+/* ================= PROGRESS BAR ================= */
+function updateProgressBar(pageIndex) {
+  const totalPages = 7;
+  const percent = (pageIndex / (totalPages - 1)) * 100;
+  document.getElementById("progressBarFill").style.width = percent + "%";
+}
+
+/* ================= FINISH LOGIC ================= */
 const finishBtn = document.getElementById("finishBtn");
 if (finishBtn) {
   finishBtn.addEventListener("click", () => {
     const total = calcScore();
     const profile = classifyProfile(total);
-
     renderProfile(profile);
     showPage(7);
-
-    // Mark as completed — next visit will reset at load
     localStorage.setItem("rp_page", "7");
   });
 }
 
 function calcScore() {
   let score = 0;
-  for (let i = 1; i <= 20; i++) {
-    const key = "q" + i;
-    score += Number(rpAnswers[key] || 0);
-  }
+  for (let i = 1; i <= 20; i++) score += Number(rpAnswers["q" + i] || 0);
   return score;
 }
 
 function classifyProfile(score) {
-  // Range: 20–100
-  let category = "";
-  let tagline = "";
-  let detail = "";
-
-  if (score <= 39) {
-    category = "Conservative";
-    tagline = "Capital protection and stability matter more than chasing high returns.";
-    detail =
-      "You prefer lower volatility and steady growth. A portfolio tilted towards high-quality debt and conservative hybrid funds " +
-      "is usually more suitable than very aggressive equity-heavy strategies.";
-  } else if (score <= 59) {
-    category = "Moderately Conservative";
-    tagline = "You are open to some risk, but prefer visible stability and comfort.";
-    detail =
-      "You can accept limited volatility for better returns, but capital safety still matters a lot. A mix with larger allocation to " +
-      "debt and balanced or conservative hybrid funds may be appropriate, with controlled equity exposure.";
-  } else if (score <= 74) {
-    category = "Balanced";
-    tagline = "You are comfortable with a healthy balance between growth and stability.";
-    detail =
-      "You can handle reasonable fluctuations in pursuit of better long-term returns. A balanced allocation across equity, hybrid " +
-      "and debt funds — aligned to your goals and time horizon — typically suits this profile.";
-  } else if (score <= 89) {
-    category = "Moderately Aggressive";
-    tagline = "You are comfortable with volatility in exchange for stronger long-term growth.";
-    detail =
-      "You understand that markets move in cycles and are willing to stay invested through them. A portfolio with higher equity " +
-      "allocation, supported by some stabilising debt/hybrid portion, may suit your profile.";
-  } else {
-    category = "Aggressive";
-    tagline = "You are willing to take meaningful risk and stay invested for long-term wealth creation.";
-    detail =
-      "You are comfortable with significant short-term fluctuations in pursuit of superior growth. Higher equity allocation across " +
-      "diversified equity funds may be suitable, provided your financial base and time horizon support this stance.";
-  }
-
-  return { score, category, tagline, detail };
+  if (score <= 39)
+    return { category:"Conservative", tagline:"Capital protection matters most.", detail:"Prefers stability." };
+  if (score <= 59)
+    return { category:"Moderately Conservative", tagline:"Open to some risk.", detail:"Prefers stability with some growth." };
+  if (score <= 74)
+    return { category:"Balanced", tagline:"Comfortable with moderate fluctuation.", detail:"Balanced allocation suits you." };
+  if (score <= 89)
+    return { category:"Moderately Aggressive", tagline:"Comfortable with volatility.", detail:"Higher equity allocation works." };
+  return { category:"Aggressive", tagline:"Willing to take meaningful risk.", detail:"Equity-heavy portfolio suits you." };
 }
 
 function renderProfile(p) {
-  const badge = document.getElementById("profileBadge");
-  const label = document.getElementById("profileLabel");
-  const tagline = document.getElementById("profileTagline");
-  const detail = document.getElementById("profileDetail");
-
-  if (badge) badge.textContent = "Investor Profile";
-  if (label) label.textContent = p.category;
-  if (tagline) tagline.textContent = p.tagline;
-  if (detail) detail.textContent = p.detail;
+  document.getElementById("profileBadge").textContent = "Investor Profile";
+  document.getElementById("profileLabel").textContent = p.category;
+  document.getElementById("profileTagline").textContent = p.tagline;
+  document.getElementById("profileDetail").textContent = p.detail;
 }
 
-/* ---------------------------------------
-   LEAD FORM → GOOGLE SHEET (APPS SCRIPT)
-----------------------------------------*/
-const leadForm = document.getElementById("leadForm");
-const leadStatus = document.getElementById("leadStatus");
-const leadSubmitBtn = document.getElementById("leadSubmitBtn");
-
-if (leadForm) {
-  leadForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const name = document.getElementById("leadName").value.trim();
-    const phone = document.getElementById("leadPhone").value.trim();
-    const email = document.getElementById("leadEmail").value.trim();
-
-    if (!name) {
-      showLeadStatus("Please enter your name.", true);
-      return;
-    }
-    if (!/^[0-9]{10}$/.test(phone)) {
-      showLeadStatus("Please enter a valid 10-digit mobile number.", true);
-      return;
-    }
-
-    const finalScore = calcScore();
-    const profile = classifyProfile(finalScore);
-
-    const payload = {
-      type: "risk_profile",
-      name,
-      mobile: phone,
-      email,
-      score: finalScore,
-      category: profile.category,
-      answers: rpAnswers,
-      timestamp: new Date().toISOString(),
-      arn: "ARN-285834"
-    };
-
-    if (leadSubmitBtn) {
-      leadSubmitBtn.disabled = true;
-      leadSubmitBtn.textContent = "Submitting…";
-    }
-    showLeadStatus("Submitting your details…", false);
-
-    try {
-      await fetch("https://script.google.com/macros/s/AKfycbwEcCOcMxezlGTw4xH8ip8SdpNtjV0f5Rhon8aoWhQunijGV0rx3SAzDGQh8ChN0-chtA/exec", {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-
-      showLeadStatus("Thank you. Your profile has been recorded — I will review it personally and get in touch with a suggested plan.", false, true);
-    } catch (err) {
-      showLeadStatus("Something went wrong. Please try again or message me on WhatsApp.", true);
-    } finally {
-      if (leadSubmitBtn) {
-        leadSubmitBtn.disabled = false;
-        leadSubmitBtn.textContent = "Share My Details";
-      }
-    }
-  });
-}
-
-function showLeadStatus(msg, isError = false, isSuccess = false) {
-  if (!leadStatus) return;
-  leadStatus.style.display = "block";
-  leadStatus.textContent = msg;
-  leadStatus.classList.remove("status-ok", "status-err");
-  if (isError) leadStatus.classList.add("status-err");
-  else if (isSuccess) leadStatus.classList.add("status-ok");
-}
 </script>
 </body>
 </html>
