@@ -516,7 +516,40 @@
 
 <script>
 /* ===================================================
-   INITIAL SETUP (pages 1..6 kept as before in your file)
+   INITIAL SETUP
+=================================================== */
+
+const pages = document.querySelectorAll(".page");
+let rp = JSON.parse(localStorage.getItem("rp") || "{}");
+let stored = parseInt(localStorage.getItem("rp_page"), 10);
+let current = (!stored || stored < 1 || stored > 7) ? 1 : stored;
+
+if (current >= 7 || Object.keys(rp).length === 0) {
+  localStorage.removeItem("rp");
+  localStorage.removeItem("rp_page");
+  rp = {};
+  current = 1;
+}
+
+/* IMPORTANT FIX — wait for DOM before showing page */
+document.addEventListener("DOMContentLoaded", () => {
+  showPage(current);
+});
+
+/* ===================================================
+   NAVIGATION
+=================================================== */
+function showPage(n) {
+  pages.forEach(p => p.classList.remove("active"));
+  document.querySelector(`.page[data-page="${n}"]`).classList.add("active");
+
+  current = n;
+  localStorage.setItem("rp_page", n);
+  updateProgressBar(n);
+  updateNextVisibility();
+}
+
+/* ===================================================
    This script enhances Page 7 behavior: collect lead, send to Apps Script, show profile below form
 =================================================== */
 
