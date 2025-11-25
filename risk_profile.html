@@ -401,16 +401,21 @@
 /* ===================================================
    INITIAL SETUP
 =================================================== */
+  localStorage.removeItem("rp_page");
+
 const pages = document.querySelectorAll(".page");
 let rp = JSON.parse(localStorage.getItem("rp") || "{}");
 let stored = parseInt(localStorage.getItem("rp_page"), 10);
 let current = (!stored || stored < 1 || stored > 7) ? 1 : stored;
 
 
-if (current >= 7) {
-  localStorage.clear();
+if (current >= 7 || Object.keys(rp).length === 0) {
+  localStorage.removeItem("rp");
+  localStorage.removeItem("rp_page");
+  rp = {};
   current = 1;
 }
+
 
 showPage(current);
 
