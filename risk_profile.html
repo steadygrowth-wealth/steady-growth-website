@@ -78,7 +78,7 @@
         </div>
 
         <div class="nav-row">
-          <button class="btn btn-ghost" prev-btn>Back</button>
+          <button class="btn btn-ghost prev-btn">Back</button>
           <button class="btn btn-primary next-btn" style="display:none;">Next</button>
         </div>
       </div>
@@ -425,7 +425,6 @@
 
 
   
-<!-- FULL SCRIPT ================================================================= -->
 <script>
 /* Storage & DOM Setup */
 const pages = document.querySelectorAll(".section-page");
@@ -449,21 +448,22 @@ function updateProgressBar() {
   document.getElementById("progressBarFill").style.width = pct + "%";
 }
 
-/* Activate first page */
+/* Activate page 1 */
 document.addEventListener("DOMContentLoaded", () => {
   showPage(1);
 });
 
-/* Navigation Buttons */
+/* Next buttons */
 document.querySelectorAll(".next-btn").forEach(btn =>
   btn.addEventListener("click", () => showPage(current + 1))
 );
 
+/* Prev buttons */
 document.querySelectorAll(".prev-btn").forEach(btn =>
   btn.addEventListener("click", () => showPage(current - 1))
 );
 
-/* Option selection (5-option style) */
+/* Option selection */
 document.querySelectorAll(".question").forEach(q => {
   const qid = q.dataset.qid;
   const options = q.querySelectorAll(".option");
@@ -483,7 +483,7 @@ document.querySelectorAll(".question").forEach(q => {
   );
 });
 
-/* Show next only when all questions in section answered */
+/* Show Next button only when section questions answered */
 function updateNextVisibility() {
   const section = document.querySelector(`.section-page[data-page="${current}"]`);
   const questions = section.querySelectorAll(".question");
@@ -494,12 +494,12 @@ function updateNextVisibility() {
   if (next) next.style.display = allDone ? "inline-block" : "none";
 }
 
-/* Finish button -> Go to form only */
+/* Finish → Go to summary page */
 document.getElementById("finishBtn").addEventListener("click", () => {
-  showPage(6);
+  showPage(7);   // FIXED
 });
 
-/* Form submit -> Calculate + Reveal Profile */
+/* Form submit → Calculate & reveal profile */
 document.getElementById("leadForm").addEventListener("submit", (ev) => {
   ev.preventDefault();
 
@@ -522,7 +522,7 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
   allQuestions.forEach(q => totalScore += (rp[q.dataset.qid] || 0));
   const pct = Math.round((totalScore / maxPossible) * 100);
 
-  /* Map to profile */
+  /* Determine profile */
   let label, tagline, equity, debt, cash;
 
   if (pct <= 40) {
@@ -539,12 +539,12 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
     equity = 75; debt = 20; cash = 5;
   }
 
-  /* Fill result card */
+  /* Fill UI */
   document.getElementById("profileLabel").textContent = label;
   document.getElementById("profileTagline").textContent = tagline;
   document.getElementById("profileScoreNum").textContent = totalScore;
   document.getElementById("profileDetail").textContent =
-    `Your risk score is ${pct}% — based on your behavioural and financial responses.`;
+    `Your risk score is ${pct}%. This is based on your behavioural and financial responses.`;
 
   document.getElementById("equityPct").textContent = equity + "%";
   document.getElementById("debtPct").textContent = debt + "%";
@@ -554,11 +554,10 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
   document.getElementById("debtFill").style.width = debt + "%";
   document.getElementById("cashFill").style.width = cash + "%";
 
-  /* Reveal result */
+  /* Reveal card */
   const result = document.getElementById("profileResult");
   result.classList.add("revealed");
   result.style.display = "block";
-  result.setAttribute("aria-hidden", "false");
 
   status.textContent = "Thank you! Your profile is ready below.";
   status.className = "lead-status ok";
@@ -566,38 +565,8 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
   result.scrollIntoView({ behavior: "smooth", block: "center" });
 });
 
-/* Recalculate -> restart */
-document.getElementById("recalcBtn").addEventListener("click", () => {
-  localStorage.removeItem("rp");
-  rp = {};
-  showPage(1);
-});
-
-/* Export summary */
-document.getElementById("downloadBtn").addEventListener("click", () => {
-  const txt = `Risk Profile Summary
-Profile: ${document.getElementById("profileLabel").textContent}
-Score: ${document.getElementById("profileScoreNum").textContent}
-Equity: ${document.getElementById("equityPct").textContent}
-Debt: ${document.getElementById("debtPct").textContent}
-Cash: ${document.getElementById("cashPct").textContent}
-Generated: ${new Date().toLocaleString()}`;
-
-  const blob = new Blob([txt], { type: "text/plain" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "risk_profile_summary.txt";
-  a.click();
-  URL.revokeObjectURL(url);
-});
-
+/* Back to website */
 document.getElementById("backToWebsiteBtn").addEventListener("click", () => {
   window.location.href = "https://steadygrowth-wealth.github.io/steady-growth-website/";
 });
-
-  
 </script>
-
-</body>
-</html>
