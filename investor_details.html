@@ -74,6 +74,34 @@
       h1 { font-size:1.5rem }
       .wrap { margin:20px 12px }
     }
+
+    /* Dropdown with custom arrow */
+select {
+  padding:10px 38px 10px 12px;
+  border-radius:10px;
+  background: rgba(255,255,255,0.04) !important;
+  color:#fff !important;
+  border:1px solid rgba(255,255,255,0.10);
+  font-size:0.95rem;
+  appearance:none;
+  outline:none;
+  cursor:pointer;
+
+  /* custom arrow */
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23e3b769' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat:no-repeat;
+  background-position:right 12px center;
+  background-size:18px;
+}
+select option {
+  background:#0f131a !important;
+  color:#fff !important;
+}
+select:focus {
+  border-color: var(--gold-light);
+  box-shadow: 0 0 0 2px rgba(227,183,105,0.25);
+}
+
   </style>
 </head>
 <body>
