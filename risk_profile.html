@@ -8,19 +8,24 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- New unified CSS -->
+  <!-- Unified CSS -->
   <link rel="stylesheet" href="risk_profile.css" />
 
   <style>
-    /* Small overrides kept inline for the result card transitions (compatible with CSS file) */
-    .section-page { display: none; animation: fadeIn 240ms ease forwards; }
-    .section-page.active { display:block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+    /* Keep the fade-in animation inline for reliability */
+    .section-page { display: none; opacity: 0; transform: translateY(8px); }
+    .section-page.active { display: block; opacity: 1; transform: translateY(0); transition: all 260ms ease; }
+
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(8px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
   </style>
 </head>
+
 <body>
 
-  <!-- fixed thin progress bar (readiness style) -->
+  <!-- Fixed progress bar -->
   <div id="progressBarContainer">
     <div id="progressBarFill"></div>
   </div>
@@ -340,21 +345,20 @@
       <!-- ========== SECTION 7 — SUMMARY & LEAD CAPTURE (updated) ========== -->
       <div class="section-page" data-page="7">
         <h1 class="page-title">Your Investor Profile</h1>
-        <p class="page-sub">
-          Based on your responses, here is a refined view of your investing personality. Submit your details and I'll translate this into a personalised mutual fund plan.
-        </p>
+        <p class="page-sub">Enter your details to reveal your personalised investor profile.</p>
 
-        <!-- LEAD FORM (compact premium layout) -->
         <div class="summary-box">
+
+          <!-- Lead form -->
           <form id="leadForm" class="lead-form" novalidate>
             <div class="field-group">
               <label for="leadName">Full Name*</label>
-              <input type="text" id="leadName" placeholder="Your full name" required />
+              <input type="text" id="leadName" required placeholder="Your full name" />
             </div>
 
             <div class="field-group">
               <label for="leadPhone">Mobile Number*</label>
-              <input type="tel" id="leadPhone" placeholder="10-digit mobile number" required />
+              <input type="tel" id="leadPhone" required placeholder="10-digit mobile number" />
             </div>
 
             <div class="field-group">
@@ -362,14 +366,14 @@
               <input type="email" id="leadEmail" placeholder="you@example.com" />
             </div>
 
-            <div style="display:flex; gap:10px; align-items:center; margin-top:10px;">
-              <button type="submit" class="btn primary" id="leadSubmitBtn">Share My Details</button>
-              <button type="button" id="whatsBtn" class="btn-outline">Message on WhatsApp</button>
-              <div id="leadStatus" class="lead-status" aria-live="polite"></div>
-            </div>
+            <button type="submit" class="btn btn-primary" id="leadSubmitBtn" style="margin-top:10px; width:100%;">
+              Submit & View Profile
+            </button>
+
+            <div id="leadStatus" class="lead-status"></div>
           </form>
 
-          <!-- PROFILE RESULT (hidden until form submitted) -->
+          <!-- Hidden profile result -->
           <div id="profileResult" class="result-card" aria-hidden="true">
             <div class="result-top">
               <div>
@@ -386,36 +390,33 @@
 
             <p id="profileDetail" class="small-muted"></p>
 
-            <!-- Allocation visual -->
+            <!-- Allocation -->
             <div style="margin-top:14px;">
               <div class="alloc-row">
                 <div class="alloc-label">Equity</div>
-                <div class="alloc-bar"><div id="equityFill" class="alloc-fill" style="width:0%"></div></div>
-                <div style="width:48px; text-align:right; color:var(--muted); font-size:0.9rem;" id="equityPct">0%</div>
+                <div class="alloc-bar"><div id="equityFill" class="alloc-fill"></div></div>
+                <div id="equityPct" class="alloc-num">0%</div>
               </div>
 
               <div class="alloc-row">
-                <div class="alloc-label">Debt / Hybrids</div>
-                <div class="alloc-bar"><div id="debtFill" class="alloc-fill" style="width:0%"></div></div>
-                <div style="width:48px; text-align:right; color:var(--muted); font-size:0.9rem;" id="debtPct">0%</div>
+                <div class="alloc-label">Debt / Hybrid</div>
+                <div class="alloc-bar"><div id="debtFill" class="alloc-fill"></div></div>
+                <div id="debtPct" class="alloc-num">0%</div>
               </div>
 
               <div class="alloc-row">
                 <div class="alloc-label">Cash / Liquid</div>
-                <div class="alloc-bar"><div id="cashFill" class="alloc-fill" style="width:0%"></div></div>
-                <div style="width:48px; text-align:right; color:var(--muted); font-size:0.9rem;" id="cashPct">0%</div>
+                <div class="alloc-bar"><div id="cashFill" class="alloc-fill"></div></div>
+                <div id="cashPct" class="alloc-num">0%</div>
               </div>
             </div>
 
             <div class="profile-actions">
-              <button id="downloadBtn" class="btn-outline">Export as Summary</button>
+              <button id="downloadBtn" class="btn-outline">Export Summary</button>
               <button id="recalcBtn" class="btn-outline">Recalculate</button>
             </div>
-
-            <div class="small-muted" style="margin-top:10px;">
-              This is a high-level, behavioural profile — not a personalised investment recommendation. For an actual allocation plan, I'll reach out after reviewing your details.
-            </div>
           </div>
+
         </div>
       </div>
 
@@ -425,183 +426,170 @@
 
 
   
+<!-- FULL SCRIPT ================================================================= -->
 <script>
-/* ===================================================
-   CORE INTERACTIVE BEHAVIOUR (selection, nav, scoring)
-   - Keeps 5-option scoring per question
-   - Progress bar similar to readiness
-   - Summary card preserved exactly (B3)
-=================================================== */
-
+/* Storage & DOM Setup */
 const pages = document.querySelectorAll(".section-page");
 const totalPages = pages.length;
-let current = 1; // we start at page 1 (A2)
-let rp = JSON.parse(localStorage.getItem("rp") || "{}");
-let stored = parseInt(localStorage.getItem("rp_page") || "1", 10);
-if (!isNaN(stored) && stored >=1 && stored <= totalPages) current = stored;
+let current = 1;
 
+let rp = JSON.parse(localStorage.getItem("rp") || "{}");
+
+/* Switch page */
 function showPage(n) {
   pages.forEach(p => p.classList.remove("active"));
   document.querySelector(`.section-page[data-page="${n}"]`).classList.add("active");
   current = n;
-  localStorage.setItem("rp_page", n);
-  updateProgressBar(n);
-  updateNextVisibility();
-  window.scrollTo({ top: 0, behavior: "instant" });
+  updateProgressBar();
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-/* init render */
-document.addEventListener("DOMContentLoaded", () => showPage(current));
+/* Progress bar */
+function updateProgressBar() {
+  const pct = ((current - 1) / (totalPages - 1)) * 100;
+  document.getElementById("progressBarFill").style.width = pct + "%";
+}
 
-/* Next Buttons */
-document.querySelectorAll(".next-btn").forEach(btn => btn.addEventListener("click", () => {
-  if (current < totalPages) showPage(current + 1);
-}));
+/* Activate first page */
+document.addEventListener("DOMContentLoaded", () => {
+  showPage(1);
+});
 
-/* Back Buttons */
-document.querySelectorAll(".prev-btn").forEach(btn => btn.addEventListener("click", () => {
-  if (current > 1) showPage(current - 1);
-}));
+/* Navigation Buttons */
+document.querySelectorAll(".next-btn").forEach(btn =>
+  btn.addEventListener("click", () => showPage(current + 1))
+);
 
-/* Option selection logic (5-option style) */
+document.querySelectorAll(".prev-btn").forEach(btn =>
+  btn.addEventListener("click", () => showPage(current - 1))
+);
+
+/* Option selection (5-option style) */
 document.querySelectorAll(".question").forEach(q => {
   const qid = q.dataset.qid;
   const options = q.querySelectorAll(".option");
 
-  // restore selection if present
   if (rp[qid]) {
-    options.forEach(o => { if (Number(o.dataset.score) === Number(rp[qid])) o.classList.add("selected"); });
+    options.forEach(o => { if (+o.dataset.score === rp[qid]) o.classList.add("selected"); });
   }
 
-  options.forEach(opt => {
+  options.forEach(opt =>
     opt.addEventListener("click", () => {
       options.forEach(o => o.classList.remove("selected"));
       opt.classList.add("selected");
-      rp[qid] = Number(opt.dataset.score);
+      rp[qid] = +opt.dataset.score;
       localStorage.setItem("rp", JSON.stringify(rp));
       updateNextVisibility();
-    });
-  });
+    })
+  );
 });
 
-/* Next visibility per section */
+/* Show next only when all questions in section answered */
 function updateNextVisibility() {
   const section = document.querySelector(`.section-page[data-page="${current}"]`);
   const questions = section.querySelectorAll(".question");
-  let allAnswered = true;
-  questions.forEach(q => { if (!rp[q.dataset.qid]) allAnswered = false; });
+  let allDone = true;
+  questions.forEach(q => { if (!rp[q.dataset.qid]) allDone = false; });
 
   const next = section.querySelector(".next-btn");
-  if (next) next.style.display = allAnswered ? "inline-block" : "none";
+  if (next) next.style.display = allDone ? "inline-block" : "none";
 }
 
-/* Progress bar */
-function updateProgressBar(n) {
-  const total = totalPages;
-  const pct = ((n - 1) / (total - 1)) * 100;
-  document.getElementById("progressBarFill").style.width = pct + "%";
-}
-
-/* Finish button handler -> compute & reveal profile */
+/* Finish button -> Go to form only */
 document.getElementById("finishBtn").addEventListener("click", () => {
-  // ensure all questions answered
-  const allQuestions = document.querySelectorAll(".question");
-  for (const q of allQuestions) {
-    if (!rp[q.dataset.qid]) {
-      q.classList.add("attention");
-      q.scrollIntoView({ behavior: "smooth", block: "center" });
-      setTimeout(() => q.classList.remove("attention"), 1200);
-      return;
-    }
+  showPage(6);
+});
+
+/* Form submit -> Calculate + Reveal Profile */
+document.getElementById("leadForm").addEventListener("submit", (ev) => {
+  ev.preventDefault();
+
+  const name = document.getElementById("leadName").value.trim();
+  const phone = document.getElementById("leadPhone").value.trim();
+  const email = document.getElementById("leadEmail").value.trim();
+  const status = document.getElementById("leadStatus");
+
+  if (!name || !phone) {
+    status.textContent = "Please enter your name and mobile number.";
+    status.className = "lead-status err";
+    return;
   }
 
-  // compute score
+  /* Calculate Score */
   let totalScore = 0;
+  const allQuestions = document.querySelectorAll(".question");
   const maxPossible = allQuestions.length * 5;
-  allQuestions.forEach(q => { totalScore += Number(rp[q.dataset.qid] || 0); });
 
-  // map to 0-100 (percentage of max)
+  allQuestions.forEach(q => totalScore += (rp[q.dataset.qid] || 0));
   const pct = Math.round((totalScore / maxPossible) * 100);
 
-  // determine profile tier (conservative/moderate/aggressive)
-  let label = "Moderate";
-  let tagline = "Balanced returns with controlled volatility";
-  let equity = 50, debt = 35, cash = 15;
+  /* Map to profile */
+  let label, tagline, equity, debt, cash;
 
   if (pct <= 40) {
     label = "Conservative";
-    tagline = "Capital preservation; low-volatility approach";
+    tagline = "Capital preservation with low volatility.";
     equity = 20; debt = 55; cash = 25;
   } else if (pct <= 70) {
     label = "Moderate";
-    tagline = "Balanced growth and stability";
+    tagline = "Balanced approach with steady growth.";
     equity = 50; debt = 35; cash = 15;
   } else {
     label = "Aggressive";
-    tagline = "Higher equity tilt for long-term wealth creation";
+    tagline = "High-growth strategy with higher equity.";
     equity = 75; debt = 20; cash = 5;
   }
 
-  // Reveal existing summary card (kept identical)
-  const profileResult = document.getElementById("profileResult");
+  /* Fill result card */
   document.getElementById("profileLabel").textContent = label;
   document.getElementById("profileTagline").textContent = tagline;
   document.getElementById("profileScoreNum").textContent = totalScore;
-  document.getElementById("profileDetail").textContent = `Score: ${pct}% — This is a behavioural score derived from your answers.`;
+  document.getElementById("profileDetail").textContent =
+    `Your risk score is ${pct}% — based on your behavioural and financial responses.`;
 
-  // Allocation visuals
   document.getElementById("equityPct").textContent = equity + "%";
   document.getElementById("debtPct").textContent = debt + "%";
   document.getElementById("cashPct").textContent = cash + "%";
 
-  // animate fills
   document.getElementById("equityFill").style.width = equity + "%";
   document.getElementById("debtFill").style.width = debt + "%";
   document.getElementById("cashFill").style.width = cash + "%";
 
-  profileResult.classList.add("revealed");
-  profileResult.setAttribute("aria-hidden", "false");
-  // scroll into view
-  profileResult.scrollIntoView({ behavior: "smooth", block: "center" });
-});
+  /* Reveal result */
+  const result = document.getElementById("profileResult");
+  result.classList.add("revealed");
+  result.style.display = "block";
+  result.setAttribute("aria-hidden", "false");
 
-/* Lead form: basic placeholder behaviour (keeps existing flow) */
-document.getElementById("leadForm").addEventListener("submit", (ev) => {
-  ev.preventDefault();
-  const name = document.getElementById("leadName").value.trim();
-  const phone = document.getElementById("leadPhone").value.trim();
-  const status = document.getElementById("leadStatus");
-  if (!name || !phone) { status.textContent = "Please provide name and mobile number."; status.className = "lead-status err"; return; }
-
-  // Simple local success (replace with your Apps Script / endpoint)
-  status.textContent = "Thanks — your details were recorded. I will contact you shortly.";
+  status.textContent = "Thank you! Your profile is ready below.";
   status.className = "lead-status ok";
+
+  result.scrollIntoView({ behavior: "smooth", block: "center" });
 });
 
-/* Recalculate button */
+/* Recalculate -> restart */
 document.getElementById("recalcBtn").addEventListener("click", () => {
-  // reset result card and storage, keep users' selections to allow tweak
-  const profileResult = document.getElementById("profileResult");
-  profileResult.classList.remove("revealed");
-  profileResult.setAttribute("aria-hidden", "true");
-  document.getElementById("equityFill").style.width = "0%";
-  document.getElementById("debtFill").style.width = "0%";
-  document.getElementById("cashFill").style.width = "0%";
-  // go back to first page
+  localStorage.removeItem("rp");
+  rp = {};
   showPage(1);
 });
 
-/* Export summary (basic CSV/text fallback) */
+/* Export summary */
 document.getElementById("downloadBtn").addEventListener("click", () => {
-  const profileLabel = document.getElementById("profileLabel").textContent;
-  const score = document.getElementById("profileScoreNum").textContent;
-  const equity = document.getElementById("equityPct").textContent;
-  const debt = document.getElementById("debtPct").textContent;
-  const cash = document.getElementById("cashPct").textContent;
-  const txt = `Investor Profile Summary\nProfile: ${profileLabel}\nScore: ${score}\nAllocation -> Equity: ${equity}, Debt: ${debt}, Cash: ${cash}\nGenerated: ${new Date().toLocaleString()}`;
+  const txt = `Risk Profile Summary
+Profile: ${document.getElementById("profileLabel").textContent}
+Score: ${document.getElementById("profileScoreNum").textContent}
+Equity: ${document.getElementById("equityPct").textContent}
+Debt: ${document.getElementById("debtPct").textContent}
+Cash: ${document.getElementById("cashPct").textContent}
+Generated: ${new Date().toLocaleString()}`;
+
   const blob = new Blob([txt], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement("a"); a.href = url; a.download = "risk_profile_summary.txt"; a.click();
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "risk_profile_summary.txt";
+  a.click();
   URL.revokeObjectURL(url);
 });
 </script>
