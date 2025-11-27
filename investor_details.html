@@ -32,7 +32,7 @@
     }
     textarea { min-height:110px; resize:vertical }
 
-    /* FIX: Dark-mode dropdown (fully integrated) */
+    /* Dropdown styling */
     select {
       padding:10px 12px;
       border-radius:10px;
@@ -86,6 +86,7 @@
       <form id="leadCollector" novalidate>
         <!-- Visible fields -->
         <div class="grid">
+
           <div class="field">
             <label for="name">Full name *</label>
             <input id="name" name="name" type="text" placeholder="Ankit Chakraborty" autocomplete="name" required />
@@ -103,12 +104,24 @@
 
           <div class="field">
             <label for="pref">Preferred channel</label>
-            <select id="pref" name="pref" style="padding:10px 12px; border-radius:10px; background: rgba(255,255,255,0.02); color:#fff; border:1px solid rgba(255,255,255,0.04)">
+            <select id="pref" name="pref">
               <option value="whatsapp">WhatsApp</option>
               <option value="call">Call</option>
               <option value="email">Email</option>
             </select>
           </div>
+
+          <!-- NEW FIELD: Preferred time -->
+          <div class="field">
+            <label for="timepref">Preferred time</label>
+            <select id="timepref" name="timepref">
+              <option value="9am-12noon">9 AM – 12 Noon</option>
+              <option value="12noon-3pm">12 Noon – 3 PM</option>
+              <option value="3pm-6pm">3 PM – 6 PM</option>
+              <option value="6pm-9pm">6 PM – 9 PM</option>
+            </select>
+          </div>
+
         </div>
 
         <div class="field">
@@ -141,14 +154,9 @@
   </div>
 
 <script>
-/*
-  LEAD_COLLECTOR: client-side form handler.
-  - Replace LEAD_ENDPOINT with your Apps Script / server URL to actually send leads.
-  - If LEAD_ENDPOINT is falsy, the form simulates success and stores in localStorage for quick testing.
-*/
-const LEAD_ENDPOINT = ""; // e.g. "https://script.google.com/macros/s/XXXX/exec"
-const REDIRECT_AFTER = ""; // e.g. "https://steadygrowth-wealth.github.io/thank-you.html" or empty to stay
-const WA_PHONE = "91XXXXXXXXXX"; // put your number (with country code, no + or spaces) if you want WA button to prefill
+const LEAD_ENDPOINT = "";
+const REDIRECT_AFTER = "";
+const WA_PHONE = "91XXXXXXXXXX";
 
 const form = document.getElementById("leadCollector");
 const statusEl = document.getElementById("status");
@@ -166,7 +174,6 @@ form.addEventListener("submit", async (ev) => {
 
   const hp = document.getElementById("hp_field").value;
   if (hp && hp.trim().length > 0) {
-    // honeypot triggered — silently ignore
     statusEl.textContent = "Thanks.";
     return;
   }
@@ -176,6 +183,7 @@ form.addEventListener("submit", async (ev) => {
   const mobile = validateMobile(mobileRaw);
   const email = document.getElementById("email").value.trim();
   const pref = document.getElementById("pref").value;
+  const timepref = document.getElementById("timepref").value;   // NEW FIELD
   const message = document.getElementById("message").value.trim();
 
   if (!name) {
@@ -189,13 +197,13 @@ form.addEventListener("submit", async (ev) => {
     return;
   }
 
-  // payload
+  // payload with new timepref
   const payload = {
-    name, mobile, email, pref, message, ts: new Date().toISOString(),
+    name, mobile, email, pref, timepref, message,
+    ts: new Date().toISOString(),
     source: "lead_collector_page"
   };
 
-  // UI - disable
   const btn = document.getElementById("submitBtn");
   btn.disabled = true;
   btn.style.opacity = "0.7";
@@ -204,7 +212,6 @@ form.addEventListener("submit", async (ev) => {
 
   try {
     if (LEAD_ENDPOINT && LEAD_ENDPOINT.length > 8) {
-      // send to endpoint (expecting JSON POST)
       const resp = await fetch(LEAD_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -214,7 +221,6 @@ form.addEventListener("submit", async (ev) => {
       statusEl.textContent = "Thanks! Your details were submitted successfully.";
       statusEl.className = "status ok";
     } else {
-      // local fallback: save to localStorage for testing
       const store = JSON.parse(localStorage.getItem("lead_store_v1") || "[]");
       store.push(payload);
       localStorage.setItem("lead_store_v1", JSON.stringify(store));
@@ -222,10 +228,8 @@ form.addEventListener("submit", async (ev) => {
       statusEl.className = "status ok";
     }
 
-    // optionally clear form
     form.reset();
 
-    // optional redirect
     if (REDIRECT_AFTER && REDIRECT_AFTER.length > 5) {
       setTimeout(() => { window.location.href = REDIRECT_AFTER; }, 900);
     }
@@ -239,7 +243,7 @@ form.addEventListener("submit", async (ev) => {
   }
 });
 
-/* WhatsApp quick message - opens WA with a prefilled text */
+/* WhatsApp message */
 whatsappBtn.addEventListener("click", () => {
   const name = (document.getElementById("name").value || "").trim();
   const mobile = (document.getElementById("mobile").value || "").trim();
@@ -247,12 +251,12 @@ whatsappBtn.addEventListener("click", () => {
     `Hi, I want to share my details for a personalised SIP plan.\nName: ${name}\nMobile: ${mobile}\nSource: website`
   );
 
-  if (WA_PHONE && WA_PHONE.length > 6) {
-    window.open(`https://wa.me/${WA_PHONE}?text=${msg}`, "_blank");
-  } else {
-    // open generic WA compose (will ask user to pick contact)
-    window.open(`https://wa.me/?text=${msg}`, "_blank");
-  }
+  window.open(
+    WA_PHONE && WA_PHONE.length > 6
+      ? `https://wa.me/${WA_PHONE}?text=${msg}`
+      : `https://wa.me/?text=${msg}`,
+    "_blank"
+  );
 });
 </script>
 
