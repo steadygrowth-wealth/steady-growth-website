@@ -1,12 +1,12 @@
 /* =============================
-   risk_profile.css
-   Ultra Minimal Premium (Dark + Subtle Gold)
-   - Fade + Slide Up reveal for result card
+   risk_profile.css (unified with readiness look)
+   - keeps your premium gold accent & result card shapes
+   - uses readiness container, progress bar, and spacing
 ============================= */
 
 :root{
   --bg: #0c0f17;
-  --card: #12141a;
+  --card: #0b1220; /* slightly darker to match readiness */
   --muted: #9ea7c5;
   --gold: #e3b769;
   --gold-light: #ffe6b9;
@@ -18,11 +18,11 @@
   --glass-strong: rgba(255,255,255,0.04);
 }
 
-/* ===== Page background & base ===== */
+/* ===== Base & layout to match readiness style ===== */
 * { box-sizing: border-box; }
-html,body{
-  height:100%;
-  margin:0;
+html, body {
+  height: 100%;
+  margin: 0;
   font-family: "Poppins", sans-serif;
   background: linear-gradient(180deg, #0b0e14 0%, #0d1116 55%);
   color: #fff;
@@ -30,23 +30,17 @@ html,body{
   -moz-osx-font-smoothing:grayscale;
 }
 
-/* ===== Layout container / card ===== */
-.container {
-  max-width: 920px;
-  margin: 48px auto;
-  padding: 0 20px;
-}
-
+/* wrap & card (readiness-like) */
+.wrap { width: 100%; max-width: 920px; margin: 40px auto; padding: 12px; }
 .card {
   background: linear-gradient(180deg, rgba(255,255,255,0.01) 0%, rgba(6,10,28,0.95) 100%);
   border-radius: 20px;
-  padding: 34px;
+  padding: 28px;
   box-shadow: var(--shadow-lift);
   border: 1px solid rgba(255,255,255,0.03);
-  min-height: 380px;
 }
 
-/* Progress bar */
+/* top thin fixed progress bar (readiness style) */
 #progressBarContainer {
   position: fixed;
   top: 12px;
@@ -60,45 +54,34 @@ html,body{
   overflow: hidden;
   box-shadow: 0 6px 20px rgba(2,4,8,0.45);
 }
-#progressBarFill{
-  height:100%;
-  width:0%;
+#progressBarFill {
+  height: 100%;
+  width: 0%;
   background: linear-gradient(90deg, var(--gold-light), var(--gold), var(--accent-strong));
   transition: width 360ms ease;
 }
 
-/* Page title & subtitle */
-.page-title {
-  font-family: "Playfair Display", serif;
-  font-size: 1.8rem;
-  margin: 0 0 8px 0;
-  color: var(--gold-light);
-  letter-spacing: -0.3px;
-}
-.page-sub {
-  color: var(--muted);
-  margin-bottom: 22px;
-  line-height:1.45;
-  font-size:0.95rem;
-}
+/* titles */
+.page-title { font-family: "Playfair Display", serif; font-size: 1.6rem; margin: 0 0 6px 0; color: var(--gold-light); }
+.page-sub { color: var(--muted); margin-bottom: 18px; line-height:1.45; font-size:0.95rem; }
 
-/* Page visibility */
-.page { display:none; opacity:0; transform: translateY(6px); transition: all 280ms ease; }
-.page.active { display:block; opacity:1; transform: translateY(0); }
+/* section page container */
+.section-page { display:none; opacity:0; transform: translateY(6px); transition: all 260ms ease; }
+.section-page.active { display:block; opacity:1; transform: translateY(0); }
 
-/* ===== Questions / options (kept similar but tightened) ===== */
-.question {
+/* question boxes (reads like readiness but keeps premium feel) */
+.q-box {
   background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.015));
   border-radius: var(--radius);
   padding: 16px;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
   border: 1px solid rgba(255,255,255,0.03);
   box-shadow: 0 6px 20px rgba(1,2,6,0.45);
 }
-.q-title { font-size:1.04rem; margin-bottom:8px; font-weight:600; color:#fff; }
+.q-title { font-size:1.02rem; margin-bottom:8px; font-weight:600; color:#fff; }
 .q-desc { color:var(--muted); margin-bottom:10px; font-size:0.92rem; }
 
-/* Options */
+/* options (5-option style) */
 .options { display:flex; flex-direction:column; gap:10px; }
 .option {
   padding: 12px 14px;
@@ -107,7 +90,7 @@ html,body{
   border: 1px solid rgba(255,255,255,0.04);
   color:var(--muted);
   cursor:pointer;
-  transition: transform 180ms ease, box-shadow 220ms ease, border-color 220ms ease;
+  transition: transform 160ms ease, box-shadow 200ms ease, border-color 200ms ease;
   font-size:0.92rem;
 }
 .option:hover { transform: translateY(-3px); border-color: rgba(227,183,105,0.25); color:#fff; }
@@ -120,48 +103,13 @@ html,body{
   transform: translateY(-1px) scale(1.01);
 }
 
-/* ===== Buttons (support multiple class patterns) ===== */
-.btn {
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  padding:10px 18px;
-  border-radius:999px;
-  font-weight:700;
-  cursor:pointer;
-  user-select:none;
-  border: none;
-}
-
-/* Primary variants */
-.btn-primary, .primary {
-  background: linear-gradient(90deg, var(--gold-light), var(--gold));
-  color: #251707;
-  border: 1px solid rgba(227,183,105,0.32);
-  box-shadow: 0 10px 30px rgba(8,10,12,0.45);
-}
-
-/* Ghost variants */
-.btn-ghost, .ghost {
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.12);
-  color: var(--muted);
-}
-
-/* small outline */
-.btn-outline {
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.06);
-  color: var(--muted);
-  padding:9px 14px;
-  border-radius:999px;
-}
-
-/* Nav row */
+/* nav row & buttons (readiness-compatible) */
 .nav-row { display:flex; justify-content:space-between; gap:12px; margin-top:18px; align-items:center; }
+.btn { display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:999px; font-weight:700; cursor:pointer; border:none; }
+.btn-primary, .primary { background: linear-gradient(90deg, var(--gold-light), var(--gold)); color:#251707; border: 1px solid rgba(227,183,105,0.32); box-shadow: 0 10px 30px rgba(8,10,12,0.45); }
+.btn-ghost { background: transparent; border: 1px solid rgba(255,255,255,0.12); color: var(--muted); }
 
-/* ===== Summary box & lead form (new, important) ===== */
+/* summary-box & lead form (kept identical semantics to original) */
 .summary-box {
   background: linear-gradient(180deg, rgba(255,255,255,0.008), rgba(255,255,255,0.01));
   border: 1px solid rgba(255,255,255,0.03);
@@ -169,40 +117,11 @@ html,body{
   border-radius: 14px;
   box-shadow: var(--shadow-soft);
 }
+.lead-form .field-group { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+.lead-form label { min-width:110px; color:var(--muted); font-size:0.92rem; }
+.lead-form input { background: rgba(6,10,28,0.82); border:1px solid rgba(255,255,255,0.04); color:#fff; padding:9px 10px; border-radius:10px; font-size:0.92rem; }
 
-/* Lead form compact layout */
-.lead-form .field-group {
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-bottom:10px;
-}
-.lead-form label {
-  min-width:110px;
-  color:var(--muted);
-  font-size:0.92rem;
-}
-.lead-form input[type="text"],
-.lead-form input[type="tel"],
-.lead-form input[type="email"]{
-  background: rgba(6,10,28,0.82);
-  border:1px solid rgba(255,255,255,0.04);
-  color:#fff;
-  padding:9px 10px;
-  border-radius:10px;
-  font-size:0.92rem;
-  outline:none;
-  transition: box-shadow 180ms, border-color 180ms;
-}
-.lead-form input:focus{
-  box-shadow: 0 6px 18px rgba(227,183,105,0.08);
-  border-color: rgba(227,183,105,0.35);
-}
-
-/* lead status */
-.lead-status { display:block; margin-left:4px; color:var(--muted); font-size:0.92rem; }
-
-/* summary-box spacing when result is revealed */
+/* result card — maintain original content & structure, but tuned spacing/colors for unified look */
 .result-card {
   margin-top:18px;
   border-radius:12px;
@@ -210,15 +129,12 @@ html,body{
   border:1px solid rgba(255,255,255,0.03);
   background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(6,10,28,0.92));
   box-shadow: 0 12px 32px rgba(2,6,12,0.55);
-  transform: translateY(8px);
+  transform: translateY(6px);
   opacity: 0;
   transition: transform 420ms cubic-bezier(.2,.9,.27,1), opacity 420ms ease;
   overflow:hidden;
 }
-.result-card.revealed {
-  transform: translateY(0);
-  opacity:1;
-}
+.result-card.revealed { transform: translateY(0); opacity:1; }
 
 /* result top */
 .result-top { display:flex; gap:14px; align-items:flex-start; }
@@ -233,8 +149,6 @@ html,body{
 }
 .profile-head { font-size:1.45rem; margin:0; color:var(--gold-light); font-weight:700; }
 .profile-tag { color:var(--muted); margin-top:6px; }
-
-/* score block */
 .profile-score { margin-left:auto; text-align:right; }
 .profile-score .num { font-size:1.6rem; font-weight:800; color:#fff; display:block; }
 .profile-score .lbl { color:var(--muted); font-size:0.85rem; }
@@ -243,35 +157,24 @@ html,body{
 .alloc-row { display:flex; align-items:center; gap:12px; margin-top:12px; }
 .alloc-label { width:150px; color:var(--muted); font-size:0.95rem; }
 .alloc-bar { flex:1; height:12px; background: rgba(255,255,255,0.04); border-radius:999px; overflow:hidden; }
-.alloc-fill {
-  height:100%;
-  width:0%;
-  background: linear-gradient(90deg, rgba(227,183,105,0.95), rgba(184,129,52,0.95));
-  transition: width 720ms cubic-bezier(.2,.9,.27,1);
-}
+.alloc-fill { height:100%; width:0%; background: linear-gradient(90deg, rgba(227,183,105,0.95), rgba(184,129,52,0.95)); transition: width 720ms cubic-bezier(.2,.9,.27,1); }
 
-/* profile actions */
+/* profile actions & notes */
 .profile-actions { display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; }
-
-/* small muted note */
+.btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.06); color: var(--muted); padding:9px 14px; border-radius:999px; }
 .small-muted { color:var(--muted); margin-top:12px; font-size:0.92rem; }
 
-/* responsive */
-@media (max-width:860px){
-  .container { padding: 0 14px; margin: 28px auto; }
+/* attention helper */
+.q-box.attention { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(227,183,105,0.06); transform: translateY(-2px); }
+
+/* responsive tweaks */
+@media (max-width: 860px) {
+  .wrap { padding: 0 14px; margin: 28px auto; }
   .card { padding: 20px; }
   .alloc-label { width:110px; font-size:0.9rem; }
   .lead-form .field-group { flex-direction:column; align-items:flex-start; }
   .lead-form label { min-width:0; }
 }
 
-/* keyboard focus accessibility */
+/* keyboard focus */
 .option:focus, .btn:focus, .btn-outline:focus { outline: 2px solid rgba(227,183,105,0.12); outline-offset: 2px; }
-
-/* subtle helper classes retained for compatibility */
-.attention { border-color: #ff6b6b !important; box-shadow: 0 6px 20px rgba(255,107,107,0.08); transform: translateY(-2px); }
-
-/* ===== Small utility spacing ===== */
-.mt-8 { margin-top:8px; }
-.mt-12 { margin-top:12px; }
-.mb-8 { margin-bottom:8px; }
