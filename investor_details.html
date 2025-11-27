@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Share Your Details — Steady Growth</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: linear-gradient(180deg,#0b0e14 0%, #0d1116 60%);
+      --card: rgba(6,10,28,0.96);
+      --muted: #9ea7c5;
+      --gold: #e3b769;
+      --gold-light: #ffe6b9;
+      --accent: #b8873a;
+      --radius: 14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%; margin:0; font-family:"Poppins",sans-serif; background:var(--bg); color:#fff; -webkit-font-smoothing:antialiased}
+    .wrap{max-width:820px; margin:48px auto; padding:18px}
+    .card{background:var(--card); border-radius:16px; padding:22px; border:1px solid rgba(255,255,255,0.03); box-shadow:0 18px 36px rgba(0,0,0,0.6)}
+    h1{font-family:"Playfair Display",serif; color:var(--gold-light); margin:0 0 6px; font-size:1.8rem}
+    p.lead { color:var(--muted); margin:0 0 18px; line-height:1.6 }
+    .grid{display:grid; grid-template-columns: 1fr 1fr; gap:12px}
+    .field { display:flex; flex-direction:column; gap:8px; margin-bottom:12px }
+    label { color:var(--muted); font-size:0.92rem }
+    input[type="text"], input[type="tel"], input[type="email"], textarea {
+      padding:10px 12px; border-radius:10px; background: rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.04); color:#fff; outline:none; font-size:0.95rem;
+    }
+    textarea { min-height:110px; resize:vertical }
+    .row { display:flex; gap:10px; align-items:center; flex-wrap:wrap }
+    .btn {
+      padding:10px 18px; border-radius:999px; font-weight:700; cursor:pointer; border:none;
+    }
+    .btn-primary { background: linear-gradient(90deg,var(--gold-light),var(--gold)); color:#24180b }
+    .btn-ghost { background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.06); padding:9px 14px }
+    .muted { color:var(--muted); font-size:0.92rem }
+    .note { font-size:0.88rem; color:var(--muted); margin-top:10px }
+    .status { margin-top:12px; font-size:0.95rem }
+    .status.ok { color: #4caf50 }
+    .status.err { color: #ff6b6b }
+    .small { font-size:0.86rem; color:var(--muted) }
+
+    /* Honeypot (hidden) */
+    .hp { display:none; position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
+
+    @media (max-width:720px) {
+      .grid { grid-template-columns: 1fr }
+      h1 { font-size:1.5rem }
+      .wrap { margin:20px 12px }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Share Your Details</h1>
+      <p class="lead">Leave your contact details and a short note — we will review your risk profile and suggest a personalised plan. We respect your privacy and will not share your details.</p>
+
+      <form id="leadCollector" novalidate>
+        <!-- Visible fields -->
+        <div class="grid">
+          <div class="field">
+            <label for="name">Full name *</label>
+            <input id="name" name="name" type="text" placeholder="Ankit Chakraborty" autocomplete="name" required />
+          </div>
+
+          <div class="field">
+            <label for="mobile">Mobile number *</label>
+            <input id="mobile" name="mobile" type="tel" placeholder="10-digit mobile" inputmode="tel" pattern="[0-9]{10}" required />
+          </div>
+
+          <div class="field">
+            <label for="email">Email (optional)</label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" />
+          </div>
+
+          <div class="field">
+            <label for="pref">Preferred channel</label>
+            <select id="pref" name="pref" style="padding:10px 12px; border-radius:10px; background: rgba(255,255,255,0.02); color:#fff; border:1px solid rgba(255,255,255,0.04)">
+              <option value="whatsapp">WhatsApp</option>
+              <option value="call">Call</option>
+              <option value="email">Email</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="message">Message (optional)</label>
+          <textarea id="message" name="message" placeholder="Any context we should know (goals, monthly SIP, timelines)"></textarea>
+        </div>
+
+        <!-- Honeypot: bots often fill hidden fields -->
+        <div class="hp" aria-hidden="true">
+          <label for="hp_field">If you are human, leave this empty</label>
+          <input id="hp_field" name="hp_field" type="text" />
+        </div>
+
+        <div style="display:flex; gap:12px; align-items:center; margin-top:6px; flex-wrap:wrap">
+          <button type="submit" id="submitBtn" class="btn btn-primary">Send my details</button>
+          <button type="button" id="whatsappBtn" class="btn btn-ghost">Message on WhatsApp</button>
+          <div id="status" class="status" aria-live="polite"></div>
+        </div>
+
+        <div class="note" style="margin-top:14px">
+          By submitting, you consent to being contacted regarding investment services. We never share your data without permission.
+        </div>
+      </form>
+
+      <div style="margin-top:18px; display:flex; gap:12px; align-items:center; justify-content:flex-end">
+        <a href="risk_profile.html" class="small" style="color:var(--muted); text-decoration:none">Back to Risk Assessment</a>
+        <a href="https://steadygrowth-wealth.github.io/steady-growth-website/" class="small" style="color:var(--muted); text-decoration:none">Back to Website</a>
+      </div>
+    </div>
+  </div>
+
+<script>
+/*
+  LEAD_COLLECTOR: client-side form handler.
+  - Replace LEAD_ENDPOINT with your Apps Script / server URL to actually send leads.
+  - If LEAD_ENDPOINT is falsy, the form simulates success and stores in localStorage for quick testing.
+*/
+const LEAD_ENDPOINT = ""; // e.g. "https://script.google.com/macros/s/XXXX/exec"
+const REDIRECT_AFTER = ""; // e.g. "https://steadygrowth-wealth.github.io/thank-you.html" or empty to stay
+const WA_PHONE = "91XXXXXXXXXX"; // put your number (with country code, no + or spaces) if you want WA button to prefill
+
+const form = document.getElementById("leadCollector");
+const statusEl = document.getElementById("status");
+const whatsappBtn = document.getElementById("whatsappBtn");
+
+function validateMobile(m) {
+  const only = (m || "").replace(/\D/g,'');
+  return only.length === 10 ? only : null;
+}
+
+form.addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  statusEl.textContent = "";
+  statusEl.className = "status";
+
+  const hp = document.getElementById("hp_field").value;
+  if (hp && hp.trim().length > 0) {
+    // honeypot triggered — silently ignore
+    statusEl.textContent = "Thanks.";
+    return;
+  }
+
+  const name = document.getElementById("name").value.trim();
+  const mobileRaw = document.getElementById("mobile").value.trim();
+  const mobile = validateMobile(mobileRaw);
+  const email = document.getElementById("email").value.trim();
+  const pref = document.getElementById("pref").value;
+  const message = document.getElementById("message").value.trim();
+
+  if (!name) {
+    statusEl.textContent = "Please enter your full name.";
+    statusEl.className = "status err";
+    return;
+  }
+  if (!mobile) {
+    statusEl.textContent = "Please enter a valid 10-digit mobile number.";
+    statusEl.className = "status err";
+    return;
+  }
+
+  // payload
+  const payload = {
+    name, mobile, email, pref, message, ts: new Date().toISOString(),
+    source: "lead_collector_page"
+  };
+
+  // UI - disable
+  const btn = document.getElementById("submitBtn");
+  btn.disabled = true;
+  btn.style.opacity = "0.7";
+  statusEl.textContent = "Sending...";
+  statusEl.className = "status";
+
+  try {
+    if (LEAD_ENDPOINT && LEAD_ENDPOINT.length > 8) {
+      // send to endpoint (expecting JSON POST)
+      const resp = await fetch(LEAD_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!resp.ok) throw new Error("Network response not OK");
+      statusEl.textContent = "Thanks! Your details were submitted successfully.";
+      statusEl.className = "status ok";
+    } else {
+      // local fallback: save to localStorage for testing
+      const store = JSON.parse(localStorage.getItem("lead_store_v1") || "[]");
+      store.push(payload);
+      localStorage.setItem("lead_store_v1", JSON.stringify(store));
+      statusEl.textContent = "Thanks! (Test mode) Your details were saved locally.";
+      statusEl.className = "status ok";
+    }
+
+    // optionally clear form
+    form.reset();
+
+    // optional redirect
+    if (REDIRECT_AFTER && REDIRECT_AFTER.length > 5) {
+      setTimeout(() => { window.location.href = REDIRECT_AFTER; }, 900);
+    }
+  } catch (err) {
+    console.error(err);
+    statusEl.textContent = "Sorry — we couldn't submit your details. Try again later.";
+    statusEl.className = "status err";
+  } finally {
+    btn.disabled = false;
+    btn.style.opacity = "1";
+  }
+});
+
+/* WhatsApp quick message - opens WA with a prefilled text */
+whatsappBtn.addEventListener("click", () => {
+  const name = (document.getElementById("name").value || "").trim();
+  const mobile = (document.getElementById("mobile").value || "").trim();
+  const msg = encodeURIComponent(
+    `Hi, I want to share my details for a personalised SIP plan.\nName: ${name}\nMobile: ${mobile}\nSource: website`
+  );
+
+  if (WA_PHONE && WA_PHONE.length > 6) {
+    window.open(`https://wa.me/${WA_PHONE}?text=${msg}`, "_blank");
+  } else {
+    // open generic WA compose (will ask user to pick contact)
+    window.open(`https://wa.me/?text=${msg}`, "_blank");
+  }
+});
+</script>
+
+</body>
+</html>
