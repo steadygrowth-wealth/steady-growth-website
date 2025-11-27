@@ -412,8 +412,7 @@
             </div>
 
             <div class="profile-actions">
-              <button id="downloadBtn" class="btn-outline">Export Summary</button>
-              <button id="recalcBtn" class="btn-outline">Recalculate</button>
+              <button id="backToWebsiteBtn" class="btn-outline">Back to Website</button>
             </div>
           </div>
 
@@ -592,6 +591,12 @@ Generated: ${new Date().toLocaleString()}`;
   a.click();
   URL.revokeObjectURL(url);
 });
+
+document.getElementById("backToWebsiteBtn").addEventListener("click", () => {
+  window.location.href = "https://steadygrowth-wealth.github.io/steady-growth-website/";
+});
+
+  
 </script>
 
 </body>
