@@ -78,7 +78,7 @@
         </div>
 
         <div class="nav-row">
-          <button class="btn btn-ghost prev-btn">Back</button>
+          <button class="btn btn-ghost prev-btn" onclick="goBack()>Back</button>
           <button class="btn btn-primary next-btn" style="display:none;">Next</button>
         </div>
       </div>
@@ -569,4 +569,8 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
 document.getElementById("backToWebsiteBtn").addEventListener("click", () => {
   window.location.href = "https://steadygrowth-wealth.github.io/steady-growth-website/";
 });
+
+  function goBack() {
+      window.location.href = "risk_first_page.html"; // redirect to your main assessment page
+    }
 </script>
