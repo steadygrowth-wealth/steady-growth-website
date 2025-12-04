@@ -221,13 +221,8 @@
   </div>
 
 <script>
-const LEAD_ENDPOINT = "";
-const REDIRECT_AFTER = "";
-const WA_PHONE = "91XXXXXXXXXX";
-
 const form      = document.getElementById("leadCollector");
 const statusEl  = document.getElementById("status");
-const whatsappBtn = document.getElementById("whatsappBtn");
 
 function validateMobile(m){
   const only = (m||"").replace(/\D/g,'');
@@ -245,26 +240,25 @@ form.addEventListener("submit", async(ev)=>{
     return;
   }
 
-  const name     = document.getElementById("name").value.trim();
-  const mobile   = validateMobile(document.getElementById("mobile").value.trim());
+  const name   = document.getElementById("name").value.trim();
+  const mobile = validateMobile(document.getElementById("mobile").value.trim());
 
   const GSHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbybdFkGSWh1HEJSrUD2Cke_ug2ceaPPzIH7MrYyPxvILmLXK7I4E0H4ANw_fEE1Iifc/exec";
-  
 
   const payload = {
-    name: document.getElementById("name").value.trim(),
-    mobile: document.getElementById("mobile").value.trim(),
+    name,
+    mobile,  // CLEAN, VALIDATED NUMBER
     email: document.getElementById("email").value.trim(),
     pref: document.getElementById("pref").value,
     timepref: document.getElementById("timepref").value,
     message: document.getElementById("message").value.trim(),
     source: "lead_form"
   };
-  
+
   fetch(GSHEET_ENDPOINT, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
   }).catch(err => console.error("Lead send error:", err));
-  
-    const em
+});
+</script>
