@@ -557,19 +557,17 @@ statusEl.style.textAlign = "center";
 form.appendChild(statusEl);
 
 form.addEventListener('submit', function (e) {
+  e.preventDefault();  // 🔥 ALWAYS stop page reload
+
   let valid = true;
 
   // Reset messages
   statusEl.textContent = "";
   statusEl.className = "";
 
-  // Clear field errors
-  ['nameError','cityError','emailError','phoneError','goalError','approachError'].forEach(id => {
-    let el = document.getElementById(id);
-    if (el) el.textContent = '';
-  });
+  ['nameError','cityError','emailError','phoneError','goalError','approachError']
+    .forEach(id => document.getElementById(id).textContent = "");
 
-  // Required fields
   const name = document.getElementById('name');
   const city = document.getElementById('city');
   const goal = document.getElementById('goal');
@@ -584,20 +582,17 @@ form.addEventListener('submit', function (e) {
     valid = false;
   }
 
-  // Email validation
   const emailVal = emailInput.value.trim();
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
   if (!emailPattern.test(emailVal)) {
     document.getElementById('emailError').textContent = 'Enter a valid email address.';
     valid = false;
   }
 
-  // Phone validation
   let phoneVal = phoneInput.value.replace(/[\s\-]/g, '');
   const selectedOption = countryCodeSelect.options[countryCodeSelect.selectedIndex];
-  const minLen = parseInt(selectedOption.dataset.min || '6', 10);
-  const maxLen = parseInt(selectedOption.dataset.max || '15', 10);
+  const minLen = parseInt(selectedOption.dataset.min || '6');
+  const maxLen = parseInt(selectedOption.dataset.max || '15');
 
   if (!/^\d+$/.test(phoneVal)) {
     document.getElementById('phoneError').textContent = 'Phone number must contain digits only.';
@@ -618,22 +613,16 @@ form.addEventListener('submit', function (e) {
     valid = false;
   }
 
-  // Stop if invalid
-  if (!valid) {
-    e.preventDefault();
-    return;
-  }
+  if (!valid) return;  // 🔥 DO NOT SUBMIT
 
-  // -------------------------------------
-  // Submit to Google Sheet
-  // -------------------------------------
+  // Submit to Google Apps Script
   const GSHEET_ENDPOINT =
     "https://script.google.com/macros/s/AKfycbybdFkGSWh1HEJSrUD2Cke_ug2ceaPPzIH7MrYyPxvILmLXK7I4E0H4ANw_fEE1Iifc/exec";
 
   const payload = {
     name: name.value.trim(),
     city: city.value.trim(),
-    email: emailInput.value.trim(),
+    email: emailVal,
     phone: phoneVal,
     country_code: countryCodeSelect.value,
     goal: goal.value,
@@ -646,14 +635,12 @@ form.addEventListener('submit', function (e) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
-  }).catch(err => console.error("Contact page submission error:", err));
+  });
 
-  // -------------------------------------
-  // SUCCESS MESSAGE
-  // -------------------------------------
   statusEl.textContent = "Submitted! We will contact you shortly.";
   statusEl.classList.add("ok");
 });
+
 </script>
 
 
