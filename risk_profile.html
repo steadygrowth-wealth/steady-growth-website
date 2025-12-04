@@ -569,6 +569,7 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
   status.textContent = "Thank you! Your profile is ready below.";
   status.className = "lead-status ok";
 
+  const GSHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbybdFkGSWh1HEJSrUD2Cke_ug2ceaPPzIH7MrYyPxvILmLXK7I4E0H4ANw_fEE1Iifc/exec";
   const payload = {
   name,
   mobile: phone,
