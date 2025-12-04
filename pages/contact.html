@@ -610,6 +610,26 @@ form.addEventListener('submit', function (e) {
   if (!valid) {
     e.preventDefault();
   }
+  if (valid) {
+  const payload = {
+    name: name.value,
+    city: city.value,
+    email: emailInput.value,
+    phone: phoneInput.value,
+    country_code: countryCodeSelect.value,
+    goal: goal.value,
+    approach: approachChecked.value,
+    message: message.value,
+    source: "contact_page"
+  };
+
+  fetch(GSHEET_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+}
+
 });
 </script>
 
