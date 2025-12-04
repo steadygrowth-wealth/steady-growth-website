@@ -888,6 +888,8 @@ if (leadForm) {
     let score = localStorage.getItem("readiness_score") || "0";
     score = Number(score);
 
+    const GSHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbybdFkGSWh1HEJSrUD2Cke_ug2ceaPPzIH7MrYyPxvILmLXK7I4E0H4ANw_fEE1Iifc/exec";
+    
     const payload = {
       name: nameInput?.value || "",
       mobile: mobileInput?.value || "",
@@ -896,8 +898,6 @@ if (leadForm) {
       answers,
       source: "sip_readiness",
     };
-
-    const webhook = "https://script.google.com/macros/s/AKfycbw-belwpkcLadQvVzgq0cwq_-HD2KBk0vZFyvqHQF3GrYVgpsU8_30Z6jOS2wwzM-ot/exec";
 
     // Fire-and-forget POST (no CORS blocking)
     fetch(GSHEET_ENDPOINT, {
