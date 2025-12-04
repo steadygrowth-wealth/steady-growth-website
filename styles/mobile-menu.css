@@ -158,3 +158,35 @@ body.menu-open {
     display: none !important;
   }
 }
+
+
+/* ============================================
+   MOBILE AUTH BUTTONS (SIDE-BY-SIDE)
+============================================ */
+.mobile-auth-buttons {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 16px !important;
+  margin-top: 20px !important;
+}
+
+.mobile-btn {
+  padding: 10px 18px !important;
+  border-radius: 50px !important;
+  font-size: 1rem !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+
+/* Register Button */
+.register-btn {
+  background: #f0b76b !important;
+  color: #000 !important;
+}
+
+/* Login Button */
+.login-btn {
+  background: transparent !important;
+  color: #fff !important;
+  border: 1px solid rgba(255,255,255,0.35) !important;
+}
