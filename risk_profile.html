@@ -569,6 +569,27 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
   status.textContent = "Thank you! Your profile is ready below.";
   status.className = "lead-status ok";
 
+  const payload = {
+  name,
+  mobile: phone,
+  email,
+  risk_profile: {
+    answers: rp,
+    total_score: totalScore,
+    score_pct: pct,
+    label,
+    allocation: { equity, debt, cash }
+  },
+  source: "risk_profile"
+};
+
+fetch(GSHEET_ENDPOINT, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(payload)
+});
+
+
   result.scrollIntoView({ behavior: "smooth", block: "center" });
 
   // Clear saved questionnaire answers so next visit is fresh
