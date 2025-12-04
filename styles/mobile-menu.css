@@ -160,33 +160,59 @@ body.menu-open {
 }
 
 
-/* ============================================
-   MOBILE AUTH BUTTONS (SIDE-BY-SIDE)
-============================================ */
-.mobile-auth-buttons {
+/* Ensure container is horizontal inside the vertical link stack */
+.mobile-menu .mobile-auth-buttons {
   display: flex !important;
   justify-content: center !important;
-  gap: 16px !important;
+  gap: 12px !important;
   margin-top: 20px !important;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 32px; /* match .mobile-nav-links padding */
 }
 
-.mobile-btn {
+/* Make these anchors behave like buttons and NOT be full-width links */
+.mobile-menu .mobile-auth-buttons .mobile-btn {
+  display: inline-flex !important;   /* prevents width:100% from ancestor rule */
+  align-items: center;
+  justify-content: center;
+  width: auto !important;            /* override global width:100% */
+  min-width: 120px;                  /* prevents very narrow buttons */
   padding: 10px 18px !important;
   border-radius: 50px !important;
-  font-size: 1rem !important;
   text-decoration: none !important;
   white-space: nowrap !important;
+  box-sizing: border-box !important;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
 }
 
-/* Register Button */
-.register-btn {
+/* Remove the mobile-nav-links a styles that would otherwise affect these */
+.mobile-menu .mobile-auth-buttons .mobile-btn {
+  border-bottom: none !important;
+  color: inherit !important;
+}
+
+/* Styles for each button (customize colors) */
+.mobile-menu .mobile-auth-buttons .register-btn {
   background: #f0b76b !important;
   color: #000 !important;
+  border: 0 !important;
 }
 
-/* Login Button */
-.login-btn {
+.mobile-menu .mobile-auth-buttons .login-btn {
   background: transparent !important;
   color: #fff !important;
   border: 1px solid rgba(255,255,255,0.35) !important;
+}
+
+/* If viewport is narrow and buttons don't fit, allow wrap */
+@media (max-width: 360px) {
+  .mobile-menu .mobile-auth-buttons {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+  .mobile-menu .mobile-auth-buttons .mobile-btn {
+    flex: 1 1 auto;
+    min-width: calc((100% - 8px) / 2);
+  }
 }
