@@ -247,4 +247,21 @@ form.addEventListener("submit", async(ev)=>{
 
   const name     = document.getElementById("name").value.trim();
   const mobile   = validateMobile(document.getElementById("mobile").value.trim());
+
+  const payload = {
+  name,
+  mobile,
+  email: document.getElementById("email").value.trim(),
+  pref: document.getElementById("pref").value,
+  timepref: document.getElementById("timepref").value,
+  message: document.getElementById("message").value,
+  source: "lead_form"
+};
+
+await fetch(LEAD_ENDPOINT, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(payload)
+});
+
   const em
