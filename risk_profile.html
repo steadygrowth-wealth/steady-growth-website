@@ -511,7 +511,7 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
   ev.preventDefault();
 
   const name = document.getElementById("leadName").value.trim();
-  const phone = document.getElementById("leadPhone").value.trim();
+  const phone = document.getElementById("leadPhone").value.trim().replace(/\D/g, "");
   const email = document.getElementById("leadEmail").value.trim();
   const status = document.getElementById("leadStatus");
 
@@ -529,20 +529,16 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
   allQuestions.forEach(q => totalScore += (rp[q.dataset.qid] || 0));
   const pct = Math.round((totalScore / maxPossible) * 100);
 
-  /* Determine profile */
+  /* Determine profile allocation */
   let label, tagline, equity, debt, cash;
-
   if (pct <= 40) {
-    label = "Conservative";
-    tagline = "Capital preservation with low volatility.";
+    label = "Conservative"; tagline = "Capital preservation with low volatility.";
     equity = 20; debt = 55; cash = 25;
   } else if (pct <= 70) {
-    label = "Moderate";
-    tagline = "Balanced approach with steady growth.";
+    label = "Moderate"; tagline = "Balanced approach with steady growth.";
     equity = 50; debt = 35; cash = 15;
   } else {
-    label = "Aggressive";
-    tagline = "High-growth strategy with higher equity.";
+    label = "Aggressive"; tagline = "High-growth strategy with higher equity.";
     equity = 75; debt = 20; cash = 5;
   }
 
@@ -550,13 +546,12 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
   document.getElementById("profileLabel").textContent = label;
   document.getElementById("profileTagline").textContent = tagline;
   document.getElementById("profileScoreNum").textContent = totalScore;
-  document.getElementById("profileDetail").textContent =
+  document.getElementById("profileDetail").textContent = 
     `Your risk score is ${pct}%. This is based on your behavioural and financial responses.`;
 
   document.getElementById("equityPct").textContent = equity + "%";
   document.getElementById("debtPct").textContent = debt + "%";
   document.getElementById("cashPct").textContent = cash + "%";
-
   document.getElementById("equityFill").style.width = equity + "%";
   document.getElementById("debtFill").style.width = debt + "%";
   document.getElementById("cashFill").style.width = cash + "%";
@@ -569,31 +564,31 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
   status.textContent = "Thank you! Your profile is ready below.";
   status.className = "lead-status ok";
 
+  /* Send to Google Sheet */
   const GSHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbybdFkGSWh1HEJSrUD2Cke_ug2ceaPPzIH7MrYyPxvILmLXK7I4E0H4ANw_fEE1Iifc/exec";
+
   const payload = {
-  name,
-  mobile: phone,
-  email,
-  risk_profile: {
-    answers: rp,
-    total_score: totalScore,
-    score_pct: pct,
-    label,
-    allocation: { equity, debt, cash }
-  },
-  source: "risk_profile"
-};
+    name,
+    mobile: phone,
+    email,
+    risk_profile: {
+      answers: rp,
+      total_score: totalScore,
+      score_pct: pct,
+      label,
+      allocation: { equity, debt, cash }
+    },
+    source: "risk_profile"
+  };
 
-fetch(GSHEET_ENDPOINT, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(payload)
-});
-
+  fetch(GSHEET_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
 
   result.scrollIntoView({ behavior: "smooth", block: "center" });
 
-  // Clear saved questionnaire answers so next visit is fresh
   localStorage.removeItem("rp");
 });
 
