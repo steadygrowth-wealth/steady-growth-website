@@ -611,23 +611,26 @@ form.addEventListener('submit', function (e) {
     e.preventDefault();
   }
   if (valid) {
+  const GSHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbybdFkGSWh1HEJSrUD2Cke_ug2ceaPPzIH7MrYyPxvILmLXK7I4E0H4ANw_fEE1Iifc/exec";
+
   const payload = {
-    name: name.value,
-    city: city.value,
-    email: emailInput.value,
-    phone: phoneInput.value,
-    country_code: countryCodeSelect.value,
+    name: name.value.trim(),
+    city: city.value.trim(),
+    email: emailInput.value.trim(),
+    phone: phoneInput.value.trim(),
+    country_code: countryCodeSelect.value, // e.g. "+91"
     goal: goal.value,
     approach: approachChecked.value,
-    message: message.value,
+    message: document.getElementById('message').value.trim(),
     source: "contact_page"
   };
-
+  
   fetch(GSHEET_ENDPOINT, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
-  });
+  }).catch(err => console.error("Contact page send error:", err));
+
 }
 
 });
