@@ -540,24 +540,36 @@ document.querySelectorAll(".mobile-nav-links a").forEach(link => {
   });
 });
 
-// ---------------------
-// Form validation logic
-// ---------------------
+// -------------------------
+// Contact Form Validation
+// -------------------------
 const form = document.getElementById('contactForm');
 const emailInput = document.getElementById('email');
 const phoneInput = document.getElementById('phone');
 const countryCodeSelect = document.getElementById('countryCode');
 
+// Create a status element (added for confirmation message)
+let statusEl = document.createElement("div");
+statusEl.id = "formStatus";
+statusEl.style.marginTop = "12px";
+statusEl.style.fontSize = "0.95rem";
+statusEl.style.textAlign = "center";
+form.appendChild(statusEl);
+
 form.addEventListener('submit', function (e) {
   let valid = true;
 
-  // Clear previous errors
+  // Reset messages
+  statusEl.textContent = "";
+  statusEl.className = "";
+
+  // Clear field errors
   ['nameError','cityError','emailError','phoneError','goalError','approachError'].forEach(id => {
-    const el = document.getElementById(id);
+    let el = document.getElementById(id);
     if (el) el.textContent = '';
   });
 
-  // Basic required checks
+  // Required fields
   const name = document.getElementById('name');
   const city = document.getElementById('city');
   const goal = document.getElementById('goal');
@@ -575,66 +587,75 @@ form.addEventListener('submit', function (e) {
   // Email validation
   const emailVal = emailInput.value.trim();
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   if (!emailPattern.test(emailVal)) {
-    document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+    document.getElementById('emailError').textContent = 'Enter a valid email address.';
     valid = false;
   }
 
-  // Phone validation (per country)
+  // Phone validation
   let phoneVal = phoneInput.value.replace(/[\s\-]/g, '');
   const selectedOption = countryCodeSelect.options[countryCodeSelect.selectedIndex];
   const minLen = parseInt(selectedOption.dataset.min || '6', 10);
   const maxLen = parseInt(selectedOption.dataset.max || '15', 10);
 
   if (!/^\d+$/.test(phoneVal)) {
-    document.getElementById('phoneError').textContent = 'Phone number should contain digits only.';
+    document.getElementById('phoneError').textContent = 'Phone number must contain digits only.';
     valid = false;
   } else if (phoneVal.length < minLen || phoneVal.length > maxLen) {
     document.getElementById('phoneError').textContent =
-      'Phone number length does not match the typical length for the selected country.';
+      `Phone number length must be ${minLen} to ${maxLen} digits for this country.`;
     valid = false;
   }
 
-  // Goal required
   if (!goal.value) {
-    document.getElementById('goalError').textContent = 'Please select your primary financial goal.';
+    document.getElementById('goalError').textContent = 'Select your primary financial goal.';
     valid = false;
   }
 
-  // Approach required
   if (!approachChecked) {
-    document.getElementById('approachError').textContent = 'Please select your investment approach.';
+    document.getElementById('approachError').textContent = 'Select your investment approach.';
     valid = false;
   }
 
+  // Stop if invalid
   if (!valid) {
     e.preventDefault();
+    return;
   }
-  if (valid) {
-  const GSHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbybdFkGSWh1HEJSrUD2Cke_ug2ceaPPzIH7MrYyPxvILmLXK7I4E0H4ANw_fEE1Iifc/exec";
+
+  // -------------------------------------
+  // Submit to Google Sheet
+  // -------------------------------------
+  const GSHEET_ENDPOINT =
+    "https://script.google.com/macros/s/AKfycbybdFkGSWh1HEJSrUD2Cke_ug2ceaPPzIH7MrYyPxvILmLXK7I4E0H4ANw_fEE1Iifc/exec";
 
   const payload = {
     name: name.value.trim(),
     city: city.value.trim(),
     email: emailInput.value.trim(),
-    phone: phoneInput.value.trim(),
-    country_code: countryCodeSelect.value, // e.g. "+91"
+    phone: phoneVal,
+    country_code: countryCodeSelect.value,
     goal: goal.value,
     approach: approachChecked.value,
     message: document.getElementById('message').value.trim(),
     source: "contact_page"
   };
-  
+
   fetch(GSHEET_ENDPOINT, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
-  }).catch(err => console.error("Contact page send error:", err));
+  }).catch(err => console.error("Contact page submission error:", err));
 
-}
-
+  // -------------------------------------
+  // SUCCESS MESSAGE
+  // -------------------------------------
+  statusEl.textContent = "Submitted! We will contact you shortly.";
+  statusEl.classList.add("ok");
 });
 </script>
+
 
 </body>
 </html>
