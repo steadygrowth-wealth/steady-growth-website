@@ -570,6 +570,9 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
   status.className = "lead-status ok";
 
   result.scrollIntoView({ behavior: "smooth", block: "center" });
+
+  // Clear saved questionnaire answers so next visit is fresh
+  localStorage.removeItem("rp");
 });
 
 /* Back to website */
