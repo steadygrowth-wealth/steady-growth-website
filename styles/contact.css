@@ -322,3 +322,7 @@ body, html {
   margin-bottom: 16px;
 }
 
+#formStatus.ok {
+  color: #4caf50 !important;   /* Material green */
+  font-weight: 600;
+}
