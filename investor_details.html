@@ -234,7 +234,7 @@ form.addEventListener("submit", async(ev)=>{
   statusEl.textContent = "";
   statusEl.className   = "status";
 
-  // honeypot
+  // Honeypot check
   if (document.getElementById("hp_field").value.trim().length > 0) {
     statusEl.textContent = "Thanks.";
     return;
@@ -242,23 +242,44 @@ form.addEventListener("submit", async(ev)=>{
 
   const name   = document.getElementById("name").value.trim();
   const mobile = validateMobile(document.getElementById("mobile").value.trim());
+  const email  = document.getElementById("email").value.trim();
+  const pref   = document.getElementById("pref").value;
+  const timepref = document.getElementById("timepref").value;
+  const message  = document.getElementById("message").value.trim();
 
-  const GSHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbybdFkGSWh1HEJSrUD2Cke_ug2ceaPPzIH7MrYyPxvILmLXK7I4E0H4ANw_fEE1Iifc/exec";
+  /* ---------------------------------------------------
+     FIX #1 — Block invalid mobile numbers
+  --------------------------------------------------- */
+  if (!mobile) {
+    statusEl.textContent = "Enter a valid 10-digit mobile number.";
+    statusEl.classList.add("err");
+    return;
+  }
+
+  const GSHEET_ENDPOINT =
+    "https://script.google.com/macros/s/AKfycbybdFkGSWh1HEJSrUD2Cke_ug2ceaPPzIH7MrYyPxvILmLXK7I4E0H4ANw_fEE1Iifc/exec";
 
   const payload = {
     name,
-    mobile,  // CLEAN, VALIDATED NUMBER
-    email: document.getElementById("email").value.trim(),
-    pref: document.getElementById("pref").value,
-    timepref: document.getElementById("timepref").value,
-    message: document.getElementById("message").value.trim(),
+    mobile,
+    email,
+    pref,
+    timepref,
+    message,
     source: "lead_form"
   };
 
+  // Send to Google Sheet (fire & forget)
   fetch(GSHEET_ENDPOINT, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
   }).catch(err => console.error("Lead send error:", err));
+
+  /* ---------------------------------------------------
+     FIX #2 — Show user a success confirmation message
+  --------------------------------------------------- */
+  statusEl.textContent = "Submitted! We will contact you shortly.";
+  statusEl.classList.add("ok");
 });
 </script>
