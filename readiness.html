@@ -900,14 +900,19 @@ if (leadForm) {
     const webhook = "https://script.google.com/macros/s/AKfycbw-belwpkcLadQvVzgq0cwq_-HD2KBk0vZFyvqHQF3GrYVgpsU8_30Z6jOS2wwzM-ot/exec";
 
     // Fire-and-forget POST (no CORS blocking)
-    fetch(webhook, {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8",
-      },
-      body: JSON.stringify(payload),
-    }).catch((err) => {
+    fetch(GSHEET_ENDPOINT, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    name: nameInput.value,
+    mobile: mobileInput.value,
+    email: emailInput.value,
+    score,
+    readiness_answers: answers,
+    source: "sip_readiness"
+  })
+});
+.catch((err) => {
       console.error("Lead submit error:", err);
     });
 
