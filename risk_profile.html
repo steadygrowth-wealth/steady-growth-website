@@ -617,9 +617,7 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
   /* ---------------------------------------------------------
      SUBMIT TO GOOGLE SHEET (MUST USE FORMDATA)
 --------------------------------------------------------- */
-  const GSHEET_ENDPOINT =
-    "const GSHEET_ENDPOINT =
-    "https://script.google.com/macros/s/AKfycbzfPKyf6reazDCBL8Ql8wqU73KerPyi7cjdHI1BKXULBERuG1MAElH058KPEmAvOIu87g/exec";
+  const GSHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbzfPKyf6reazDCBL8Ql8wqU73KerPyi7cjdHI1BKXULBERuG1MAElH058KPEmAvOIu87g/exec";
 
   const fd = new FormData();
   fd.append("formType", "risk_profile");
