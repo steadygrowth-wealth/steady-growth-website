@@ -222,26 +222,35 @@
     </div>
   </div>
 
-<script>
+
+  <script>
 const form      = document.getElementById("leadCollector");
 const statusEl  = document.getElementById("status");
+const btn       = document.getElementById("submitBtn");
 
 function validateMobile(m){
   const only = (m||"").replace(/\D/g,'');
   return only.length === 10 ? only : null;
 }
 
-form.addEventListener("submit", async(ev)=>{
+form.addEventListener("submit", async (ev) => {
   ev.preventDefault();
   statusEl.textContent = "";
-  statusEl.className   = "status";
+  statusEl.className = "status";
+
+  // Disable button + show progress
+  btn.disabled = true;
+  btn.textContent = "Sending...";
 
   // Honeypot check
   if (document.getElementById("hp_field").value.trim().length > 0) {
     statusEl.textContent = "Thanks.";
+    btn.disabled = false;
+    btn.textContent = "Send my details";
     return;
   }
 
+  // Collect values
   const name     = document.getElementById("name").value.trim();
   const mobile   = validateMobile(document.getElementById("mobile").value.trim());
   const email    = document.getElementById("email").value.trim();
@@ -253,15 +262,14 @@ form.addEventListener("submit", async(ev)=>{
   if (!mobile) {
     statusEl.textContent = "Enter a valid 10-digit mobile number.";
     statusEl.classList.add("err");
+    btn.disabled = false;
+    btn.textContent = "Send my details";
     return;
   }
 
-  const GSHEET_ENDPOINT =
-    "https://script.google.com/macros/s/AKfycbzfPKyf6reazDCBL8Ql8wqU73KerPyi7cjdHI1BKXULBERuG1MAElH058KPEmAvOIu87g/exec";
-
-  // Prepare FormData
+  // Prepare data for Google Sheets
   const fd = new FormData();
-  fd.append("formType", "visitor_details");   // routing to the correct sheet
+  fd.append("formType", "visitor_details");
   fd.append("name", name);
   fd.append("mobile", mobile);
   fd.append("email", email);
@@ -269,7 +277,11 @@ form.addEventListener("submit", async(ev)=>{
   fd.append("timepref", timepref);
   fd.append("message", message);
 
-  // Submit to Apps Script
+  // Your Web App endpoint
+  const GSHEET_ENDPOINT =
+    "https://script.google.com/macros/s/AKfycbzfPKyf6reazDCBL8Ql8wqU73KerPyi7cjdHI1BKXULBERuG1MAElH058KPEmAvOIu87g/exec";
+
+  // Submit data
   fetch(GSHEET_ENDPOINT, {
     method: "POST",
     body: fd
@@ -279,20 +291,32 @@ form.addEventListener("submit", async(ev)=>{
     if (res.ok) {
       statusEl.textContent = "Submitted! We will contact you shortly.";
       statusEl.classList.add("ok");
+
+      btn.textContent = "Submitted!";
+      btn.disabled = true; // disable after success
+
       form.reset();
     } else {
       statusEl.textContent = "Submission failed. Try again.";
       statusEl.classList.add("err");
+
+      btn.disabled = false;
+      btn.textContent = "Send my details";
     }
   })
   .catch(err => {
     console.error("Error:", err);
+
     statusEl.textContent = "Network error. Try again.";
     statusEl.classList.add("err");
-  });
 
+    btn.disabled = false;
+    btn.textContent = "Send my details";
+  });
 });
 </script>
+
+
 
 
 </body>
