@@ -634,12 +634,12 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
   document.getElementById("profileResult")
     .scrollIntoView({ behavior: "smooth", block: "center" });
 
-  localStorage.removeItem("rp");
 });
 
 /* Back button */
 document.getElementById("backToWebsiteBtn")
   .addEventListener("click", () => {
+    localStorage.removeItem("rp");
     window.location.href =
       "https://steadygrowth-wealth.github.io/steady-growth-website/";
   });
