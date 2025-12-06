@@ -595,13 +595,33 @@ function validateEmail(str) {
 
 // Country-specific phone validation
 function validatePhone(number, countryOption) {
-  let digits = number.replace(/\D/g, "");
+  let digits = number.replace(/\D/g, "");   // remove spaces, hyphens, etc.
 
+  const countryCode = countryOption.value;
   const minLen = parseInt(countryOption.dataset.min);
   const maxLen = parseInt(countryOption.dataset.max);
 
+  // -------------------------------------------
+  // INDIA-SPECIFIC LEADING ZERO HANDLING (+91)
+  // -------------------------------------------
+  if (countryCode === "+91") {
+    // If 11 digits AND starts with 0 → remove the leading zero
+    if (digits.length === 11 && digits.startsWith("0")) {
+      digits = digits.substring(1);  // drop the first character
+    }
+
+    // Must be EXACTLY 10 digits after adjustment
+    if (digits.length !== 10) return null;
+  } 
+  // -------------------------------------------
+  // OTHER COUNTRIES – default length validation
+  // -------------------------------------------
+  else {
+    if (digits.length < minLen || digits.length > maxLen) return null;
+  }
+
+  // Must be all digits
   if (!/^\d+$/.test(digits)) return null;
-  if (digits.length < minLen || digits.length > maxLen) return null;
 
   return digits;
 }
