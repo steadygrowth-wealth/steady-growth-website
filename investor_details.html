@@ -228,60 +228,167 @@ const form      = document.getElementById("leadCollector");
 const statusEl  = document.getElementById("status");
 const btn       = document.getElementById("submitBtn");
 
-function validateMobile(m){
-  const only = (m||"").replace(/\D/g,'');
-  return only.length === 10 ? only : null;
+// Input fields
+const nameEl     = document.getElementById("name");
+const mobileEl   = document.getElementById("mobile");
+const emailEl    = document.getElementById("email");
+const prefEl     = document.getElementById("pref");
+const timeprefEl = document.getElementById("timepref");
+
+// ----- Helper: Create validation message UI under each field -----
+function createMsgEl(inputEl) {
+  const div = document.createElement("div");
+  div.style.fontSize = "0.85rem";
+  div.style.marginTop = "-6px";
+  div.style.marginBottom = "6px";
+  div.style.height = "18px";
+  div.style.color = "#ff6b6b"; // default red
+  inputEl.parentNode.appendChild(div);
+  return div;
 }
 
-form.addEventListener("submit", async (ev) => {
+// Create UI areas
+const nameMsg     = createMsgEl(nameEl);
+const mobileMsg   = createMsgEl(mobileEl);
+const emailMsg    = createMsgEl(emailEl);
+const prefMsg     = createMsgEl(prefEl);
+const timeprefMsg = createMsgEl(timeprefEl);
+
+// ----- VALIDATORS -----
+
+// A. Name validator (letters + spaces, min 2 chars)
+function validateName(name) {
+  const clean = name.trim();
+  if (!/^[A-Za-z ]+$/.test(clean)) return null;
+  if (clean.length < 2) return null;
+  return clean;
+}
+
+// B. Strong Indian Mobile Validator
+function validateMobile(m) {
+  const only = (m || "").replace(/\D/g, "");
+  if (!/^[6-9]\d{9}$/.test(only)) return null;
+  if (/^(.)\1{9}$/.test(only)) return null;
+  return only;
+}
+
+// C. Email validator
+function validateEmail(mail) {
+  const clean = mail.trim();
+  const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean);
+  return ok ? clean : null;
+}
+
+// D. Preferred channel validator
+function validatePref(p) {
+  return p !== "" ? p : null;
+}
+
+// E. Preferred time validator
+function validateTimePref(t) {
+  return t !== "" ? t : null;
+}
+
+// ----- LIVE VALIDATION -----
+function updateSubmitState() {
+  const allValid =
+    validateName(nameEl.value) &&
+    validateMobile(mobileEl.value) &&
+    validateEmail(emailEl.value) &&
+    validatePref(prefEl.value) &&
+    validateTimePref(timeprefEl.value);
+
+  btn.disabled = !allValid;
+}
+
+// NAME Live Validation
+nameEl.addEventListener("input", () => {
+  const v = validateName(nameEl.value);
+  if (v) {
+    nameMsg.textContent = "✓ Looks good";
+    nameMsg.style.color = "#4caf50";
+  } else {
+    nameMsg.textContent = "✗ Enter a valid name (letters & spaces)";
+    nameMsg.style.color = "#ff6b6b";
+  }
+  updateSubmitState();
+});
+
+// MOBILE Live Validation
+mobileEl.addEventListener("input", () => {
+  const v = validateMobile(mobileEl.value);
+  if (v) {
+    mobileMsg.textContent = "✓ Valid mobile number";
+    mobileMsg.style.color = "#4caf50";
+  } else {
+    mobileMsg.textContent = "✗ Must be a 10-digit Indian mobile number";
+    mobileMsg.style.color = "#ff6b6b";
+  }
+  updateSubmitState();
+});
+
+// EMAIL Live Validation
+emailEl.addEventListener("input", () => {
+  const v = validateEmail(emailEl.value);
+  if (v) {
+    emailMsg.textContent = "✓ Valid email";
+    emailMsg.style.color = "#4caf50";
+  } else {
+    emailMsg.textContent = "✗ Enter a valid email address";
+    emailMsg.style.color = "#ff6b6b";
+  }
+  updateSubmitState();
+});
+
+// PREF Live Validation
+prefEl.addEventListener("change", () => {
+  const v = validatePref(prefEl.value);
+  if (v) {
+    prefMsg.textContent = "✓ Selected";
+    prefMsg.style.color = "#4caf50";
+  } else {
+    prefMsg.textContent = "✗ Please choose a channel";
+    prefMsg.style.color = "#ff6b6b";
+  }
+  updateSubmitState();
+});
+
+// TIME PREF Live Validation
+timeprefEl.addEventListener("change", () => {
+  const v = validateTimePref(timeprefEl.value);
+  if (v) {
+    timeprefMsg.textContent = "✓ Selected";
+    timeprefMsg.style.color = "#4caf50";
+  } else {
+    timeprefMsg.textContent = "✗ Please choose a time";
+    timeprefMsg.style.color = "#ff6b6b";
+  }
+  updateSubmitState();
+});
+
+// Initially disable submit button
+btn.disabled = true;
+
+// ----- FORM SUBMIT -----
+form.addEventListener("submit", (ev) => {
   ev.preventDefault();
   statusEl.textContent = "";
   statusEl.className = "status";
 
-  // Disable button + show progress
   btn.disabled = true;
   btn.textContent = "Sending...";
 
-  // Honeypot check
-  if (document.getElementById("hp_field").value.trim().length > 0) {
-    statusEl.textContent = "Thanks.";
-    btn.disabled = false;
-    btn.textContent = "Send my details";
-    return;
-  }
-
-  // Collect values
-  const name     = document.getElementById("name").value.trim();
-  const mobile   = validateMobile(document.getElementById("mobile").value.trim());
-  const email    = document.getElementById("email").value.trim();
-  const pref     = document.getElementById("pref").value;
-  const timepref = document.getElementById("timepref").value;
-  const message  = document.getElementById("message").value.trim();
-
-  // Validate mobile
-  if (!mobile) {
-    statusEl.textContent = "Enter a valid 10-digit mobile number.";
-    statusEl.classList.add("err");
-    btn.disabled = false;
-    btn.textContent = "Send my details";
-    return;
-  }
-
-  // Prepare data for Google Sheets
   const fd = new FormData();
   fd.append("formType", "visitor_details");
-  fd.append("name", name);
-  fd.append("mobile", mobile);
-  fd.append("email", email);
-  fd.append("pref", pref);
-  fd.append("timepref", timepref);
-  fd.append("message", message);
+  fd.append("name", validateName(nameEl.value));
+  fd.append("mobile", validateMobile(mobileEl.value));
+  fd.append("email", validateEmail(emailEl.value));
+  fd.append("pref", prefEl.value);
+  fd.append("timepref", timeprefEl.value);
+  fd.append("message", document.getElementById("message").value.trim());
 
-  // Your Web App endpoint
-  const GSHEET_ENDPOINT =
-    "https://script.google.com/macros/s/AKfycbzfPKyf6reazDCBL8Ql8wqU73KerPyi7cjdHI1BKXULBERuG1MAElH058KPEmAvOIu87g/exec";
+  const GSHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbzfPKyf6reazDCBL8Ql8wqU73KerPyi7cjdHI1BKXULBERuG1MAElH058KPEmAvOIu87g/exec";
 
-  // Submit data
   fetch(GSHEET_ENDPOINT, {
     method: "POST",
     body: fd
@@ -293,9 +400,14 @@ form.addEventListener("submit", async (ev) => {
       statusEl.classList.add("ok");
 
       btn.textContent = "Submitted!";
-      btn.disabled = true; // disable after success
+      btn.disabled = true;
 
       form.reset();
+      nameMsg.textContent = "";
+      mobileMsg.textContent = "";
+      emailMsg.textContent = "";
+      prefMsg.textContent = "";
+      timeprefMsg.textContent = "";
     } else {
       statusEl.textContent = "Submission failed. Try again.";
       statusEl.classList.add("err");
@@ -305,8 +417,7 @@ form.addEventListener("submit", async (ev) => {
     }
   })
   .catch(err => {
-    console.error("Error:", err);
-
+    console.error(err);
     statusEl.textContent = "Network error. Try again.";
     statusEl.classList.add("err");
 
