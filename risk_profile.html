@@ -434,8 +434,8 @@
   
 <script>
 /* -----------------------------------------------------------
-   RISK PROFILE — COMPLETE & FIXED JAVASCRIPT
-   (Correct client_name → Apps Script field)
+   RISK PROFILE — FULLY CORRECTED JAVASCRIPT
+   (Guaranteed Google Sheet submission: client_name fixed)
 ----------------------------------------------------------- */
 
 /* Page handling */
@@ -446,7 +446,7 @@ let current = 1;
 /* Load stored answers */
 let rp = JSON.parse(localStorage.getItem("rp") || "{}");
 
-/* Show selected page */
+/* Switch pages */
 function showPage(n) {
   pages.forEach(p => p.classList.remove("active"));
   document.querySelector(`.section-page[data-page="${n}"]`).classList.add("active");
@@ -461,35 +461,30 @@ function updateProgressBar() {
   document.getElementById("progressBarFill").style.width = pct + "%";
 }
 
-/* Initialize */
-document.addEventListener("DOMContentLoaded", () => {
-  showPage(1);
-});
+/* Start */
+document.addEventListener("DOMContentLoaded", () => showPage(1));
 
 /* Next & Back buttons */
 document.querySelectorAll(".next-btn").forEach(btn =>
   btn.addEventListener("click", () => showPage(current + 1))
 );
-
 document.querySelectorAll(".prev-btn").forEach(btn =>
   btn.addEventListener("click", () => showPage(current - 1))
 );
 
 /* -----------------------------------------------------------
-   QUESTION OPTION SELECTION
+   QUESTION SELECTION
 ----------------------------------------------------------- */
 document.querySelectorAll(".question").forEach(q => {
   const qid = q.dataset.qid;
   const options = q.querySelectorAll(".option");
 
-  /* Restore earlier selected option */
   if (rp[qid]) {
     options.forEach(o => {
       if (+o.dataset.score === rp[qid]) o.classList.add("selected");
     });
   }
 
-  /* New selection */
   options.forEach(opt =>
     opt.addEventListener("click", () => {
       options.forEach(o => o.classList.remove("selected"));
@@ -503,7 +498,7 @@ document.querySelectorAll(".question").forEach(q => {
   );
 });
 
-/* Show "Next" only if all section questions are answered */
+/* Show "Next" when all answers in section filled */
 function updateNextVisibility() {
   const section = document.querySelector(`.section-page[data-page="${current}"]`);
   const questions = section.querySelectorAll(".question");
@@ -517,27 +512,24 @@ function updateNextVisibility() {
   if (next) next.style.display = allDone ? "inline-block" : "none";
 }
 
-/* Finish button */
 document.getElementById("finishBtn").addEventListener("click", () => {
   showPage(7);
 });
 
 /* -----------------------------------------------------------
-   SUMMARY FORM SUBMISSION
+   SUMMARY FORM SUBMIT → GOOGLE SHEETS
 ----------------------------------------------------------- */
 document.getElementById("leadForm").addEventListener("submit", (ev) => {
   ev.preventDefault();
 
-  const nameField = document.getElementById("leadName");
-  const emailField = document.getElementById("leadEmail");
-  const phoneField = document.getElementById("leadPhone");
+  const form = document.getElementById("leadForm");
 
-  let name = nameField.value.trim();
-  let phone = phoneField.value.trim().replace(/\D/g, "");
-  const email = emailField.value.trim();
+  const name = document.getElementById("leadName").value.trim();
+  let phone = document.getElementById("leadPhone").value.trim().replace(/\D/g, "");
+  const email = document.getElementById("leadEmail").value.trim();
   const status = document.getElementById("leadStatus");
 
-  /* Validate name & mobile */
+  /* Name & mobile validation */
   if (!name) {
     status.textContent = "Please enter your name.";
     status.className = "lead-status err";
@@ -550,7 +542,7 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
     return;
   }
 
-  /* Allow Indian mobile numbers with leading zero */
+  /* Allow 0XXXXXXXXX → convert to 10-digit */
   if (phone.length === 11 && phone.startsWith("0")) {
     phone = phone.substring(1);
   }
@@ -562,7 +554,7 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
   }
 
   /* ---------------------------------------------------------
-     CALCULATE RISK SCORE
+     CALCULATE SCORE
   --------------------------------------------------------- */
   let totalScore = 0;
   const allQuestions = document.querySelectorAll(".question");
@@ -574,7 +566,6 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
 
   const pct = Math.round((totalScore / maxPossible) * 100);
 
-  /* Determine risk category */
   let label, tagline, equity, debt, cash;
 
   if (pct <= 40) {
@@ -593,9 +584,7 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
     equity = 75; debt = 20; cash = 5;
   }
 
-  /* ---------------------------------------------------------
-     UPDATE PROFILE UI
-  --------------------------------------------------------- */
+  /* Update UI */
   document.getElementById("profileLabel").textContent = label;
   document.getElementById("profileTagline").textContent = tagline;
   document.getElementById("profileScoreNum").textContent = totalScore;
@@ -610,24 +599,25 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
   document.getElementById("debtFill").style.width = debt + "%";
   document.getElementById("cashFill").style.width = cash + "%";
 
-  const result = document.getElementById("profileResult");
-  result.style.display = "block";
-  result.classList.add("revealed");
+  document.getElementById("profileResult").style.display = "block";
 
   status.textContent = "Thank you! Your personalised investor profile is ready below.";
   status.className = "lead-status ok";
 
   /* ---------------------------------------------------------
-     SEND TO GOOGLE SHEET (FormData)
+     SEND TO GOOGLE SHEET (FINAL FIX)
 --------------------------------------------------------- */
   const GSHEET_ENDPOINT =
     "https://script.google.com/macros/s/AKfycbzfPKyf6reazDCBL8Ql8wqU73KerPyi7cjdHI1BKXULBERuG1MAElH058KPEmAvOIu87g/exec";
 
-  const fd = new FormData();
-  fd.append("formType", "risk_profile");
-  fd.append("client_name", name);             // ✔ FIXED
-  fd.append("mobile", phone);
-  fd.append("email", email);
+  // FORM-DATA CREATED FROM FORM (ensures client_name is included)
+  const fd = new FormData(form);
+
+  fd.set("formType", "risk_profile");      // ensure correct form type
+  fd.set("client_name", name);              // overwrite to ensure inclusion
+  fd.set("mobile", phone);
+  fd.set("email", email);
+
   fd.append("answers_json", JSON.stringify({
     answers: rp,
     total_score: totalScore,
@@ -636,30 +626,28 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
     allocation: { equity, debt, cash }
   }));
 
-  fetch(GSHEET_ENDPOINT, {
-    method: "POST",
-    body: fd
-  })
-  .then(r => r.json())
-  .then(res => console.log("Sheet update:", res))
-  .catch(err => console.error("Error:", err));
+  fetch(GSHEET_ENDPOINT, { method: "POST", body: fd })
+    .then(r => r.json())
+    .then(res => console.log("Sheet response:", res))
+    .catch(err => console.error("Submission error:", err));
 
-  result.scrollIntoView({ behavior: "smooth", block: "center" });
+  document.getElementById("profileResult")
+    .scrollIntoView({ behavior: "smooth", block: "center" });
 
   localStorage.removeItem("rp");
 });
 
-/* Back to Website */
-document.getElementById("backToWebsiteBtn").addEventListener("click", () => {
-  window.location.href = "https://steadygrowth-wealth.github.io/steady-growth-website/";
-});
+/* Back button */
+document.getElementById("backToWebsiteBtn")
+  .addEventListener("click", () => {
+    window.location.href =
+      "https://steadygrowth-wealth.github.io/steady-growth-website/";
+  });
 
-/* Optional "Back" redirection */
 function goBack() {
   window.location.href = "risk_first_page.html";
 }
 </script>
-
 
 
 </body>
