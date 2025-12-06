@@ -265,12 +265,27 @@ function validateName(name) {
 }
 
 // B. Strong Indian Mobile Validator
-function validateMobile(m) {
-  const only = (m || "").replace(/\D/g, "");
-  if (!/^[6-9]\d{9}$/.test(only)) return null;
+function validateMobile(m){
+  // Remove all non-digit characters
+  let only = (m || "").replace(/\D/g, "");
+
+  // Remove leading zeros (but keep digits after that)
+  while (only.startsWith("0")) {
+    only = only.substring(1);
+  }
+
+  // Now the number must be exactly 10 digits
+  if (only.length !== 10) return null;
+
+  // Must start with 6,7,8,9 (Indian mobile rule)
+  if (!/^[6-9]/.test(only)) return null;
+
+  // Block repeating digits like 0000000000, 9999999999, etc.
   if (/^(.)\1{9}$/.test(only)) return null;
+
   return only;
 }
+
 
 // C. Email validator
 function validateEmail(mail) {
