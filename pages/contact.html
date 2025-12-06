@@ -611,32 +611,32 @@ function validatePhone(number, countryOption) {
 // ---------------------------------------------
 function setMessage(el, msg, isValid) {
   el.textContent = msg;
-  el.style.color = isValid ? "#78e08f" : "#ffb3b3";
+  el.style.color = isValid ? "#4caf50" : "#ffb3b3";
 }
 
 // Live validation listeners
 fields.name.addEventListener("input", () => {
   const ok = validateName(fields.name.value);
-  ok ? setMessage(errors.name, "Looks good.", true)
-     : setMessage(errors.name, "Please enter your full name.", false);
+  ok ? setMessage(errors.name, "✓", true)
+     : setMessage(errors.name, "✗ Please enter your full name using letters & spaces only.", false);
 });
 
 fields.city.addEventListener("input", () => {
   const ok = validateCity(fields.city.value);
-  ok ? setMessage(errors.city, "Looks good.", true)
+  ok ? setMessage(errors.city, "✓", true)
      : setMessage(errors.city, "Please enter your city.", false);
 });
 
 fields.email.addEventListener("input", () => {
   const ok = validateEmail(fields.email.value);
-  ok ? setMessage(errors.email, "Email format looks correct.", true)
+  ok ? setMessage(errors.email, "✓", true)
      : setMessage(errors.email, "Please enter a valid email.", false);
 });
 
 fields.phone.addEventListener("input", () => {
   const option = fields.countryCode.options[fields.countryCode.selectedIndex];
   const ok = validatePhone(fields.phone.value, option);
-  ok ? setMessage(errors.phone, "Number format looks correct.", true)
+  ok ? setMessage(errors.phone, "✓", true)
      : setMessage(errors.phone, "Please enter a valid number for this country.", false);
 });
 
@@ -644,8 +644,8 @@ fields.phone.addEventListener("input", () => {
 fields.countryCode.addEventListener("change", () => {
   const option = fields.countryCode.options[fields.countryCode.selectedIndex];
   const ok = validatePhone(fields.phone.value, option);
-  ok ? setMessage(errors.phone, "Number format looks correct.", true)
-     : setMessage(errors.phone, "Adjust number length for selected country.", false);
+  ok ? setMessage(errors.phone, "✓", true)
+     : setMessage(errors.phone, "✗ Please enter a valid mobile number.", false);
 });
 
 // Goal
@@ -673,7 +673,7 @@ form.addEventListener("submit", (e) => {
   statusEl.style.color = "";
 
   let valid = true;
-
+https://script.google.com/macros/s/AKfycbzfPKyf6reazDCBL8Ql8wqU73KerPyi7cjdHI1BKXULBERuG1MAElH058KPEmAvOIu87g/exec
   // Run final validation
   const name = validateName(fields.name.value);
   const city = validateCity(fields.city.value);
