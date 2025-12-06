@@ -433,319 +433,216 @@
 
   
 <script>
-// ===============================
-// Risk Profile – Navigation & State
-// ===============================
+/* -----------------------------------------------------------
+   RISK PROFILE — CLEAN FULL JAVASCRIPT
+----------------------------------------------------------- */
+
+/* Page handling */
 const pages = document.querySelectorAll(".section-page");
 const totalPages = pages.length;
-let currentPage = 1;
+let current = 1;
 
-// Risk profile answers (qid -> score)
+/* Load stored answers if available */
 let rp = JSON.parse(localStorage.getItem("rp") || "{}");
 
-// Progress bar
-function updateProgressBar() {
-  const pct = ((currentPage - 1) / (totalPages - 1)) * 100;
-  const bar = document.getElementById("progressBarFill");
-  if (bar) bar.style.width = pct + "%";
-}
-
-// Show a specific page
-function showPage(pageNum) {
+/* Switch visible page */
+function showPage(n) {
   pages.forEach(p => p.classList.remove("active"));
-  const target = document.querySelector(`.section-page[data-page="${pageNum}"]`);
-  if (target) {
-    target.classList.add("active");
-    currentPage = pageNum;
-    updateProgressBar();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    updateNextVisibility();
-  }
+  document.querySelector(`.section-page[data-page="${n}"]`).classList.add("active");
+  current = n;
+  updateProgressBar();
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-// Go back to the first risk page (kept from your original code)
+/* Update progress bar */
+function updateProgressBar() {
+  const pct = ((current - 1) / (totalPages - 1)) * 100;
+  document.getElementById("progressBarFill").style.width = pct + "%";
+}
+
+/* Initialise */
+document.addEventListener("DOMContentLoaded", () => {
+  showPage(1);
+});
+
+/* Next buttons */
+document.querySelectorAll(".next-btn").forEach(btn =>
+  btn.addEventListener("click", () => showPage(current + 1))
+);
+
+/* Previous buttons */
+document.querySelectorAll(".prev-btn").forEach(btn =>
+  btn.addEventListener("click", () => showPage(current - 1))
+);
+
+/* -----------------------------------------------------------
+   QUESTION OPTION SELECTION
+----------------------------------------------------------- */
+document.querySelectorAll(".question").forEach(q => {
+  const qid = q.dataset.qid;
+  const options = q.querySelectorAll(".option");
+
+  /* Restore previous selection */
+  if (rp[qid]) {
+    options.forEach(o => {
+      if (+o.dataset.score === rp[qid]) o.classList.add("selected");
+    });
+  }
+
+  /* Set selection */
+  options.forEach(opt =>
+    opt.addEventListener("click", () => {
+      options.forEach(o => o.classList.remove("selected"));
+      opt.classList.add("selected");
+      rp[qid] = +opt.dataset.score;
+
+      localStorage.setItem("rp", JSON.stringify(rp));
+      updateNextVisibility();
+    })
+  );
+});
+
+/* Show 'Next' only if all questions in section answered */
+function updateNextVisibility() {
+  const section = document.querySelector(`.section-page[data-page="${current}"]`);
+  const questions = section.querySelectorAll(".question");
+
+  let allDone = true;
+  questions.forEach(q => {
+    if (!rp[q.dataset.qid]) allDone = false;
+  });
+
+  const next = section.querySelector(".next-btn");
+  if (next) next.style.display = allDone ? "inline-block" : "none";
+}
+
+/* Final page reveal */
+document.getElementById("finishBtn").addEventListener("click", () => {
+  showPage(7);
+});
+
+/* -----------------------------------------------------------
+   SUMMARY PAGE — FORM SUBMISSION
+----------------------------------------------------------- */
+document.getElementById("leadForm").addEventListener("submit", (ev) => {
+  ev.preventDefault();
+
+  const name = document.getElementById("leadName").value.trim();
+  const phone = document.getElementById("leadPhone").value.trim().replace(/\D/g, "");
+  const email = document.getElementById("leadEmail").value.trim();
+  const status = document.getElementById("leadStatus");
+
+  if (!name || !phone) {
+    status.textContent = "Please enter your name and mobile number.";
+    status.className = "lead-status err";
+    return;
+  }
+
+  /* ---------------------------------------------------------
+     CALCULATE TOTAL SCORE
+  --------------------------------------------------------- */
+  let totalScore = 0;
+  const allQuestions = document.querySelectorAll(".question");
+  const maxPossible = allQuestions.length * 5;
+
+  allQuestions.forEach(q => {
+    totalScore += (rp[q.dataset.qid] || 0);
+  });
+
+  const pct = Math.round((totalScore / maxPossible) * 100);
+
+  /* ---------------------------------------------------------
+     PROFILE CATEGORY
+  --------------------------------------------------------- */
+  let label, tagline, equity, debt, cash;
+
+  if (pct <= 40) {
+    label = "Conservative"; 
+    tagline = "Capital preservation with low volatility.";
+    equity = 20; debt = 55; cash = 25;
+
+  } else if (pct <= 70) {
+    label = "Moderate"; 
+    tagline = "Balanced approach with steady growth.";
+    equity = 50; debt = 35; cash = 15;
+
+  } else {
+    label = "Aggressive"; 
+    tagline = "High-growth strategy with higher equity.";
+    equity = 75; debt = 20; cash = 5;
+  }
+
+  /* ---------------------------------------------------------
+     UPDATE UI RESULTS
+  --------------------------------------------------------- */
+  document.getElementById("profileLabel").textContent = label;
+  document.getElementById("profileTagline").textContent = tagline;
+  document.getElementById("profileScoreNum").textContent = totalScore;
+  document.getElementById("profileDetail").textContent =
+    `Your risk score is ${pct}%. This reflects your financial behaviour and comfort with market movements.`;
+
+  document.getElementById("equityPct").textContent = equity + "%";
+  document.getElementById("debtPct").textContent = debt + "%";
+  document.getElementById("cashPct").textContent = cash + "%";
+
+  document.getElementById("equityFill").style.width = equity + "%";
+  document.getElementById("debtFill").style.width = debt + "%";
+  document.getElementById("cashFill").style.width = cash + "%";
+
+  const result = document.getElementById("profileResult");
+  result.style.display = "block";
+  result.classList.add("revealed");
+
+  status.textContent = "Thank you! Your profile is ready below.";
+  status.className = "lead-status ok";
+
+  /* ---------------------------------------------------------
+     BUILD GOOGLE SHEET PAYLOAD
+  --------------------------------------------------------- */
+
+  const GSHEET_ENDPOINT =
+    "https://script.google.com/macros/s/AKfycbybdFkGSWh1HEJSrUD2Cke_ug2ceaPPzIH7MrYyPxvILmLXK7I4E0H4ANw_fEE1Iifc/exec";
+
+  /* MUST MATCH APPS SCRIPT FIELD NAMES */
+  const payload = {
+    formType: "risk_profile",
+    client_name: name,
+    mobile: phone,
+    email: email,
+    answers_json: JSON.stringify({
+      answers: rp,
+      total_score: totalScore,
+      pct_score: pct,
+      label,
+      allocation: { equity, debt, cash }
+    })
+  };
+
+  fetch(GSHEET_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+
+  /* Scroll to results */
+  result.scrollIntoView({ behavior: "smooth", block: "center" });
+
+  /* Clear saved answers */
+  localStorage.removeItem("rp");
+});
+
+/* -----------------------------------------------------------
+   BACK TO WEBSITE
+----------------------------------------------------------- */
+document.getElementById("backToWebsiteBtn").addEventListener("click", () => {
+  window.location.href = "https://steadygrowth-wealth.github.io/steady-growth-website/";
+});
+
+/* Optional: Return to first page */
 function goBack() {
   window.location.href = "risk_first_page.html";
 }
-
-// ===============================
-// Question selection & Next button logic
-// ===============================
-function updateNextVisibility() {
-  const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
-  if (!section) return;
-
-  const questions = section.querySelectorAll(".question");
-  let allAnswered = true;
-  questions.forEach(q => {
-    const qid = q.dataset.qid;
-    if (!rp[qid]) allAnswered = false;
-  });
-
-  const nextBtn = section.querySelector(".next-btn");
-  if (nextBtn) {
-    nextBtn.style.display = allAnswered ? "inline-block" : "none";
-  }
-}
-
-// Attach option click handlers
-function initQuestions() {
-  document.querySelectorAll(".question").forEach(q => {
-    const qid = q.dataset.qid;
-    const options = q.querySelectorAll(".option");
-
-    // Restore previous selection from localStorage
-    if (rp[qid]) {
-      options.forEach(o => {
-        if (+o.dataset.score === rp[qid]) o.classList.add("selected");
-      });
-    }
-
-    options.forEach(opt => {
-      opt.addEventListener("click", () => {
-        options.forEach(o => o.classList.remove("selected"));
-        opt.classList.add("selected");
-
-        rp[qid] = +opt.dataset.score;
-        localStorage.setItem("rp", JSON.stringify(rp));
-        updateNextVisibility();
-      });
-    });
-  });
-}
-
-// ===============================
-// Page navigation buttons
-// ===============================
-function initNavButtons() {
-  // Next buttons
-  document.querySelectorAll(".next-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      showPage(currentPage + 1);
-    });
-  });
-
-  // Back buttons (within wizard, not the final goBack() redirect)
-  document.querySelectorAll(".prev-btn").forEach(btn => {
-    if (!btn.getAttribute("onclick")) {
-      btn.addEventListener("click", () => {
-        showPage(currentPage - 1);
-      });
-    }
-  });
-
-  // Finish button → go to summary page (page 7)
-  const finishBtn = document.getElementById("finishBtn");
-  if (finishBtn) {
-    finishBtn.addEventListener("click", () => {
-      showPage(7);
-    });
-  }
-}
-
-// ===============================
-// Mobile validation (India-focused)
-// ===============================
-function normalizeIndianMobile(raw) {
-  let digits = (raw || "").replace(/\D/g, "");
-
-  // Accept 10-digit or 11-digit starting with 0 (strip the 0)
-  if (digits.length === 11 && digits.startsWith("0")) {
-    digits = digits.substring(1);
-  }
-
-  if (digits.length !== 10) return null;
-  if (!/^\d+$/.test(digits)) return null;
-
-  return digits;
-}
-
-function validateEmailOptional(email) {
-  const clean = email.trim();
-  if (!clean) return true; // optional
-  const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return pattern.test(clean);
-}
-
-// ===============================
-// Lead form submission handler
-// ===============================
-function initLeadForm() {
-  const form = document.getElementById("leadForm");
-  if (!form) return;
-
-  const nameInput  = document.getElementById("leadName");
-  const phoneInput = document.getElementById("leadPhone");
-  const emailInput = document.getElementById("leadEmail");
-  const statusEl   = document.getElementById("leadStatus");
-  const resultCard = document.getElementById("profileResult");
-  const submitBtn  = document.getElementById("leadSubmitBtn");
-
-  form.addEventListener("submit", (ev) => {
-    ev.preventDefault();
-
-    // Reset status
-    statusEl.textContent = "";
-    statusEl.className = "lead-status";
-
-    const name  = (nameInput.value || "").trim();
-    const phone = normalizeIndianMobile(phoneInput.value || "");
-    const email = (emailInput.value || "").trim();
-
-    // Basic validations
-    if (!name || name.length < 2) {
-      statusEl.textContent = "Please enter your full name.";
-      statusEl.classList.add("err");
-      return;
-    }
-
-    if (!phone) {
-      statusEl.textContent = "Please enter a valid 10-digit mobile number.";
-      statusEl.classList.add("err");
-      return;
-    }
-
-    if (!validateEmailOptional(email)) {
-      statusEl.textContent = "Please enter a valid email address (or leave it blank).";
-      statusEl.classList.add("err");
-      return;
-    }
-
-    // ===============================
-    // Calculate score & profile
-    // ===============================
-    let totalScore = 0;
-    const allQuestions = document.querySelectorAll(".question");
-    const maxPossible = allQuestions.length * 5;
-
-    allQuestions.forEach(q => {
-      const qid = q.dataset.qid;
-      totalScore += (rp[qid] || 0);
-    });
-
-    const pct = Math.round((totalScore / maxPossible) * 100);
-
-    let label, tagline, equity, debt, cash;
-    if (pct <= 40) {
-      label   = "Conservative";
-      tagline = "Capital preservation with low volatility.";
-      equity  = 20; debt = 55; cash = 25;
-    } else if (pct <= 70) {
-      label   = "Moderate";
-      tagline = "Balanced approach with steady growth.";
-      equity  = 50; debt = 35; cash = 15;
-    } else {
-      label   = "Aggressive";
-      tagline = "High-growth strategy with higher equity.";
-      equity  = 75; debt = 20; cash = 5;
-    }
-
-    // ===============================
-    // Fill UI with profile
-    // ===============================
-    document.getElementById("profileLabel").textContent      = label;
-    document.getElementById("profileTagline").textContent    = tagline;
-    document.getElementById("profileScoreNum").textContent   = totalScore;
-    document.getElementById("profileDetail").textContent     =
-      `Your risk score is ${pct}%. This is based on your behavioural and financial responses.`;
-
-    document.getElementById("equityPct").textContent = equity + "%";
-    document.getElementById("debtPct").textContent   = debt   + "%";
-    document.getElementById("cashPct").textContent   = cash   + "%";
-
-    document.getElementById("equityFill").style.width = equity + "%";
-    document.getElementById("debtFill").style.width   = debt   + "%";
-    document.getElementById("cashFill").style.width   = cash   + "%";
-
-    resultCard.classList.add("revealed");
-    resultCard.style.display = "block";
-
-    statusEl.textContent = "Thank you. Your investor profile is shown below.";
-    statusEl.classList.add("ok");
-
-    resultCard.scrollIntoView({ behavior: "smooth", block: "center" });
-
-    // ===============================
-    // Prepare payload for Apps Script
-    // ===============================
-    const GSHEET_ENDPOINT =
-      "https://script.google.com/macros/s/AKfycbzfPKyf6reazDCBL8Ql8wqU73KerPyi7cjdHI1BKXULBERuG1MAElH058KPEmAvOIu87g/exec";
-
-    const answersPayload = {
-      answers: rp,
-      total_score: totalScore,
-      score_pct: pct,
-      label,
-      allocation: { equity, debt, cash }
-    };
-
-    const payload = {
-      formType: "risk_profile",                  // routing in Apps Script
-      client_name: name,
-      mobile: phone,
-      email: email,
-      answers_json: JSON.stringify(answersPayload),
-      source: "risk_profile_page"
-    };
-
-    // ===============================
-    // Send to Google Sheet
-    // ===============================
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Submitting…";
-
-    fetch(GSHEET_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    })
-    .then(r => r.json())
-    .then(res => {
-      if (res.ok) {
-        statusEl.textContent = "Profile saved successfully. We will reach out to you shortly.";
-        statusEl.classList.add("ok");
-        // Clear stored answers so a fresh attempt starts clean
-        localStorage.removeItem("rp");
-      } else {
-        statusEl.textContent = "We received your responses, but logging to our system had an issue. Please try again later.";
-        statusEl.classList.add("err");
-      }
-    })
-    .catch(() => {
-      statusEl.textContent = "Network issue while saving your profile. Your on-screen result is still valid.";
-      statusEl.classList.add("err");
-    })
-    .finally(() => {
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Submit & View Profile";
-    });
-  });
-}
-
-// ===============================
-// Back to website button
-// ===============================
-function initBackToWebsite() {
-  const backBtn = document.getElementById("backToWebsiteBtn");
-  if (!backBtn) return;
-
-  backBtn.addEventListener("click", () => {
-    window.location.href = "https://steadygrowth-wealth.github.io/steady-growth-website/";
-  });
-}
-
-// ===============================
-// Init on DOMContentLoaded
-// ===============================
-document.addEventListener("DOMContentLoaded", () => {
-  initQuestions();
-  initNavButtons();
-  initLeadForm();
-  initBackToWebsite();
-  showPage(1);  // start at first section
-});
 </script>
-
 
 
 
