@@ -609,8 +609,8 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
 
   /* Hide the form, show the profile (Option A) */
   form.style.display = "none";
-  // profileResult.style.display = "block";
-  profileResult.setAttribute("aria-hidden", "false");
+  profileResult.classList.add("revealed");   // <-- REQUIRED
+
 
   status.textContent = "Thank you! Your personalised investor profile is ready below.";
   status.className = "lead-status ok";
