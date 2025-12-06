@@ -519,6 +519,9 @@
 
 
 <script>
+// ---------------------------------------------
+// Mobile menu
+// ---------------------------------------------
 const navToggle = document.getElementById("navToggle");
 const mobileMenu = document.getElementById("mobileMenu");
 const menuClose = document.getElementById("menuClose");
@@ -540,110 +543,202 @@ document.querySelectorAll(".mobile-nav-links a").forEach(link => {
   });
 });
 
-// -------------------------
-// Contact Form Validation
-// -------------------------
-const form = document.getElementById('contactForm');
-const emailInput = document.getElementById('email');
-const phoneInput = document.getElementById('phone');
-const countryCodeSelect = document.getElementById('countryCode');
-
-// Create a status element (added for confirmation message)
-let statusEl = document.createElement("div");
-statusEl.id = "formStatus";
+// ---------------------------------------------
+// Contact Form — Premium Validation + Submit
+// ---------------------------------------------
+const form = document.getElementById("contactForm");
+const statusEl = document.createElement("div");
 statusEl.style.marginTop = "12px";
-statusEl.style.fontSize = "0.95rem";
+statusEl.style.fontSize = "0.92rem";
 statusEl.style.textAlign = "center";
+statusEl.style.minHeight = "1.2em";
 form.appendChild(statusEl);
 
-form.addEventListener('submit', function (e) {
-  e.preventDefault();  // 🔥 ALWAYS stop page reload
+const fields = {
+  name: document.getElementById("name"),
+  city: document.getElementById("city"),
+  email: document.getElementById("email"),
+  phone: document.getElementById("phone"),
+  countryCode: document.getElementById("countryCode"),
+  goal: document.getElementById("goal"),
+  approach: document.getElementsByName("approach"),
+  message: document.getElementById("message")
+};
+
+// Error message elements
+const errors = {
+  name: document.getElementById("nameError"),
+  city: document.getElementById("cityError"),
+  email: document.getElementById("emailError"),
+  phone: document.getElementById("phoneError"),
+  goal: document.getElementById("goalError"),
+  approach: document.getElementById("approachError")
+};
+
+// ---------------------------------------------
+// Validation Helpers
+// ---------------------------------------------
+function validateName(str) {
+  const clean = str.trim();
+  return /^[A-Za-z ]{2,}$/.test(clean) ? clean : null;
+}
+
+function validateCity(str) {
+  const clean = str.trim();
+  return clean.length >= 2 ? clean : null;
+}
+
+function validateEmail(str) {
+  const clean = str.trim();
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean) ? clean : null;
+}
+
+// Country-specific phone validation
+function validatePhone(number, countryOption) {
+  let digits = number.replace(/\D/g, "");
+
+  const minLen = parseInt(countryOption.dataset.min);
+  const maxLen = parseInt(countryOption.dataset.max);
+
+  if (!/^\d+$/.test(digits)) return null;
+  if (digits.length < minLen || digits.length > maxLen) return null;
+
+  return digits;
+}
+
+// ---------------------------------------------
+// Live Validation Messages (Professional Tone)
+// ---------------------------------------------
+function setMessage(el, msg, isValid) {
+  el.textContent = msg;
+  el.style.color = isValid ? "#78e08f" : "#ffb3b3";
+}
+
+// Live validation listeners
+fields.name.addEventListener("input", () => {
+  const ok = validateName(fields.name.value);
+  ok ? setMessage(errors.name, "Looks good.", true)
+     : setMessage(errors.name, "Please enter your full name.", false);
+});
+
+fields.city.addEventListener("input", () => {
+  const ok = validateCity(fields.city.value);
+  ok ? setMessage(errors.city, "Looks good.", true)
+     : setMessage(errors.city, "Please enter your city.", false);
+});
+
+fields.email.addEventListener("input", () => {
+  const ok = validateEmail(fields.email.value);
+  ok ? setMessage(errors.email, "Email format looks correct.", true)
+     : setMessage(errors.email, "Please enter a valid email.", false);
+});
+
+fields.phone.addEventListener("input", () => {
+  const option = fields.countryCode.options[fields.countryCode.selectedIndex];
+  const ok = validatePhone(fields.phone.value, option);
+  ok ? setMessage(errors.phone, "Number format looks correct.", true)
+     : setMessage(errors.phone, "Please enter a valid number for this country.", false);
+});
+
+// Country change → revalidate phone
+fields.countryCode.addEventListener("change", () => {
+  const option = fields.countryCode.options[fields.countryCode.selectedIndex];
+  const ok = validatePhone(fields.phone.value, option);
+  ok ? setMessage(errors.phone, "Number format looks correct.", true)
+     : setMessage(errors.phone, "Adjust number length for selected country.", false);
+});
+
+// Goal
+fields.goal.addEventListener("change", () => {
+  fields.goal.value
+    ? setMessage(errors.goal, "Selection noted.", true)
+    : setMessage(errors.goal, "Please choose a goal.", false);
+});
+
+// Approach
+fields.approach.forEach(radio => {
+  radio.addEventListener("change", () => {
+    setMessage(errors.approach, "Selection noted.", true);
+  });
+});
+
+// ---------------------------------------------
+// Form Submission
+// ---------------------------------------------
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  // Reset status
+  statusEl.textContent = "";
+  statusEl.style.color = "";
 
   let valid = true;
 
-  // Reset messages
-  statusEl.textContent = "";
-  statusEl.className = "";
+  // Run final validation
+  const name = validateName(fields.name.value);
+  const city = validateCity(fields.city.value);
+  const email = validateEmail(fields.email.value);
 
-  ['nameError','cityError','emailError','phoneError','goalError','approachError']
-    .forEach(id => document.getElementById(id).textContent = "");
+  const option = fields.countryCode.options[fields.countryCode.selectedIndex];
+  const phone = validatePhone(fields.phone.value, option);
 
-  const name = document.getElementById('name');
-  const city = document.getElementById('city');
-  const goal = document.getElementById('goal');
-  const approachChecked = document.querySelector('input[name="approach"]:checked');
+  const goal = fields.goal.value;
+  const approachChecked = [...fields.approach].find(r => r.checked);
 
-  if (!name.value.trim()) {
-    document.getElementById('nameError').textContent = 'Please enter your name.';
-    valid = false;
-  }
-  if (!city.value.trim()) {
-    document.getElementById('cityError').textContent = 'Please enter your city.';
-    valid = false;
-  }
+  if (!name) { setMessage(errors.name, "Please enter your full name.", false); valid = false; }
+  if (!city) { setMessage(errors.city, "Please enter your city.", false); valid = false; }
+  if (!email) { setMessage(errors.email, "Please enter a valid email.", false); valid = false; }
+  if (!phone) { setMessage(errors.phone, "Please enter a valid number for this country.", false); valid = false; }
+  if (!goal) { setMessage(errors.goal, "Please choose a goal.", false); valid = false; }
+  if (!approachChecked) { setMessage(errors.approach, "Please select an investment approach.", false); valid = false; }
 
-  const emailVal = emailInput.value.trim();
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailPattern.test(emailVal)) {
-    document.getElementById('emailError').textContent = 'Enter a valid email address.';
-    valid = false;
-  }
+  if (!valid) return;
 
-  let phoneVal = phoneInput.value.replace(/[\s\-]/g, '');
-  const selectedOption = countryCodeSelect.options[countryCodeSelect.selectedIndex];
-  const minLen = parseInt(selectedOption.dataset.min || '6');
-  const maxLen = parseInt(selectedOption.dataset.max || '15');
+  // Disable button
+  const submitBtn = form.querySelector("button[type='submit']");
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Sending…";
 
-  if (!/^\d+$/.test(phoneVal)) {
-    document.getElementById('phoneError').textContent = 'Phone number must contain digits only.';
-    valid = false;
-  } else if (phoneVal.length < minLen || phoneVal.length > maxLen) {
-    document.getElementById('phoneError').textContent =
-      `Phone number length must be ${minLen} to ${maxLen} digits for this country.`;
-    valid = false;
-  }
+  // Build FormData
+  const fd = new FormData();
+  fd.append("formType", "contact_requests");
+  fd.append("name", name);
+  fd.append("city", city);
+  fd.append("email", email);
+  fd.append("country_code", option.value);
+  fd.append("phone", phone);
+  fd.append("goal", goal);
+  fd.append("approach", approachChecked.value);
+  fd.append("message", fields.message.value.trim());
 
-  if (!goal.value) {
-    document.getElementById('goalError').textContent = 'Select your primary financial goal.';
-    valid = false;
-  }
-
-  if (!approachChecked) {
-    document.getElementById('approachError').textContent = 'Select your investment approach.';
-    valid = false;
-  }
-
-  if (!valid) return;  // 🔥 DO NOT SUBMIT
-
-  // Submit to Google Apps Script
   const GSHEET_ENDPOINT =
-    "https://script.google.com/macros/s/AKfycbybdFkGSWh1HEJSrUD2Cke_ug2ceaPPzIH7MrYyPxvILmLXK7I4E0H4ANw_fEE1Iifc/exec";
-
-
-  const payload = {
-    name: name.value.trim(),
-    city: city.value.trim(),
-    email: emailVal,
-    phone: phoneVal,
-    country_code: countryCodeSelect.value,
-    goal: goal.value,
-    approach: approachChecked.value,
-    message: document.getElementById('message').value.trim(),
-    source: "contact_page"
-  };
+    "YOUR_GOOGLE_WEB_APP_URL_HERE";
 
   fetch(GSHEET_ENDPOINT, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
+    body: fd
+  })
+  .then(r => r.json())
+  .then(res => {
+    if (res.ok) {
+      statusEl.textContent = "Thank you — your request has been submitted. We will connect with you shortly.";
+      statusEl.style.color = "#78e08f";
+      form.reset();
+    } else {
+      statusEl.textContent = "Unable to submit at the moment. Please try again.";
+      statusEl.style.color = "#ffb3b3";
+    }
+  })
+  .catch(() => {
+    statusEl.textContent = "Network error. Please try again.";
+    statusEl.style.color = "#ffb3b3";
+  })
+  .finally(() => {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Request a Consultation →";
   });
-
-  statusEl.textContent = "Submitted! We will contact you shortly.";
-  statusEl.classList.add("ok");
 });
-
 </script>
-
 
 </body>
 </html>
