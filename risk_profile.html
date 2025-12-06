@@ -565,28 +565,35 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
   status.className = "lead-status ok";
 
   /* Send to Google Sheet */
-  const GSHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbybdFkGSWh1HEJSrUD2Cke_ug2ceaPPzIH7MrYyPxvILmLXK7I4E0H4ANw_fEE1Iifc/exec";
-  
+const GSHEET_ENDPOINT =
+  "https://script.google.com/macros/s/AKfycbybdFkGSWh1HEJSrUD2Cke_ug2ceaPPzIH7MrYyPxvILmLXK7I4E0H4ANw_fEE1Iifc/exec";
 
-  const payload = {
-    name,
-    mobile: phone,
-    email,
-    risk_profile: {
-      answers: rp,
-      total_score: totalScore,
-      score_pct: pct,
-      label,
-      allocation: { equity, debt, cash }
-    },
-    source: "risk_profile"
-  };
+/* Build payload exactly as Apps Script expects */
+const payload = {
+  formType: "risk_profile",          // ★ REQUIRED for correct routing
+  client_name: name,                 // ★ Apps Script expects client_name
+  mobile: phone,
+  email: email,
+  answers_json: JSON.stringify({
+    answers: rp,
+    total_score: totalScore,
+    score_pct: pct,
+    label,
+    allocation: { equity, debt, cash }
+  }),
+  source: "risk_profile_page"
+};
 
-  fetch(GSHEET_ENDPOINT, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  });
+fetch(GSHEET_ENDPOINT, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(payload)
+})
+.then(r => r.json())
+.then(res => {
+  console.log("Sheet response:", res);
+});
+
 
   result.scrollIntoView({ behavior: "smooth", block: "center" });
 
