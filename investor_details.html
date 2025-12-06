@@ -242,16 +242,14 @@ form.addEventListener("submit", async(ev)=>{
     return;
   }
 
-  const name   = document.getElementById("name").value.trim();
-  const mobile = validateMobile(document.getElementById("mobile").value.trim());
-  const email  = document.getElementById("email").value.trim();
-  const pref   = document.getElementById("pref").value;
+  const name     = document.getElementById("name").value.trim();
+  const mobile   = validateMobile(document.getElementById("mobile").value.trim());
+  const email    = document.getElementById("email").value.trim();
+  const pref     = document.getElementById("pref").value;
   const timepref = document.getElementById("timepref").value;
   const message  = document.getElementById("message").value.trim();
 
-  /* ---------------------------------------------------
-     FIX #1 — Block invalid mobile numbers
-  --------------------------------------------------- */
+  // Validate mobile
   if (!mobile) {
     statusEl.textContent = "Enter a valid 10-digit mobile number.";
     statusEl.classList.add("err");
@@ -261,31 +259,41 @@ form.addEventListener("submit", async(ev)=>{
   const GSHEET_ENDPOINT =
     "https://script.google.com/macros/s/AKfycbybdFkGSWh1HEJSrUD2Cke_ug2ceaPPzIH7MrYyPxvILmLXK7I4E0H4ANw_fEE1Iifc/exec";
 
+  // Prepare FormData
+  const fd = new FormData();
+  fd.append("formType", "visitor_details");   // routing to the correct sheet
+  fd.append("name", name);
+  fd.append("mobile", mobile);
+  fd.append("email", email);
+  fd.append("pref", pref);
+  fd.append("timepref", timepref);
+  fd.append("message", message);
 
-  const payload = {
-    name,
-    mobile,
-    email,
-    pref,
-    timepref,
-    message,
-    source: "lead_form"
-  };
-
-  // Send to Google Sheet (fire & forget)
+  // Submit to Apps Script
   fetch(GSHEET_ENDPOINT, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  }).catch(err => console.error("Lead send error:", err));
+    body: fd
+  })
+  .then(r => r.json())
+  .then(res => {
+    if (res.ok) {
+      statusEl.textContent = "Submitted! We will contact you shortly.";
+      statusEl.classList.add("ok");
+      form.reset();
+    } else {
+      statusEl.textContent = "Submission failed. Try again.";
+      statusEl.classList.add("err");
+    }
+  })
+  .catch(err => {
+    console.error("Error:", err);
+    statusEl.textContent = "Network error. Try again.";
+    statusEl.classList.add("err");
+  });
 
-  /* ---------------------------------------------------
-     FIX #2 — Show user a success confirmation message
-  --------------------------------------------------- */
-  statusEl.textContent = "Submitted! We will contact you shortly.";
-  statusEl.classList.add("ok");
 });
 </script>
+
 
 </body>
 </html>
