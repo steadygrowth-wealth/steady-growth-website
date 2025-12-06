@@ -353,7 +353,7 @@
           <form id="leadForm" class="lead-form" novalidate>
             <div class="field-group">
               <label for="leadName">Full Name*</label>
-              <input type="text" id="leadName" name="client_name" autocomplete="name" required placeholder="Your full name" />
+              <input type="text" id="leadName" required placeholder="Your full name" />
             </div>
 
             <div class="field-group">
@@ -614,7 +614,7 @@ document.getElementById("leadForm").addEventListener("submit", (ev) => {
   const fd = new FormData(form);
 
   fd.set("formType", "risk_profile");      // ensure correct form type
-  fd.set("client_name", name);              // overwrite to ensure inclusion
+  fd.set("name", name);              // overwrite to ensure inclusion
   fd.set("mobile", phone);
   fd.set("email", email);
 
