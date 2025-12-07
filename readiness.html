@@ -681,57 +681,112 @@
 
   
 <script>
-/* ============================================================
-   STEADY GROWTH — SIP READINESS JAVASCRIPT (FINAL VERSION)
-============================================================ */
+/* -------------------------------------------------------
+   SIP READINESS — FINAL CLEAN VERSION
+--------------------------------------------------------*/
 
-/* -----------------------------------------------------
-   HARD RESET FOR DEBUG (remove after final testing)
------------------------------------------------------*/
-localStorage.removeItem("readiness_page");
-localStorage.removeItem("readiness_answers");
-localStorage.removeItem("readiness_score");
-
-/* -----------------------------------------------------
-   PAGE/STATE SETUP
------------------------------------------------------*/
+/* ==========================
+   PAGE + STORAGE SETUP
+========================== */
 const pages = document.querySelectorAll(".section-page");
-let currentPage = 0;
 
+let currentPage = Number(localStorage.getItem("readiness_page") || 0);
 let answers = JSON.parse(localStorage.getItem("readiness_answers") || "{}");
-let storedPage = parseInt(localStorage.getItem("readiness_page") || "0");
 
-if (storedPage < 0 || storedPage > 6) storedPage = 0;
-currentPage = storedPage;
+const TOTAL_PAGES = 6; // sections 0–5 before lead form
+const progressBar = document.createElement("div");
 
-/* -----------------------------------------------------
-   SHOW PAGE
------------------------------------------------------*/
-function showPage(n) {
-  pages.forEach(p => p.classList.remove("active"));
-  const page = pages[n];
-  if (page) {
-    page.classList.add("active");
-    currentPage = n;
-    localStorage.setItem("readiness_page", String(n));
+/* ==========================
+   PROGRESS BAR
+========================== */
+progressBar.style.position = "fixed";
+progressBar.style.top = "0";
+progressBar.style.left = "0";
+progressBar.style.height = "5px";
+progressBar.style.width = "0%";
+progressBar.style.zIndex = "9999";
+progressBar.style.background = "linear-gradient(90deg,#ffe5ba,#f0b76b,#b9782f)";
+progressBar.style.transition = "width 0.25s ease";
+document.body.appendChild(progressBar);
+
+function updateProgress() {
+  if (currentPage === 0) {
+    progressBar.style.width = "0%";
+    return;
   }
+  const percent = (currentPage / TOTAL_PAGES) * 100;
+  progressBar.style.width = percent + "%";
 }
 
+/* ==========================
+   PAGE NAVIGATION
+========================== */
+function showPage(n) {
+  pages.forEach(p => p.classList.remove("active"));
+
+  const page = pages[n];
+  if (page) page.classList.add("active");
+
+  currentPage = n;
+  localStorage.setItem("readiness_page", n);
+
+  updateProgress();
+
+  // mobile scroll fix
+  if (window.innerWidth < 900) {
+    setTimeout(() => {
+      page.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 150);
+  }
+
+  checkSectionCompletion();
+}
+
+// Load correct page on refresh
 showPage(currentPage);
 
-/* -----------------------------------------------------
-   START BUTTON
------------------------------------------------------*/
+/* Start button (page 0 → page 1) */
 const startBtn = document.getElementById("startBtn");
 if (startBtn) startBtn.addEventListener("click", () => showPage(1));
 
-/* -----------------------------------------------------
-   YES/NO QUESTION LOGIC
------------------------------------------------------*/
+/* ==========================
+   NEXT BUTTON WITH VALIDATION
+========================== */
+document.querySelectorAll(".next-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
+    const qboxes = section.querySelectorAll(".q-box");
+
+    const unanswered = [...qboxes].filter(q => !answers[q.dataset.key]);
+    if (unanswered.length > 0) {
+      const first = unanswered[0];
+      first.classList.add("attention");
+      first.scrollIntoView({ behavior: "smooth", block: "center" });
+      setTimeout(() => first.classList.remove("attention"), 800);
+      return;
+    }
+
+    showPage(currentPage + 1);
+  });
+});
+
+/* ==========================
+   PREVIOUS BUTTON
+========================== */
+document.querySelectorAll(".prev-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    if (currentPage > 0) showPage(currentPage - 1);
+  });
+});
+
+/* ==========================
+   CAPTURE YES/NO ANSWERS
+========================== */
 document.querySelectorAll(".q-box").forEach(qbox => {
   const key = qbox.dataset.key;
   const buttons = qbox.querySelectorAll(".yn-btn");
 
+  // Restore previously selected answer
   if (answers[key]) {
     buttons.forEach(btn => {
       if (btn.dataset.val === answers[key]) btn.classList.add("selected");
@@ -740,64 +795,28 @@ document.querySelectorAll(".q-box").forEach(qbox => {
 
   buttons.forEach(btn => {
     btn.addEventListener("click", () => {
+      // Save
       answers[key] = btn.dataset.val;
       localStorage.setItem("readiness_answers", JSON.stringify(answers));
 
+      // Visual highlight
       buttons.forEach(b => b.classList.remove("selected"));
       btn.classList.add("selected");
+
+      // Auto-scroll to next question on mobile
+      if (window.innerWidth < 900) {
+        const next = qbox.nextElementSibling?.closest(".q-box");
+        if (next) next.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
 
       checkSectionCompletion();
     });
   });
 });
 
-/* -----------------------------------------------------
-   NEXT BUTTONS
------------------------------------------------------*/
-document.querySelectorAll(".next-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
-    const qboxes = section.querySelectorAll(".q-box");
-    const missing = [...qboxes].filter(q => !answers[q.dataset.key]);
-
-    if (missing.length > 0) {
-      missing[0].classList.add("attention");
-      missing[0].scrollIntoView({ behavior: "smooth", block: "center" });
-      setTimeout(() => missing[0].classList.remove("attention"), 800);
-      return;
-    }
-
-    showPage(currentPage + 1);
-  });
-});
-
-/* -----------------------------------------------------
-   BACK BUTTONS
------------------------------------------------------*/
-document.querySelectorAll(".prev-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    if (currentPage > 0) showPage(currentPage - 1);
-  });
-});
-
-/* -----------------------------------------------------
-   FINISH BUTTON → COMPUTE SCORE
------------------------------------------------------*/
-const finishBtn = document.getElementById("finishBtn");
-if (finishBtn) {
-  finishBtn.addEventListener("click", () => {
-    let score = 0;
-    for (let i = 1; i <= 25; i++) {
-      if (answers["q" + i] === "yes") score++;
-    }
-    localStorage.setItem("readiness_score", String(score));
-    showPage(6); // Go to lead form
-  });
-}
-
-/* -----------------------------------------------------
-   CHECK COMPLETION TO SHOW NEXT BUTTON
------------------------------------------------------*/
+/* ==========================
+   SHOW NEXT / FINISH BUTTON
+========================== */
 function checkSectionCompletion() {
   const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
   if (!section) return;
@@ -805,78 +824,106 @@ function checkSectionCompletion() {
   const qboxes = section.querySelectorAll(".q-box");
   const nextBtn = section.querySelector(".next-btn");
   const finishBtn = document.getElementById("finishBtn");
-  const missing = [...qboxes].filter(q => !answers[q.dataset.key]);
 
-  if (nextBtn) nextBtn.style.display = missing.length === 0 ? "inline-block" : "none";
-  if (finishBtn && currentPage === 5) {
-    finishBtn.style.display = missing.length === 0 ? "inline-block" : "none";
-  }
+  const unanswered = [...qboxes].filter(q => !answers[q.dataset.key]);
+
+  if (nextBtn) nextBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
+  if (finishBtn && currentPage === 5)
+    finishBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
 }
 
-/* -----------------------------------------------------
-   LEAD FORM SUBMISSION (Google Sheets)
------------------------------------------------------*/
-const leadForm = document.getElementById("leadForm");
-const leadStatus = document.getElementById("leadStatus");
+/* ==========================
+   SCORE CALCULATION
+========================== */
+const finishBtnEl = document.getElementById("finishBtn");
+if (finishBtnEl) {
+  finishBtnEl.addEventListener("click", () => {
+    let score = 0;
+    for (let i = 1; i <= 25; i++) {
+      if (answers["q" + i] === "yes") score++;
+    }
+    localStorage.setItem("readiness_score", score);
 
-const ENDPOINT =
-  "https://script.google.com/macros/s/AKfycbzfPKyf6reazDCBL8Ql8wqU73KerPyi7cjdHI1BKXULBERuG1MAElH058KPEmAvOIu87g/exec";
+    showPage(6); // go to lead capture page
+    localStorage.setItem("readiness_page", "6");
+  });
+}
+
+/* ==========================
+   LEAD FORM SUBMIT → GOOGLE SHEET
+========================== */
+const leadForm = document.getElementById("leadForm");
+const statusEl = document.getElementById("leadStatus");
 
 if (leadForm) {
   leadForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    const nameVal = document.getElementById("name").value.trim();
+    const mobileVal = document.getElementById("mobile").value.trim();
+    const emailVal = document.getElementById("email").value.trim();
+
+    const score = Number(localStorage.getItem("readiness_score") || "0");
+    const answers_json = JSON.stringify(answers);
+
+    const GS_ENDPOINT =
+      "https://script.google.com/macros/s/AKfycbzfPKyf6reazDCBL8Ql8wqU73KerPyi7cjdHI1BKXULBERuG1MAElH058KPEmAvOIu87g/exec";
+
     const payload = {
       formType: "readiness",
-      name: document.getElementById("name").value,
-      mobile: document.getElementById("mobile").value,
-      email: document.getElementById("email").value,
-      score: Number(localStorage.getItem("readiness_score") || "0"),
-      answers_json: JSON.stringify(answers),
+      name: nameVal,
+      mobile: mobileVal,
+      email: emailVal,
+      score: score,
+      answers_json: answers_json,
       source: "sip_readiness"
     };
 
-    leadStatus.textContent = "Saving your data...";
+    console.log("Sending:", payload);
 
     try {
-      const res = await fetch(ENDPOINT, {
+      const res = await fetch(GS_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
 
-      const out = await res.json();
-      console.log("GS response:", out);
-
-      leadStatus.textContent =
-        out.ok ? "Saved! Preparing your SIP Readiness Report..." : "Error saving data.";
+      const json = await res.json();
+      console.log("GSHEET Response:", json);
     } catch (err) {
-      console.error("FETCH ERROR:", err);
-      leadStatus.textContent = "Network error. Please try again.";
+      console.error("Readiness submit error:", err);
     }
 
-    setTimeout(() => {
-      showFinalScore(payload.score);
-    }, 800);
+    statusEl.textContent =
+      "Thank you! Generating your SIP Readiness Report...";
+
+    showFinalScore(score);
   });
 }
 
-/* -----------------------------------------------------
-   SCORE RENDER
------------------------------------------------------*/
+/* ==========================
+   FINAL SCORE REPORT RENDER
+========================== */
 function showFinalScore(score) {
   const page = document.querySelector('[data-page="6"]');
-  if (!page) return;
-
   const label = getScoreLabel(score);
-  const message = getScoreMessage(score);
+  const msg = getScoreMessage(score);
 
   page.innerHTML = `
     <h1>Your SIP Readiness Report</h1>
     <div class="summary-box" style="text-align:center;">
-      <div style="font-size:3rem; font-weight:700; color:var(--accent);">${score} / 25</div>
-      <div style="font-size:1.3rem; font-weight:600;">${label}</div>
-      <p style="color:#ddd;">${message}</p>
+      <div style="font-size:3rem;font-weight:700;color:#f0b76b;margin-bottom:6px;">
+        ${score} / 25
+      </div>
+      <div style="font-size:1.4rem;font-weight:600;margin-bottom:10px;">
+        ${label}
+      </div>
+      <p style="font-size:1rem;color:#d4d7e9;line-height:1.6;">${msg}</p>
+    </div>
+
+    <div class="nav-row" style="flex-direction:column;gap:12px;margin-top:25px;">
+      <a class="btn btn-primary" href="risk_intro.html">Get Personalized Investment Plan →</a>
+      <a class="btn btn-ghost" href="index.html">← Back to Website</a>
     </div>
   `;
 }
@@ -892,15 +939,15 @@ function getScoreMessage(score) {
   if (score <= 8)
     return "Your financial base needs strengthening before starting SIPs.";
   if (score <= 15)
-    return "Some readiness exists, but gaps need attention.";
+    return "Some readiness exists, but important gaps remain.";
   if (score <= 21)
-    return "You are almost ready. A few refinements will help.";
-  return "You are fully ready for disciplined long-term SIP investing.";
+    return "You are close to SIP-ready — a few refinements needed.";
+  return "You are fully ready for disciplined SIP investing.";
 }
 
-/* -----------------------------------------------------
-   WHY BOX TOGGLER
------------------------------------------------------*/
+/* ==========================
+   WHY TOGGLE
+========================== */
 document.querySelectorAll(".why-toggle").forEach(toggle => {
   toggle.addEventListener("click", () => {
     const box = toggle.nextElementSibling;
@@ -914,7 +961,6 @@ document.querySelectorAll(".why-toggle").forEach(toggle => {
   });
 });
 </script>
-
 
 </body>
 </html>
