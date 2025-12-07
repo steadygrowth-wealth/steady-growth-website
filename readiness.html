@@ -723,16 +723,19 @@ document.addEventListener("DOMContentLoaded", function () {
     // Check if a section is complete
     // -------------------------------
     function isPageComplete(pageNum) {
-        const section = document.querySelector(`.section-page[data-page="${pageNum}"]`);
-        if (!section) return false;
+    const section = document.querySelector(`.section-page[data-page="${pageNum}"]`);
+    if (!section) return false;
 
-        const questions = section.querySelectorAll(".q-box");
+    const questions = section.querySelectorAll(".q-box");
 
-        for (let q of questions) {
-            if (!(q.dataset.key in answers)) return false;
+    for (let q of questions) {
+        if (!q.querySelector(".yn-btn.selected")) {
+            return false; // this question not answered
         }
-        return true;
     }
+    return true;
+}
+
 
     // -------------------------------
     // Update visibility of Next / Finish
