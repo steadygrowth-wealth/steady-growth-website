@@ -682,46 +682,46 @@
  <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    let current = 0; // start at intro page
+    let current = 0; // Start at intro
     const pages = document.querySelectorAll(".section-page");
-    const totalPages = pages.length - 1; // last page is lead capture
+    const totalQuestionPages = 5; // pages 1 to 5 are question pages
 
     let answers = JSON.parse(localStorage.getItem("readiness_answers") || "{}");
 
-    // -------------------------------
+    // ------------------------------------------
     // ⭐ SHOW PAGE
-    // -------------------------------
+    // ------------------------------------------
     function showPage(n) {
         pages.forEach(p => p.classList.remove("active"));
         document.querySelector(`.section-page[data-page="${n}"]`).classList.add("active");
         current = n;
         window.scrollTo({ top: 0, behavior: "smooth" });
-
         updateButtons();
     }
 
-    // -------------------------------
-    // ⭐ START BUTTON
-    // -------------------------------
+    // ------------------------------------------
+    // ⭐ START BUTTON (Page 0 → Page 1)
+    // ------------------------------------------
     document.getElementById("startBtn").addEventListener("click", function () {
         showPage(1);
     });
 
-    // -------------------------------
-    // ⭐ YES/NO SELECTION HANDLING
-    // -------------------------------
+    // ------------------------------------------
+    // ⭐ YES/NO BUTTON HANDLING
+    // ------------------------------------------
     document.querySelectorAll(".yn-btn").forEach(btn => {
         btn.addEventListener("click", function () {
+
             const parent = btn.closest(".q-box");
             const key = parent.dataset.key;
 
             // Clear previous selection
             parent.querySelectorAll(".yn-btn").forEach(b => b.classList.remove("selected"));
 
-            // Set new selection
+            // Mark selected
             btn.classList.add("selected");
 
-            // Save (Yes=1, No=0)
+            // Save YES=1, NO=0
             answers[key] = btn.dataset.val === "yes" ? 1 : 0;
             localStorage.setItem("readiness_answers", JSON.stringify(answers));
 
@@ -729,77 +729,81 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // -------------------------------
-    // ⭐ UPDATE BUTTON VISIBILITY
-    // -------------------------------
-    function updateButtons() {
-        document.querySelectorAll(".nav-row").forEach(row => {
-            row.querySelectorAll(".next-btn, #finishBtn").forEach(btn => btn.style.display = "none");
-        });
+    // ------------------------------------------
+    // ⭐ CHECK PAGE COMPLETION
+    // ------------------------------------------
+    function isPageComplete(pageNum) {
+        const section = document.querySelector(`.section-page[data-page="${pageNum}"]`);
+        if (!section) return false;
 
-        // Intro page → only Start button
+        const questions = section.querySelectorAll(".q-box");
+
+        for (let q of questions) {
+            if (!(q.dataset.key in answers)) return false;
+        }
+        return true;
+    }
+
+    // ------------------------------------------
+    // ⭐ UPDATE NEXT/BACK/FINISH BUTTONS
+    // ------------------------------------------
+    function updateButtons() {
+
+        // Hide all next buttons initially
+        document.querySelectorAll(".next-btn").forEach(btn => btn.style.display = "none");
+        document.getElementById("finishBtn").style.display = "none";
+
+        // Intro page
         if (current === 0) return;
 
-        // Last question page (page 5)
+        // Last question page (5)
         if (current === 5) {
-            if (isPageComplete(current)) {
+            if (isPageComplete(5)) {
                 document.getElementById("finishBtn").style.display = "block";
             }
             return;
         }
 
-        // Normal question pages
-        if (isPageComplete(current)) {
-            const nextBtn = pages[current].querySelector(".next-btn");
-            if (nextBtn) nextBtn.style.display = "block";
+        // Question pages 1–4
+        if (current >= 1 && current <= 4) {
+            if (isPageComplete(current)) {
+                const nextBtn = pages[current].querySelector(".next-btn");
+                if (nextBtn) nextBtn.style.display = "block";
+            }
         }
     }
 
-    // -------------------------------
-    // ⭐ CHECK IF ALL QUESTIONS ANSWERED ON A PAGE
-    // -------------------------------
-    function isPageComplete(pageNum) {
-        const section = document.querySelector(`.section-page[data-page="${pageNum}"]`);
-        if (!section) return false;
-
-        const boxes = section.querySelectorAll(".q-box");
-
-        for (let box of boxes) {
-            const key = box.dataset.key;
-            if (!(key in answers)) return false;
-        }
-        return true;
-    }
-
-    // -------------------------------
+    // ------------------------------------------
     // ⭐ NEXT BUTTONS
-    // -------------------------------
+    // ------------------------------------------
     document.querySelectorAll(".next-btn").forEach(btn => {
         btn.addEventListener("click", function () {
-            if (current < 5) showPage(current + 1);
+            if (current < totalQuestionPages) {
+                showPage(current + 1);
+            }
         });
     });
 
-    // -------------------------------
+    // ------------------------------------------
     // ⭐ BACK BUTTONS
-    // -------------------------------
+    // ------------------------------------------
     document.querySelectorAll(".prev-btn").forEach(btn => {
         btn.addEventListener("click", function () {
             if (current > 1) showPage(current - 1);
         });
     });
 
-    // -------------------------------
-    // ⭐ FINISH (GO TO LEAD FORM)
-    // -------------------------------
+    // ------------------------------------------
+    // ⭐ FINISH BUTTON → GO TO LEAD FORM
+    // ------------------------------------------
     document.getElementById("finishBtn").addEventListener("click", function () {
         calculateScore();
         showPage(6);
     });
 
-    // -------------------------------
-    // ⭐ CALCULATE SCORE
-    // -------------------------------
+    // ------------------------------------------
+    // ⭐ SCORE CALCULATION
+    // ------------------------------------------
     function calculateScore() {
         let total = 0;
         Object.values(answers).forEach(v => total += parseInt(v));
@@ -807,47 +811,64 @@ document.addEventListener("DOMContentLoaded", function () {
         return total;
     }
 
-    // -------------------------------
-    // ⭐ LEAD FORM SUBMIT + FINAL SUBMISSION TO SHEETS
-    // -------------------------------
-    document.getElementById("leadForm").addEventListener("submit", function (e) {
-        e.preventDefault();
+    // ------------------------------------------
+    // ⭐ SUBMIT TO GOOGLE SHEET (Mobile-Safe)
+    // ------------------------------------------
+    function submitToGoogleSheet(payload) {
 
-        const payload = {
-            formType: "readiness",
-            name: document.getElementById("name").value.trim(),
-            mobile: document.getElementById("mobile").value.trim(),
-            email: document.getElementById("email").value.trim(),
-            answers_json: JSON.stringify(answers),
-            score: calculateScore(),
-            source: "readiness_page"
-        };
-
-        document.getElementById("leadStatus").innerText = "Submitting...";
+        const formData = new URLSearchParams();
+        formData.append("formType", "readiness");
+        formData.append("name", payload.name || "");
+        formData.append("mobile", payload.mobile || "");
+        formData.append("email", payload.email || "");
+        formData.append("answers_json", JSON.stringify(answers || {}));
+        formData.append("score", payload.score || 0);
+        formData.append("source", "readiness_page");
 
         fetch("https://script.google.com/macros/s/AKfycbzfPKyf6reazDCBL8Ql8wqU73KerPyi7cjdHI1BKXULBERuG1MAElH058KPEmAvOIu87g/exec", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+            },
+            body: formData.toString()
         })
         .then(r => r.json())
         .then(res => {
             if (res.ok) {
-                document.getElementById("leadStatus").innerText = "Success! Your score is ready.";
-                setTimeout(() => {
-                    window.location.href = "/thankyou.html";
-                }, 1200);
+                document.getElementById("leadStatus").innerText =
+                    "Success! Redirecting...";
+                setTimeout(() => window.location.href = "/thankyou.html", 1000);
             } else {
-                document.getElementById("leadStatus").innerText = "Error: " + res.error;
+                document.getElementById("leadStatus").innerText =
+                    "Server Error: " + res.error;
             }
         })
         .catch(err => {
-            console.error(err);
-            document.getElementById("leadStatus").innerText = "Network error.";
+            console.error("Network Error:", err);
+            document.getElementById("leadStatus").innerText =
+                "Network error. Please try again.";
         });
+    }
+
+    // ------------------------------------------
+    // ⭐ LEAD FORM SUBMIT
+    // ------------------------------------------
+    document.getElementById("leadForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const payload = {
+            name: document.getElementById("name").value.trim(),
+            mobile: document.getElementById("mobile").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            score: calculateScore()
+        };
+
+        document.getElementById("leadStatus").innerText = "Submitting...";
+
+        submitToGoogleSheet(payload);
     });
 
-    // Start on intro page
+    // Initial load
     showPage(0);
 
 });
