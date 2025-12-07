@@ -679,18 +679,17 @@
   </div>
 
 
- <script>
+<script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    let current = 0; // Start at intro
+    let current = 0; // start on intro
     const pages = document.querySelectorAll(".section-page");
-    const totalQuestionPages = 5; // pages 1 to 5 are question pages
 
     let answers = JSON.parse(localStorage.getItem("readiness_answers") || "{}");
 
-    // ------------------------------------------
+    // ---------------------------------------------------
     // ⭐ SHOW PAGE
-    // ------------------------------------------
+    // ---------------------------------------------------
     function showPage(n) {
         pages.forEach(p => p.classList.remove("active"));
         document.querySelector(`.section-page[data-page="${n}"]`).classList.add("active");
@@ -699,111 +698,96 @@ document.addEventListener("DOMContentLoaded", function () {
         updateButtons();
     }
 
-    // ------------------------------------------
-    // ⭐ START BUTTON (Page 0 → Page 1)
-    // ------------------------------------------
+    // ---------------------------------------------------
+    // ⭐ START BUTTON
+    // ---------------------------------------------------
     document.getElementById("startBtn").addEventListener("click", function () {
         showPage(1);
     });
 
-    // ------------------------------------------
-    // ⭐ YES/NO BUTTON HANDLING
-    // ------------------------------------------
+    // ---------------------------------------------------
+    // ⭐ YES/NO SELECTION
+    // ---------------------------------------------------
     document.querySelectorAll(".yn-btn").forEach(btn => {
         btn.addEventListener("click", function () {
 
             const parent = btn.closest(".q-box");
             const key = parent.dataset.key;
 
-            // Clear previous selection
+            // clear previous
             parent.querySelectorAll(".yn-btn").forEach(b => b.classList.remove("selected"));
-
-            // Mark selected
             btn.classList.add("selected");
 
-            // Save YES=1, NO=0
-            answers[key] = btn.dataset.val === "yes" ? 1 : 0;
+            // save answer
+            answers[key] = (btn.dataset.val === "yes" ? 1 : 0);
             localStorage.setItem("readiness_answers", JSON.stringify(answers));
 
             updateButtons();
         });
     });
 
-    // ------------------------------------------
-    // ⭐ CHECK PAGE COMPLETION
-    // ------------------------------------------
+    // ---------------------------------------------------
+    // ⭐ CHECK IF ALL 5 QUESTIONS IN SECTION ARE ANSWERED
+    // ---------------------------------------------------
     function isPageComplete(pageNum) {
         const section = document.querySelector(`.section-page[data-page="${pageNum}"]`);
         if (!section) return false;
 
         const questions = section.querySelectorAll(".q-box");
-
         for (let q of questions) {
-            if (!(q.dataset.key in answers)) return false;
+            if (!answers[q.dataset.key]) return false;
         }
         return true;
     }
 
-    // ------------------------------------------
-    // ⭐ UPDATE NEXT/BACK/FINISH BUTTONS
-    // ------------------------------------------
+    // ---------------------------------------------------
+    // ⭐ UPDATE NEXT / FINISH BUTTON VISIBILITY
+    // ---------------------------------------------------
     function updateButtons() {
 
-        // Hide all next buttons initially
-        document.querySelectorAll(".next-btn").forEach(btn => btn.style.display = "none");
+        document.querySelectorAll(".next-btn").forEach(b => b.style.display = "none");
         document.getElementById("finishBtn").style.display = "none";
 
-        // Intro page
-        if (current === 0) return;
+        if (current === 0) return; // intro only
 
-        // Last question page (5)
-        if (current === 5) {
-            if (isPageComplete(5)) {
-                document.getElementById("finishBtn").style.display = "block";
-            }
-            return;
-        }
-
-        // Question pages 1–4
+        // pages 1–4 (5 questions each)
         if (current >= 1 && current <= 4) {
             if (isPageComplete(current)) {
                 const nextBtn = pages[current].querySelector(".next-btn");
                 if (nextBtn) nextBtn.style.display = "block";
             }
+            return;
+        }
+
+        // page 5 (last question set)
+        if (current === 5) {
+            if (isPageComplete(5)) {
+                document.getElementById("finishBtn").style.display = "block";
+            }
         }
     }
 
-    // ------------------------------------------
+    // ---------------------------------------------------
     // ⭐ NEXT BUTTONS
-    // ------------------------------------------
+    // ---------------------------------------------------
     document.querySelectorAll(".next-btn").forEach(btn => {
         btn.addEventListener("click", function () {
-            if (current < totalQuestionPages) {
-                showPage(current + 1);
-            }
+            showPage(current + 1);
         });
     });
 
-    // ------------------------------------------
+    // ---------------------------------------------------
     // ⭐ BACK BUTTONS
-    // ------------------------------------------
+    // ---------------------------------------------------
     document.querySelectorAll(".prev-btn").forEach(btn => {
         btn.addEventListener("click", function () {
             if (current > 1) showPage(current - 1);
         });
     });
 
-    // ------------------------------------------
-    // ⭐ FINISH BUTTON → GO TO LEAD FORM
-    // ------------------------------------------
-    document.getElementById("finishBtn").addEventListener("click", function () {
-        calculateScore();
-        showPage(6);
-    });
-
-    // ------------------------------------------
-    // ⭐ SCORE CALCULATION
-    // ------------------------------------------
+    // ---------------------------------------------------
+    // ⭐ CALCULATE SCORE
+    // ---------------------------------------------------
     function calculateScore() {
         let total = 0;
         Object.values(answers).forEach(v => total += parseInt(v));
@@ -811,18 +795,31 @@ document.addEventListener("DOMContentLoaded", function () {
         return total;
     }
 
-    // ------------------------------------------
-    // ⭐ SUBMIT TO GOOGLE SHEET (Mobile-Safe)
-    // ------------------------------------------
+    // ---------------------------------------------------
+    // ⭐ FINISH → SHOW LEAD FORM (PAGE 6)
+    // ---------------------------------------------------
+    document.getElementById("finishBtn").addEventListener("click", function () {
+
+        const score = calculateScore();
+
+        // show score inside page 6
+        document.getElementById("leadStatus").innerText = "Your Readiness Score: " + score;
+
+        showPage(6);
+    });
+
+    // ---------------------------------------------------
+    // ⭐ SUBMIT TO GOOGLE SHEET (Mobile Safe)
+    // ---------------------------------------------------
     function submitToGoogleSheet(payload) {
 
         const formData = new URLSearchParams();
         formData.append("formType", "readiness");
-        formData.append("name", payload.name || "");
-        formData.append("mobile", payload.mobile || "");
-        formData.append("email", payload.email || "");
-        formData.append("answers_json", JSON.stringify(answers || {}));
-        formData.append("score", payload.score || 0);
+        formData.append("name", payload.name);
+        formData.append("mobile", payload.mobile);
+        formData.append("email", payload.email);
+        formData.append("answers_json", JSON.stringify(answers));
+        formData.append("score", payload.score);
         formData.append("source", "readiness_page");
 
         fetch("https://script.google.com/macros/s/AKfycbzfPKyf6reazDCBL8Ql8wqU73KerPyi7cjdHI1BKXULBERuG1MAElH058KPEmAvOIu87g/exec", {
@@ -835,32 +832,29 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(r => r.json())
         .then(res => {
             if (res.ok) {
-                document.getElementById("leadStatus").innerText =
-                    "Success! Redirecting...";
-                setTimeout(() => window.location.href = "/thankyou.html", 1000);
+                window.location.href = "/thankyou.html";
             } else {
-                document.getElementById("leadStatus").innerText =
-                    "Server Error: " + res.error;
+                document.getElementById("leadStatus").innerText = "Error: " + res.error;
             }
         })
         .catch(err => {
-            console.error("Network Error:", err);
-            document.getElementById("leadStatus").innerText =
-                "Network error. Please try again.";
+            document.getElementById("leadStatus").innerText = "Network error. Try again.";
         });
     }
 
-    // ------------------------------------------
+    // ---------------------------------------------------
     // ⭐ LEAD FORM SUBMIT
-    // ------------------------------------------
+    // ---------------------------------------------------
     document.getElementById("leadForm").addEventListener("submit", function (e) {
         e.preventDefault();
+
+        const score = calculateScore();
 
         const payload = {
             name: document.getElementById("name").value.trim(),
             mobile: document.getElementById("mobile").value.trim(),
             email: document.getElementById("email").value.trim(),
-            score: calculateScore()
+            score: score
         };
 
         document.getElementById("leadStatus").innerText = "Submitting...";
@@ -868,7 +862,7 @@ document.addEventListener("DOMContentLoaded", function () {
         submitToGoogleSheet(payload);
     });
 
-    // Initial load
+    // start intro
     showPage(0);
 
 });
