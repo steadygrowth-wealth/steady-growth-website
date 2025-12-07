@@ -681,142 +681,182 @@
 
   
 <script>
-/* ============================================================
-   SIP READINESS — CLEAN FINAL JAVASCRIPT (PASTE READY)
-============================================================ */
-
-// -----------------------------------------
-// LOCAL STORAGE INIT
-// -----------------------------------------
+/* -----------------------------------------------------
+   INITIAL SETUP & LOCAL STORAGE
+-----------------------------------------------------*/
+const pages = document.querySelectorAll(".section-page");
+let currentPage = 0;
 let answers = JSON.parse(localStorage.getItem("readiness_answers") || "{}");
-let currentPage = Number(localStorage.getItem("readiness_page") || 0);
+let storedPage = parseInt(localStorage.getItem("readiness_page") || "0");
 
-if (currentPage >= 6) {
+// We track progress for pages 1–6
+const TOTAL_PROGRESS_PAGES = 6;
+
+// Reset ONLY if user returns after completing assessment
+if (storedPage >= 6) {
   localStorage.removeItem("readiness_answers");
   localStorage.removeItem("readiness_page");
-  currentPage = 0;
+  storedPage = 0;
 }
 
-const pages = document.querySelectorAll(".section-page");
-const TOTAL_PAGES = 6;
+currentPage = storedPage;
 
 
-// -----------------------------------------
-// PROGRESS BAR
-// -----------------------------------------
+/* -----------------------------------------------------
+   PROGRESS BAR (TOP FIXED)
+-----------------------------------------------------*/
 const progressBar = document.createElement("div");
-progressBar.style.cssText = `
-  position:fixed; top:0; left:0; height:5px; width:0%;
-  background:linear-gradient(90deg,#ffe6c0,#f0b76b,#b9782f);
-  z-index:9999; transition:width .3s ease;
-`;
+progressBar.style.position = "fixed";
+progressBar.style.top = "0";
+progressBar.style.left = "0";
+progressBar.style.height = "5px";
+progressBar.style.width = "0%";
+progressBar.style.zIndex = "9999";
+progressBar.style.background = "linear-gradient(90deg,#ffe5ba,#f0b76b,#b9782f)";
+progressBar.style.transition = "width 0.3s ease";
 document.body.appendChild(progressBar);
 
 function updateProgress() {
-  if (currentPage === 0) return (progressBar.style.width = "0%");
-  progressBar.style.width = (currentPage / TOTAL_PAGES) * 100 + "%";
+  if (currentPage === 0) {
+    progressBar.style.width = "0%";
+    return;
+  }
+  let percent = (currentPage / TOTAL_PROGRESS_PAGES) * 100;
+  if (percent > 100) percent = 100;
+  progressBar.style.width = percent + "%";
 }
 
 
-// -----------------------------------------
-// PAGE NAVIGATION
-// -----------------------------------------
+/* -----------------------------------------------------
+   PAGE NAVIGATION
+-----------------------------------------------------*/
 function showPage(n) {
   pages.forEach(p => p.classList.remove("active"));
-  pages[n].classList.add("active");
+  const page = pages[n];
+  if (page) page.classList.add("active");
 
   currentPage = n;
-  localStorage.setItem("readiness_page", n);
-  updateProgress();
+  localStorage.setItem("readiness_page", String(n));
 
-  if (window.innerWidth < 900) {
-    setTimeout(() => pages[n].scrollIntoView({ behavior: "smooth" }), 120);
+  // Scroll on mobile
+  if (window.innerWidth <= 900) {
+    setTimeout(() => {
+      page.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 120);
   }
 
-  updateNavigationState();
+  updateProgress();
+  checkSectionCompletion();
 }
 
 showPage(currentPage);
 
 
 // Start button
-document.getElementById("startBtn")?.addEventListener("click", () => showPage(1));
+const startBtn = document.getElementById("startBtn");
+if (startBtn) startBtn.addEventListener("click", () => showPage(1));
 
 
-// -----------------------------------------
-// QUESTION SELECT HANDLER
-// -----------------------------------------
-document.querySelectorAll(".q-box").forEach(box => {
-  const qKey = box.dataset.key;
-  const btns = box.querySelectorAll(".yn-btn");
+/* -----------------------------------------------------
+   NEXT BUTTON HANDLING WITH VALIDATION
+-----------------------------------------------------*/
+document.querySelectorAll(".next-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
+    const qboxes = section.querySelectorAll(".q-box");
+    const unanswered = [...qboxes].filter(q => !answers[q.dataset.key]);
 
-  if (answers[qKey]) {
-    btns.forEach(b => {
-      if (b.dataset.val === answers[qKey]) b.classList.add("selected");
+    if (unanswered.length > 0) {
+      unanswered[0].classList.add("attention");
+      unanswered[0].scrollIntoView({ behavior: "smooth", block: "center" });
+      setTimeout(() => unanswered[0].classList.remove("attention"), 800);
+      return;
+    }
+
+    showPage(currentPage + 1);
+  });
+});
+
+
+/* -----------------------------------------------------
+   PREVIOUS BUTTON HANDLING
+-----------------------------------------------------*/
+document.querySelectorAll(".prev-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    if (currentPage > 0) showPage(currentPage - 1);
+  });
+});
+
+
+/* -----------------------------------------------------
+   YES/NO QUESTION CLICK HANDLER
+-----------------------------------------------------*/
+document.querySelectorAll(".q-box").forEach(qbox => {
+  const key = qbox.dataset.key;
+  const buttons = qbox.querySelectorAll(".yn-btn");
+
+  // Restore previous selection
+  if (answers[key]) {
+    buttons.forEach(btn => {
+      if (btn.dataset.val === answers[key]) btn.classList.add("selected");
     });
   }
 
-  btns.forEach(btn => {
+  buttons.forEach(btn => {
     btn.addEventListener("click", () => {
-      answers[qKey] = btn.dataset.val;
+      answers[key] = btn.dataset.val;
       localStorage.setItem("readiness_answers", JSON.stringify(answers));
 
-      btns.forEach(b => b.classList.remove("selected"));
+      buttons.forEach(b => b.classList.remove("selected"));
       btn.classList.add("selected");
 
-      updateNavigationState();
+      // Smart scroll to next question (mobile)
+      if (window.innerWidth <= 900) {
+        setTimeout(() => {
+          const next = qbox.nextElementSibling?.closest(".q-box");
+          if (next) next.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 100);
+      }
+
+      checkSectionCompletion();
     });
   });
 });
 
 
-// -----------------------------------------
-// NAVIGATION RULES
-// -----------------------------------------
-function updateNavigationState() {
-  const pageEl = pages[currentPage];
-  if (!pageEl) return;
+/* -----------------------------------------------------
+   SHOW NEXT / FINISH BUTTON
+-----------------------------------------------------*/
+function checkSectionCompletion() {
+  const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
+  if (!section) return;
 
-  const nextBtn = pageEl.querySelector(".next-btn");
+  const qboxes = section.querySelectorAll(".q-box");
+  const nextBtn = section.querySelector(".next-btn");
   const finishBtn = document.getElementById("finishBtn");
 
-  const qBoxes = pageEl.querySelectorAll(".q-box");
-  const missing = [...qBoxes].filter(q => !answers[q.dataset.key]);
+  const unanswered = [...qboxes].filter(q => !answers[q.dataset.key]);
 
-  if (nextBtn) nextBtn.style.display = missing.length === 0 ? "inline-block" : "none";
-  if (finishBtn && currentPage === 5) finishBtn.style.display = missing.length === 0 ? "inline-block" : "none";
+  if (nextBtn) nextBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
+
+  if (finishBtn && currentPage === 5) {
+    finishBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
+  }
 }
 
 
-// -----------------------------------------
-// NEXT / BACK BUTTONS
-// -----------------------------------------
-document.querySelectorAll(".next-btn").forEach(btn =>
-  btn.addEventListener("click", () => {
-    const qBoxes = pages[currentPage].querySelectorAll(".q-box");
-    const missing = [...qBoxes].filter(q => !answers[q.dataset.key]);
+/* -----------------------------------------------------
+   FINISH → CALCULATE SCORE → GOTO PAGE 6
+-----------------------------------------------------*/
+const finish = document.getElementById("finishBtn");
+if (finish) {
+  finish.addEventListener("click", () => {
+    const score = calculateScore();
+    localStorage.setItem("readiness_score", score);
+    showPage(6);
+  });
+}
 
-    if (missing.length > 0) {
-      missing[0].classList.add("attention");
-      missing[0].scrollIntoView({ behavior: "smooth", block: "center" });
-      setTimeout(() => missing[0].classList.remove("attention"), 900);
-      return;
-    }
-
-    showPage(currentPage + 1);
-  })
-);
-
-document.querySelectorAll(".prev-btn").forEach(btn =>
-  btn.addEventListener("click", () => {
-    if (currentPage > 0) showPage(currentPage - 1);
-  })
-);
-
-
-// -----------------------------------------
-// SCORE CALCULATION
-// -----------------------------------------
 function calculateScore() {
   let score = 0;
   for (let i = 1; i <= 25; i++) {
@@ -825,105 +865,114 @@ function calculateScore() {
   return score;
 }
 
-document.getElementById("finishBtn")?.addEventListener("click", () => {
-  const score = calculateScore();
-  localStorage.setItem("readiness_score", score);
-  showPage(6);
-});
 
-
-// -----------------------------------------
-// GOOGLE SHEET ENDPOINT
-// -----------------------------------------
-const GSHEET_URL =
-  "https://script.google.com/macros/s/AKfycbybdFkGSWh1HEJSrUD2Cke_ug2ceaPPzIH7MrYyPxvILmLXK7I4E0H4ANw_fEE1Iifc/exec";
-
-
-// -----------------------------------------
-// LEAD FORM SUBMISSION
-// -----------------------------------------
+/* -----------------------------------------------------
+   LEAD FORM → SEND TO GOOGLE SHEET (CORRECTED)
+-----------------------------------------------------*/
 const leadForm = document.getElementById("leadForm");
-const leadStatus = document.getElementById("leadStatus");
+const statusEl = document.getElementById("leadStatus");
 
-leadForm?.addEventListener("submit", e => {
-  e.preventDefault();
+if (leadForm) {
+  leadForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  const name = document.getElementById("name").value.trim();
-  const mobile = document.getElementById("mobile").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const score = Number(localStorage.getItem("readiness_score") || 0);
+    const name = document.getElementById("name").value.trim();
+    const mobile = document.getElementById("mobile").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const score = Number(localStorage.getItem("readiness_score") || "0");
 
-  const payload = {
-    formType: "readiness",
-    client_name: name,
-    mobile: mobile,
-    email: email,
-    score: score,
-    answers_json: JSON.stringify(answers)
-  };
+    // correct endpoint
+    const GSHEET_ENDPOINT =
+      "https://script.google.com/macros/s/AKfycbybdFkGSWh1HEJSrUD2Cke_ug2ceaPPzIH7MrYyPxvILmLXK7I4E0H4ANw_fEE1Iifc/exec";
 
-  fetch(GSHEET_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  }).catch(err => console.error("Submit error:", err));
+    // SEND DATA (IMPORTANT!)
+    fetch(GSHEET_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        formType: "readiness",
+        name,
+        mobile,
+        email,
+        score,
+        answers_json: JSON.stringify(answers),
+        source: "sip_readiness"
+      })
+    })
+    .then(r => r.json())
+    .then(res => console.log("Sheet response:", res))
+    .catch(err => console.error("Sheet error:", err));
 
-  leadStatus.textContent = "Thank you! Generating your SIP Readiness Report...";
+    statusEl.textContent = "Thank you! Generating your SIP Readiness Report...";
 
-  setTimeout(() => renderReport(score), 900);
-});
+    setTimeout(() => showFinalScore(score), 600);
+  });
+}
 
 
-// -----------------------------------------
-// FINAL REPORT RENDER
-// -----------------------------------------
-function renderReport(score) {
-  const p = document.querySelector('[data-page="6"]');
+/* -----------------------------------------------------
+   SHOW FINAL SCORE REPORT
+-----------------------------------------------------*/
+function showFinalScore(score) {
+  const page = document.querySelector('[data-page="6"]');
 
-  const label =
-    score <= 8 ? "Not Ready" :
-    score <= 15 ? "Medium Risk Zone" :
-    score <= 21 ? "Almost Ready" :
-    "Fully Ready";
-
-  p.innerHTML = `
+  page.innerHTML = `
     <h1>Your SIP Readiness Report</h1>
 
     <div class="summary-box" style="text-align:center;">
-      <div style="font-size:3rem; font-weight:700; color:var(--accent);">${score} / 25</div>
-      <div style="font-size:1.4rem; margin-top:6px;">${label}</div>
+      <div style="font-size:3rem; font-weight:700; color:var(--accent);">
+        ${score} / 25
+      </div>
+      <div style="font-size:1.4rem; margin-bottom:10px;">
+        ${getScoreLabel(score)}
+      </div>
+      <p style="font-size:1rem; color:#d4d7e9; line-height:1.6;">
+        ${getScoreMessage(score)}
+      </p>
     </div>
 
-    <div class="summary-box" style="margin-top:20px;">
-      <h3 style="color:#ffe5ba;">How to read this score</h3>
-      <ul style="color:#d4d7e9; font-size:0.95rem; line-height:1.7;">
-        <li><b>0–8:</b> Not yet ready — strengthen your financial base first.</li>
-        <li><b>9–15:</b> Medium Risk Zone — gaps exist that need guidance.</li>
-        <li><b>16–21:</b> Almost Ready — minor improvements needed.</li>
-        <li><b>22–25:</b> Fully Ready — strong readiness & discipline.</li>
-      </ul>
-    </div>
-
-    <div class="nav-row" style="flex-direction:column; margin-top:20px;">
+    <div class="nav-row" style="flex-direction:column; gap:12px; margin-top:25px;">
       <a class="btn btn-primary" href="risk_intro.html">Get Personalized Investment Plan →</a>
       <a class="btn btn-ghost" href="index.html">← Back to Website</a>
     </div>
   `;
 }
 
+function getScoreLabel(score) {
+  if (score <= 8) return "Not Ready";
+  if (score <= 15) return "Medium Risk Zone";
+  if (score <= 21) return "Almost Ready";
+  return "Fully Ready";
+}
 
-// -----------------------------------------
-// WHY EXPAND/COLLAPSE
-// -----------------------------------------
-document.querySelectorAll(".why-toggle").forEach(t =>
-  t.addEventListener("click", () => {
-    const box = t.nextElementSibling;
-    const open = box.style.display === "block";
-    box.style.display = open ? "none" : "block";
-    t.textContent = open ? "Why it matters ▼" : "Why it matters ▲";
-  })
-);
+function getScoreMessage(score) {
+  if (score <= 8)
+    return "Your financial base needs strengthening before starting meaningful SIPs.";
+  if (score <= 15)
+    return "You have some readiness, but there are important gaps to fix.";
+  if (score <= 21)
+    return "You're close to being SIP-ready. A few refinements will help.";
+  return "You are fully ready for disciplined long-term SIP investing.";
+}
 
+
+/* -----------------------------------------------------
+   WHY TOGGLE
+-----------------------------------------------------*/
+document.querySelectorAll(".why-toggle").forEach(toggle => {
+  toggle.addEventListener("click", () => {
+    const box = toggle.nextElementSibling;
+    if (!box) return;
+
+    if (box.style.display === "block") {
+      box.style.display = "none";
+      toggle.textContent = "Why it matters ▼";
+    } else {
+      box.style.display = "block";
+      toggle.textContent = "Why it matters ▲";
+    }
+  });
+});
 </script>
 
 
