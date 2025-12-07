@@ -686,6 +686,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const totalPages = pages.length;
     let current = 1;
 
+  document.getElementById("startBtn").addEventListener("click", function () {
+        showPage(1);
+    });
+
     // Load data if exists
     let answers = JSON.parse(localStorage.getItem("readiness_answers") || "{}");
     let score = localStorage.getItem("readiness_score") || 0;
