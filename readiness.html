@@ -741,22 +741,22 @@ document.addEventListener("DOMContentLoaded", function () {
     // Update visibility of Next / Finish
     // -------------------------------
     function updateButtons() {
-        document.querySelectorAll(".next-btn").forEach(b => b.style.display = "none");
-        document.getElementById("finishBtn").style.display = "none";
+    // Hide all
+    document.querySelectorAll(".next-btn").forEach(b => b.style.display = "none");
+    document.getElementById("finishBtn").style.display = "none";
 
-        if (current === 0) return;
-
-        if (current >= 1 && current <= 4) {
-            if (isPageComplete(current)) {
-                pages[current].querySelector(".next-btn").style.display = "block";
-            }
-            return;
+    if (current >= 1 && current <= 4) {
+        if (isPageComplete(current)) {
+            const nextBtn = pages[current].querySelector(".next-btn");
+            if (nextBtn) nextBtn.style.display = "block";
         }
-
-        if (current === 5 && isPageComplete(5)) {
-            document.getElementById("finishBtn").style.display = "block";
-        }
+        return;
     }
+
+    if (current === 5 && isPageComplete(5)) {
+        document.getElementById("finishBtn").style.display = "block";
+    }
+}
 
     // Next
     document.querySelectorAll(".next-btn").forEach(btn =>
