@@ -680,236 +680,292 @@
 
 
   <script>
-/* =============================================================
-   MUST RUN BEFORE DOMContentLoaded → RESET IF USER FINISHED
-============================================================= */
-const savedPage = Number(localStorage.getItem("readiness_page") || 0);
-if (savedPage >= 6) {
-  localStorage.removeItem("readiness_page");
-  localStorage.removeItem("readiness_answers");
-  localStorage.removeItem("readiness_score");
-}
-
 document.addEventListener("DOMContentLoaded", function () {
 
-/* ==========================
-   PAGE + STORAGE SETUP
-========================== */
-const pages = document.querySelectorAll(".section-page");
-
-let currentPage = Number(localStorage.getItem("readiness_page") || 0);
-let answers = JSON.parse(localStorage.getItem("readiness_answers") || "{}");
-
-const TOTAL_PAGES = 6;
-
-/* ==========================
-   PROGRESS BAR
-========================== */
-const progressBar = document.createElement("div");
-progressBar.style.position = "fixed";
-progressBar.style.top = "0";
-progressBar.style.left = "0";
-progressBar.style.height = "5px";
-progressBar.style.width = "0%";
-progressBar.style.zIndex = "9999";
-progressBar.style.background =
-  "linear-gradient(90deg,#ffe5ba,#f0b76b,#b9782f)";
-progressBar.style.transition = "width 0.25s ease";
-document.body.appendChild(progressBar);
-
-function updateProgress() {
-  if (currentPage === 0) {
-    progressBar.style.width = "0%";
-    return;
-  }
-  progressBar.style.width = (currentPage / TOTAL_PAGES) * 100 + "%";
-}
-
-/* ==========================
-   PAGE NAVIGATION
-========================== */
-function showPage(n) {
-  pages.forEach(p => p.classList.remove("active"));
-  pages[n].classList.add("active");
-
-  currentPage = n;
-  localStorage.setItem("readiness_page", n);
-
-  updateProgress();
-
-  if (window.innerWidth < 900) {
-    setTimeout(() => {
-      pages[n].scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 100);
+  /* ==========================
+     RESET IF USER FINISHED BEFORE
+  =========================== */
+  if (Number(localStorage.getItem("readiness_page")) >= 6) {
+    localStorage.removeItem("readiness_page");
+    localStorage.removeItem("readiness_answers");
+    localStorage.removeItem("readiness_score");
   }
 
-  checkSectionCompletion();
-}
+  /* ==========================
+     PAGE + STORAGE SETUP
+  =========================== */
+  const pages = document.querySelectorAll(".section-page");
 
-showPage(currentPage);
+  let currentPage = Number(localStorage.getItem("readiness_page") || 0);
+  let answers = JSON.parse(localStorage.getItem("readiness_answers") || "{}");
 
-/* Start */
-document.getElementById("startBtn")?.addEventListener("click", () => showPage(1));
+  const TOTAL_PAGES = 6; // sections 0–5 before lead form
 
-/* Next */
-document.querySelectorAll(".next-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
+  /* ==========================
+     PROGRESS BAR
+  =========================== */
+  const progressBar = document.createElement("div");
+  progressBar.style.position = "fixed";
+  progressBar.style.top = "0";
+  progressBar.style.left = "0";
+  progressBar.style.height = "5px";
+  progressBar.style.width = "0%";
+  progressBar.style.zIndex = "9999";
+  progressBar.style.background =
+    "linear-gradient(90deg,#ffe5ba,#f0b76b,#b9782f)";
+  progressBar.style.transition = "width 0.25s ease";
+  document.body.appendChild(progressBar);
+
+  function updateProgress() {
+    if (currentPage === 0) {
+      progressBar.style.width = "0%";
+      return;
+    }
+    const percent = (currentPage / TOTAL_PAGES) * 100;
+    progressBar.style.width = percent + "%";
+  }
+
+  /* ==========================
+     PAGE NAVIGATION
+  =========================== */
+  function showPage(n) {
+    pages.forEach(p => p.classList.remove("active"));
+
+    const page = pages[n];
+    if (page) page.classList.add("active");
+
+    currentPage = n;
+    localStorage.setItem("readiness_page", n);
+
+    updateProgress();
+
+    if (window.innerWidth < 900) {
+      setTimeout(() => {
+        page.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 120);
+    }
+
+    checkSectionCompletion();
+  }
+
+  showPage(currentPage);
+
+  /* ==========================
+     START BUTTON
+  =========================== */
+  const startBtn = document.getElementById("startBtn");
+  if (startBtn) startBtn.addEventListener("click", () => showPage(1));
+
+  /* ==========================
+     NEXT BUTTON
+  =========================== */
+  document.querySelectorAll(".next-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
+      const qboxes = section.querySelectorAll(".q-box");
+
+      const unanswered = [...qboxes].filter(q => !answers[q.dataset.key]);
+
+      if (unanswered.length > 0) {
+        const first = unanswered[0];
+        first.classList.add("attention");
+        first.scrollIntoView({ behavior: "smooth", block: "center" });
+        setTimeout(() => first.classList.remove("attention"), 800);
+        return;
+      }
+
+      showPage(currentPage + 1);
+    });
+  });
+
+  /* ==========================
+     PREV BUTTON
+  =========================== */
+  document.querySelectorAll(".prev-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (currentPage > 0) showPage(currentPage - 1);
+    });
+  });
+
+  /* ==========================
+     CAPTURE YES/NO ANSWERS
+  =========================== */
+  document.querySelectorAll(".q-box").forEach(qbox => {
+    const key = qbox.dataset.key;
+    const buttons = qbox.querySelectorAll(".yn-btn");
+
+    if (answers[key]) {
+      buttons.forEach(btn => {
+        if (btn.dataset.val === answers[key]) btn.classList.add("selected");
+      });
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        answers[key] = btn.dataset.val;
+        localStorage.setItem("readiness_answers", JSON.stringify(answers));
+
+        buttons.forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+
+        if (window.innerWidth < 900) {
+          const next = qbox.nextElementSibling?.closest(".q-box");
+          if (next) next.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+
+        checkSectionCompletion();
+      });
+    });
+  });
+
+  /* ==========================
+     ENABLE NEXT/FINISH
+  =========================== */
+  function checkSectionCompletion() {
     const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
+    if (!section) return;
+
     const qboxes = section.querySelectorAll(".q-box");
+    const nextBtn = section.querySelector(".next-btn");
+    const finishBtn = document.getElementById("finishBtn");
 
     const unanswered = [...qboxes].filter(q => !answers[q.dataset.key]);
 
-    if (unanswered.length > 0) {
-      const first = unanswered[0];
-      first.classList.add("attention");
-      first.scrollIntoView({ behavior: "smooth", block: "center" });
-      setTimeout(() => first.classList.remove("attention"), 800);
-      return;
-    }
-
-    showPage(currentPage + 1);
-  });
-});
-
-/* Back */
-document.querySelectorAll(".prev-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    if (currentPage > 0) showPage(currentPage - 1);
-  });
-});
-
-/* Capture Answers */
-document.querySelectorAll(".q-box").forEach(qbox => {
-  const key = qbox.dataset.key;
-  const buttons = qbox.querySelectorAll(".yn-btn");
-
-  if (answers[key]) {
-    buttons.forEach(b => {
-      if (b.dataset.val === answers[key]) b.classList.add("selected");
-    });
+    if (nextBtn) nextBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
+    if (finishBtn && currentPage === 5)
+      finishBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
   }
 
-  buttons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      answers[key] = btn.dataset.val;
-      localStorage.setItem("readiness_answers", JSON.stringify(answers));
-
-      buttons.forEach(b => b.classList.remove("selected"));
-      btn.classList.add("selected");
-
-      if (window.innerWidth < 900) {
-        const next = qbox.nextElementSibling?.closest(".q-box");
-        if (next) next.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-
-      checkSectionCompletion();
-    });
-  });
-});
-
-/* Show Next / Finish */
-function checkSectionCompletion() {
-  const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
-  const qboxes = section.querySelectorAll(".q-box");
-  const nextBtn = section.querySelector(".next-btn");
+  /* ==========================
+     FINISH BUTTON → CALCULATE SCORE
+  =========================== */
   const finishBtn = document.getElementById("finishBtn");
 
-  const unanswered = [...qboxes].filter(q => !answers[q.dataset.key]);
+  if (finishBtn) {
+    finishBtn.addEventListener("click", () => {
+      let score = 0;
+      for (let i = 1; i <= 25; i++) {
+        if (answers["q" + i] === "yes") score++;
+      }
 
-  if (nextBtn) nextBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
-  if (finishBtn && currentPage === 5)
-    finishBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
-}
-
-/* Finish Calculation */
-document.getElementById("finishBtn")?.addEventListener("click", () => {
-  let score = 0;
-  for (let i = 1; i <= 25; i++) {
-    if (answers["q" + i] === "yes") score++;
+      localStorage.setItem("readiness_score", score);
+      showPage(6);
+      localStorage.setItem("readiness_page", "6");
+    });
   }
 
-  localStorage.setItem("readiness_score", score);
-  showPage(6);
-});
+  /* ==========================
+     GOOGLE SHEET SUBMIT (CORS SAFE)
+  =========================== */
+  const leadForm = document.getElementById("leadForm");
+  const statusEl = document.getElementById("leadStatus");
 
-/* ==========================
-   SUBMIT TO GOOGLE SHEET
-========================== */
-const leadForm = document.getElementById("leadForm");
-const statusEl = document.getElementById("leadStatus");
+  if (leadForm) {
+    leadForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-if (leadForm) {
-  leadForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+      const nameVal = document.getElementById("name").value.trim();
+      const mobileVal = document.getElementById("mobile").value.trim();
+      const emailVal = document.getElementById("email").value.trim();
 
-    const payload = {
-      formType: "readiness",
-      name: document.getElementById("name").value.trim(),
-      mobile: document.getElementById("mobile").value.trim(),
-      email: document.getElementById("email").value.trim(),
-      answers_json: JSON.stringify(answers),
-      score: Number(localStorage.getItem("readiness_score")),
-      source: "sip_readiness"
-    };
+      const score = Number(localStorage.getItem("readiness_score") || 0);
+      const answers_json = JSON.stringify(answers);
 
-    const GS_ENDPOINT =
-      "https://script.google.com/macros/s/AKfycbzfPKyf6reazDCBL8Ql8wqU73KerPyi7cjdHI1BKXULBERuG1MAElH058KPEmAvOIu87g/exec";
+      const GS_ENDPOINT =
+        "https://script.google.com/macros/s/AKfycbzfPKyf6reazDCBL8Ql8wqU73KerPyi7cjdHI1BKXULBERuG1MAElH058KPEmAvOIu87g/exec";
 
-    try {
-      await fetch(GS_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-    } catch (err) {
-      console.error("Submit error:", err);
-    }
+      const fd = new FormData();
+      fd.append("formType", "readiness");
+      fd.append("name", nameVal);
+      fd.append("mobile", mobileVal);
+      fd.append("email", emailVal);
+      fd.append("score", score);
+      fd.append("answers_json", answers_json);
+      fd.append("source", "readiness");
 
-    statusEl.textContent = "Thank you! Generating your SIP Readiness Report...";
-    showFinalScore(payload.score);
+      try {
+        await fetch(GS_ENDPOINT, {
+          method: "POST",
+          body: fd   // ⭐ no JSON headers → no CORS issue
+        });
+
+      } catch (err) {
+        console.error("Sheet submit error:", err);
+      }
+
+      statusEl.textContent =
+        "Thank you! Generating your SIP Readiness Report...";
+
+      showFinalScore(score);
+    });
+  }
+
+  /* ==========================
+     RENDER SCORE REPORT
+  =========================== */
+  function showFinalScore(score) {
+    const page = document.querySelector('[data-page="6"]');
+    const label = getScoreLabel(score);
+    const msg = getScoreMessage(score);
+
+    page.innerHTML = `
+      <h1>Your SIP Readiness Report</h1>
+
+      <div class="summary-box" style="text-align:center;">
+        <div style="font-size:3rem;font-weight:700;color:#f0b76b;margin-bottom:6px;">
+          ${score} / 25
+        </div>
+        <div style="font-size:1.4rem;font-weight:600;margin-bottom:10px;">
+          ${label}
+        </div>
+        <p style="font-size:1rem;color:#d4d7e9;line-height:1.6;">
+          ${msg}
+        </p>
+      </div>
+
+      <div class="nav-row" style="flex-direction:column;gap:12px;margin-top:25px;">
+        <a class="btn btn-primary" href="risk_intro.html">Get Personalized Investment Plan →</a>
+        <a class="btn btn-ghost" href="index.html">← Back to Website</a>
+      </div>
+    `;
+  }
+
+  function getScoreLabel(score) {
+    if (score <= 8) return "Not Ready";
+    if (score <= 15) return "Medium Risk Zone";
+    if (score <= 21) return "Almost Ready";
+    return "Fully Ready";
+  }
+
+  function getScoreMessage(score) {
+    if (score <= 8)
+      return "Your financial base needs strengthening before starting SIPs.";
+    if (score <= 15)
+      return "Some readiness exists, but important gaps remain.";
+    if (score <= 21)
+      return "You are close to SIP-ready — a few refinements needed.";
+    return "You are fully ready for disciplined SIP investing.";
+  }
+
+  /* ==========================
+     WHY TOGGLE
+  =========================== */
+  document.querySelectorAll(".why-toggle").forEach(toggle => {
+    toggle.addEventListener("click", () => {
+      const box = toggle.nextElementSibling;
+      if (box.style.display === "block") {
+        box.style.display = "none";
+        toggle.textContent = "Why it matters ▼";
+      } else {
+        box.style.display = "block";
+        toggle.textContent = "Why it matters ▲";
+      }
+    });
   });
-}
-
-/* Score rendering */
-function showFinalScore(score) {
-  const label = score <= 8 ? "Not Ready"
-              : score <= 15 ? "Medium Risk Zone"
-              : score <= 21 ? "Almost Ready"
-              : "Fully Ready";
-
-  const msg = score <= 8 ? "Your financial base needs strengthening."
-            : score <= 15 ? "Some readiness exists but gaps remain."
-            : score <= 21 ? "You are close to SIP-ready."
-            : "You are fully ready for disciplined SIP investing.";
-
-  const page = document.querySelector('[data-page="6"]');
-  page.innerHTML = `
-    <h1>Your SIP Readiness Report</h1>
-    <div class="summary-box" style="text-align:center;">
-      <div style="font-size:3rem;font-weight:700;color:#f0b76b;">${score} / 25</div>
-      <div style="font-size:1.4rem;font-weight:600;margin-bottom:10px;">${label}</div>
-      <p style="font-size:1rem;color:#d4d7e9;line-height:1.6;">${msg}</p>
-    </div>
-
-    <div class="nav-row" style="flex-direction:column;gap:12px;margin-top:25px;">
-      <a class="btn btn-primary" href="risk_intro.html">Get Personalized Investment Plan →</a>
-      <a class="btn btn-ghost" href="index.html">← Back to Website</a>
-    </div>
-  `;
-}
-
-/* WHY toggle */
-document.querySelectorAll(".why-toggle").forEach(toggle => {
-  toggle.addEventListener("click", () => {
-    const box = toggle.nextElementSibling;
-    const open = box.style.display === "block";
-    box.style.display = open ? "none" : "block";
-    toggle.textContent = open ? "Why it matters ▼" : "Why it matters ▲";
-  });
-});
 
 });
+</script>
 
-  </script>
+  
   </body>
 </html>
