@@ -680,20 +680,17 @@
 
 
   <script>
-/* -------------------------------------------------------
-   SIP READINESS — FINAL PRODUCTION VERSION
---------------------------------------------------------*/
-
-document.addEventListener("DOMContentLoaded", function () {
-
-/* ==========================
-   RESET IF USER FINISHED BEFORE
-========================== */
-if (Number(localStorage.getItem("readiness_page")) >= 6) {
+/* =============================================================
+   MUST RUN BEFORE DOMContentLoaded → RESET IF USER FINISHED
+============================================================= */
+const savedPage = Number(localStorage.getItem("readiness_page") || 0);
+if (savedPage >= 6) {
   localStorage.removeItem("readiness_page");
   localStorage.removeItem("readiness_answers");
   localStorage.removeItem("readiness_score");
 }
+
+document.addEventListener("DOMContentLoaded", function () {
 
 /* ==========================
    PAGE + STORAGE SETUP
@@ -703,7 +700,7 @@ const pages = document.querySelectorAll(".section-page");
 let currentPage = Number(localStorage.getItem("readiness_page") || 0);
 let answers = JSON.parse(localStorage.getItem("readiness_answers") || "{}");
 
-const TOTAL_PAGES = 6; // sections 0–5 before the lead form
+const TOTAL_PAGES = 6;
 
 /* ==========================
    PROGRESS BAR
@@ -725,8 +722,7 @@ function updateProgress() {
     progressBar.style.width = "0%";
     return;
   }
-  const percent = (currentPage / TOTAL_PAGES) * 100;
-  progressBar.style.width = percent + "%";
+  progressBar.style.width = (currentPage / TOTAL_PAGES) * 100 + "%";
 }
 
 /* ==========================
@@ -734,37 +730,28 @@ function updateProgress() {
 ========================== */
 function showPage(n) {
   pages.forEach(p => p.classList.remove("active"));
-
-  const page = pages[n];
-  if (page) page.classList.add("active");
+  pages[n].classList.add("active");
 
   currentPage = n;
   localStorage.setItem("readiness_page", n);
 
   updateProgress();
 
-  // Scroll fix for mobile
   if (window.innerWidth < 900) {
     setTimeout(() => {
-      page.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 120);
+      pages[n].scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
   }
 
   checkSectionCompletion();
 }
 
-// Load correct page
 showPage(currentPage);
 
-/* ==========================
-   START BUTTON
-========================== */
-const startBtn = document.getElementById("startBtn");
-if (startBtn) startBtn.addEventListener("click", () => showPage(1));
+/* Start */
+document.getElementById("startBtn")?.addEventListener("click", () => showPage(1));
 
-/* ==========================
-   NEXT BUTTON WITH VALIDATION
-========================== */
+/* Next */
 document.querySelectorAll(".next-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
@@ -784,26 +771,21 @@ document.querySelectorAll(".next-btn").forEach(btn => {
   });
 });
 
-/* ==========================
-   PREVIOUS BUTTON
-========================== */
+/* Back */
 document.querySelectorAll(".prev-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     if (currentPage > 0) showPage(currentPage - 1);
   });
 });
 
-/* ==========================
-   CAPTURE YES/NO ANSWERS
-========================== */
+/* Capture Answers */
 document.querySelectorAll(".q-box").forEach(qbox => {
   const key = qbox.dataset.key;
   const buttons = qbox.querySelectorAll(".yn-btn");
 
-  // Restore selected answer
   if (answers[key]) {
-    buttons.forEach(btn => {
-      if (btn.dataset.val === answers[key]) btn.classList.add("selected");
+    buttons.forEach(b => {
+      if (b.dataset.val === answers[key]) b.classList.add("selected");
     });
   }
 
@@ -815,7 +797,6 @@ document.querySelectorAll(".q-box").forEach(qbox => {
       buttons.forEach(b => b.classList.remove("selected"));
       btn.classList.add("selected");
 
-      // Auto-scroll to next on mobile
       if (window.innerWidth < 900) {
         const next = qbox.nextElementSibling?.closest(".q-box");
         if (next) next.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -826,13 +807,9 @@ document.querySelectorAll(".q-box").forEach(qbox => {
   });
 });
 
-/* ==========================
-   VALIDATE + SHOW BUTTONS
-========================== */
+/* Show Next / Finish */
 function checkSectionCompletion() {
   const section = document.querySelector(`.section-page[data-page="${currentPage}"]`);
-  if (!section) return;
-
   const qboxes = section.querySelectorAll(".q-box");
   const nextBtn = section.querySelector(".next-btn");
   const finishBtn = document.getElementById("finishBtn");
@@ -844,26 +821,19 @@ function checkSectionCompletion() {
     finishBtn.style.display = unanswered.length === 0 ? "inline-block" : "none";
 }
 
-/* ==========================
-   SCORE CALCULATION
-========================== */
-const finishBtn = document.getElementById("finishBtn");
+/* Finish Calculation */
+document.getElementById("finishBtn")?.addEventListener("click", () => {
+  let score = 0;
+  for (let i = 1; i <= 25; i++) {
+    if (answers["q" + i] === "yes") score++;
+  }
 
-if (finishBtn) {
-  finishBtn.addEventListener("click", () => {
-    let score = 0;
-    for (let i = 1; i <= 25; i++) {
-      if (answers["q" + i] === "yes") score++;
-    }
-
-    localStorage.setItem("readiness_score", score);
-    showPage(6);
-    localStorage.setItem("readiness_page", "6");
-  });
-}
+  localStorage.setItem("readiness_score", score);
+  showPage(6);
+});
 
 /* ==========================
-   LEAD FORM → GOOGLE SHEET
+   SUBMIT TO GOOGLE SHEET
 ========================== */
 const leadForm = document.getElementById("leadForm");
 const statusEl = document.getElementById("leadStatus");
@@ -872,68 +842,53 @@ if (leadForm) {
   leadForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const nameVal = document.getElementById("name").value.trim();
-    const mobileVal = document.getElementById("mobile").value.trim();
-    const emailVal = document.getElementById("email").value.trim();
-
-    const score = Number(localStorage.getItem("readiness_score") || 0);
-    const answers_json = JSON.stringify(answers);
+    const payload = {
+      formType: "readiness",
+      name: document.getElementById("name").value.trim(),
+      mobile: document.getElementById("mobile").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      answers_json: JSON.stringify(answers),
+      score: Number(localStorage.getItem("readiness_score")),
+      source: "sip_readiness"
+    };
 
     const GS_ENDPOINT =
       "https://script.google.com/macros/s/AKfycbzfPKyf6reazDCBL8Ql8wqU73KerPyi7cjdHI1BKXULBERuG1MAElH058KPEmAvOIu87g/exec";
 
-    const body = {
-      formType: "readiness",
-      name: nameVal,
-      mobile: mobileVal,
-      email: emailVal,
-      score: score,
-      answers_json: answers_json,
-      source: "sip_readiness"
-    };
-
-    console.log("Sending:", body);
-
     try {
-      const res = await fetch(GS_ENDPOINT, {
+      await fetch(GS_ENDPOINT, {
         method: "POST",
-        mode: "no-cors",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
+        body: JSON.stringify(payload)
       });
-
-      console.log("Fetch complete");
     } catch (err) {
-      console.error("Sheet submit error:", err);
+      console.error("Submit error:", err);
     }
 
     statusEl.textContent = "Thank you! Generating your SIP Readiness Report...";
-
-    showFinalScore(score);
+    showFinalScore(payload.score);
   });
 }
 
-/* ==========================
-   REPORT RENDER
-========================== */
+/* Score rendering */
 function showFinalScore(score) {
-  const page = document.querySelector('[data-page="6"]');
-  const label = getScoreLabel(score);
-  const msg = getScoreMessage(score);
+  const label = score <= 8 ? "Not Ready"
+              : score <= 15 ? "Medium Risk Zone"
+              : score <= 21 ? "Almost Ready"
+              : "Fully Ready";
 
+  const msg = score <= 8 ? "Your financial base needs strengthening."
+            : score <= 15 ? "Some readiness exists but gaps remain."
+            : score <= 21 ? "You are close to SIP-ready."
+            : "You are fully ready for disciplined SIP investing.";
+
+  const page = document.querySelector('[data-page="6"]');
   page.innerHTML = `
     <h1>Your SIP Readiness Report</h1>
-
     <div class="summary-box" style="text-align:center;">
-      <div style="font-size:3rem;font-weight:700;color:#f0b76b;margin-bottom:6px;">
-        ${score} / 25
-      </div>
-      <div style="font-size:1.4rem;font-weight:600;margin-bottom:10px;">
-        ${label}
-      </div>
-      <p style="font-size:1rem;color:#d4d7e9;line-height:1.6;">
-        ${msg}
-      </p>
+      <div style="font-size:3rem;font-weight:700;color:#f0b76b;">${score} / 25</div>
+      <div style="font-size:1.4rem;font-weight:600;margin-bottom:10px;">${label}</div>
+      <p style="font-size:1rem;color:#d4d7e9;line-height:1.6;">${msg}</p>
     </div>
 
     <div class="nav-row" style="flex-direction:column;gap:12px;margin-top:25px;">
@@ -943,40 +898,18 @@ function showFinalScore(score) {
   `;
 }
 
-function getScoreLabel(score) {
-  if (score <= 8) return "Not Ready";
-  if (score <= 15) return "Medium Risk Zone";
-  if (score <= 21) return "Almost Ready";
-  return "Fully Ready";
-}
-
-function getScoreMessage(score) {
-  if (score <= 8)
-    return "Your financial base needs strengthening before starting SIPs.";
-  if (score <= 15)
-    return "Some readiness exists, but important gaps remain.";
-  if (score <= 21)
-    return "You are close to SIP-ready — a few refinements needed.";
-  return "You are fully ready for disciplined SIP investing.";
-}
-
-/* ==========================
-   WHY TOGGLE
-========================== */
+/* WHY toggle */
 document.querySelectorAll(".why-toggle").forEach(toggle => {
   toggle.addEventListener("click", () => {
     const box = toggle.nextElementSibling;
-    if (box.style.display === "block") {
-      box.style.display = "none";
-      toggle.textContent = "Why it matters ▼";
-    } else {
-      box.style.display = "block";
-      toggle.textContent = "Why it matters ▲";
-    }
+    const open = box.style.display === "block";
+    box.style.display = open ? "none" : "block";
+    toggle.textContent = open ? "Why it matters ▼" : "Why it matters ▲";
   });
 });
 
 });
-</script>
-</body>
+
+  </script>
+  </body>
 </html>
