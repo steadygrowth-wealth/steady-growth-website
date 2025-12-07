@@ -780,7 +780,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // BACK buttons
   document.querySelectorAll(".prev-btn").forEach(btn => {
     btn.addEventListener("click", () => {
-      if (current > 1) showPage(current - 1);
+      if (current > 0) showPage(current - 1);
     });
   });
 
