@@ -689,6 +689,23 @@ document.addEventListener("DOMContentLoaded", function () {
   let answers = JSON.parse(localStorage.getItem("readiness_answers") || "{}");
 
   // ===============================
+  // WHY IT MATTERS — Toggle Logic
+  // ===============================
+  document.querySelectorAll(".why-toggle").forEach(toggle => {
+    toggle.addEventListener("click", function () {
+      const whyBox = this.nextElementSibling;
+
+      if (whyBox.style.display === "block") {
+        whyBox.style.display = "none";
+        this.textContent = "Why it matters ▼";
+      } else {
+        whyBox.style.display = "block";
+        this.textContent = "Why it matters ▲";
+      }
+    });
+  });
+
+  // ===============================
   // SHOW PAGE
   // ===============================
   function showPage(n) {
@@ -743,8 +760,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const finishBtn = document.getElementById("finishBtn");
     if (finishBtn) finishBtn.style.display = "none";
 
-    if (current === 0) return;
-
     if (current >= 1 && current <= 4) {
       if (isPageComplete(current)) {
         const nextBtn = pages[current].querySelector(".next-btn");
@@ -790,7 +805,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // ===============================
-  // SEND TO GOOGLE SHEET (unchanged)
+  // SEND TO GOOGLE SHEET
   // ===============================
   function submitToGoogleSheet(payload) {
     const formData = new URLSearchParams();
@@ -838,7 +853,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // ===========================
-      // SCORE TIERS (5-TIER SYSTEM)
+      // SCORE TIERS
       // ===========================
       let tierLabel = "", tierTitle = "", message = "";
 
@@ -865,7 +880,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // ===============================
-      // RENDER LUXURY SCORE REPORT
+      // SHOW SCORE REPORT
       // ===============================
       statusEl.innerHTML = `
         <div style="
@@ -954,7 +969,9 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
       `;
 
+      // ===============================
       // BUTTON ACTIONS
+      // ===============================
       document.getElementById("startJourneyBtn").addEventListener("click", () => {
         window.location.href = "/risk_first_page.html";
       });
@@ -974,7 +991,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 </script>
-
 
 
 
