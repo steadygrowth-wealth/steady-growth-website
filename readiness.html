@@ -682,196 +682,295 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    let current = 0;
-    const pages = document.querySelectorAll(".section-page");
+  let current = 0; // 0 = intro, 1–5 = questions, 6 = lead+report
+  const pages = document.querySelectorAll(".section-page");
 
-    let answers = JSON.parse(localStorage.getItem("readiness_answers") || "{}");
+  // Store answers as key -> 1/0
+  let answers = JSON.parse(localStorage.getItem("readiness_answers") || "{}");
 
-    // -------------------------------
-    // Show page
-    // -------------------------------
-    function showPage(n) {
-        pages.forEach(p => p.classList.remove("active"));
-        document.querySelector(`.section-page[data-page="${n}"]`).classList.add("active");
-        current = n;
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        updateButtons();
-    }
+  // -------------------------------
+  // Show a given page
+  // -------------------------------
+  function showPage(n) {
+    pages.forEach(p => p.classList.remove("active"));
+    const page = document.querySelector(`.section-page[data-page="${n}"]`);
+    if (page) page.classList.add("active");
+    current = n;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    updateButtons();
+  }
 
-    document.getElementById("startBtn").addEventListener("click", () => showPage(1));
+  // Intro → Section 1
+  document.getElementById("startBtn").addEventListener("click", () => showPage(1));
 
-    // -------------------------------
-    // YES/NO Question Selection
-    // -------------------------------
-    document.querySelectorAll(".yn-btn").forEach(btn => {
-        btn.addEventListener("click", function () {
+  // -------------------------------
+  // YES / NO buttons
+  // -------------------------------
+  document.querySelectorAll(".yn-btn").forEach(btn => {
+    btn.addEventListener("click", function () {
+      const parent = btn.closest(".q-box");
+      const key = parent.dataset.key;
 
-            const parent = btn.closest(".q-box");
-            const key = parent.dataset.key;
+      // Visual selection
+      parent.querySelectorAll(".yn-btn").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
 
-            parent.querySelectorAll(".yn-btn").forEach(b => b.classList.remove("selected"));
-            btn.classList.add("selected");
+      // Save answer (Yes=1, No=0)
+      answers[key] = (btn.dataset.val === "yes" ? 1 : 0);
+      localStorage.setItem("readiness_answers", JSON.stringify(answers));
 
-            answers[key] = (btn.dataset.val === "yes" ? 1 : 0);
-            localStorage.setItem("readiness_answers", JSON.stringify(answers));
-
-            updateButtons();
-        });
+      updateButtons();
     });
+  });
 
-    // -------------------------------
-    // Check if a section is complete
-    // -------------------------------
-    function isPageComplete(pageNum) {
+  // -------------------------------
+  // Check if all questions on a page are answered
+  // (based on .yn-btn.selected – works for Yes & No)
+  // -------------------------------
+  function isPageComplete(pageNum) {
     const section = document.querySelector(`.section-page[data-page="${pageNum}"]`);
     if (!section) return false;
 
     const questions = section.querySelectorAll(".q-box");
-
     for (let q of questions) {
-        if (!q.querySelector(".yn-btn.selected")) {
-            return false; // this question not answered
-        }
+      if (!q.querySelector(".yn-btn.selected")) {
+        return false;
+      }
     }
     return true;
-}
+  }
 
-
-    // -------------------------------
-    // Update visibility of Next / Finish
-    // -------------------------------
-    function updateButtons() {
-    // Hide all
+  // -------------------------------
+  // Show / hide Next & Finish buttons
+  // -------------------------------
+  function updateButtons() {
+    // Hide all next buttons + finish by default
     document.querySelectorAll(".next-btn").forEach(b => b.style.display = "none");
-    document.getElementById("finishBtn").style.display = "none";
+    const finishBtn = document.getElementById("finishBtn");
+    if (finishBtn) finishBtn.style.display = "none";
 
+    if (current === 0) return; // intro page
+
+    // Pages 1–4 → show Next only if complete
     if (current >= 1 && current <= 4) {
-        if (isPageComplete(current)) {
-            const nextBtn = pages[current].querySelector(".next-btn");
-            if (nextBtn) nextBtn.style.display = "block";
-        }
-        return;
+      if (isPageComplete(current)) {
+        const nextBtn = pages[current].querySelector(".next-btn");
+        if (nextBtn) nextBtn.style.display = "block";
+      }
+      return;
     }
 
+    // Page 5 → show Finish only if complete
     if (current === 5 && isPageComplete(5)) {
-        document.getElementById("finishBtn").style.display = "block";
+      if (finishBtn) finishBtn.style.display = "block";
     }
-}
+  }
 
-    // Next
-    document.querySelectorAll(".next-btn").forEach(btn =>
-        btn.addEventListener("click", () => showPage(current + 1))
-    );
-
-    // Back
-    document.querySelectorAll(".prev-btn").forEach(btn =>
-        btn.addEventListener("click", () => { if (current > 1) showPage(current - 1); })
-    );
-
-    // -------------------------------
-    // Calculate score
-    // -------------------------------
-    function calculateScore() {
-        let total = 0;
-        Object.values(answers).forEach(v => total += parseInt(v));
-        localStorage.setItem("readiness_score", total);
-        return total;
-    }
-
-    // -------------------------------
-    // Finish Questions → Show Lead Form
-    // -------------------------------
-    document.getElementById("finishBtn").addEventListener("click", function () {
-
-        const score = calculateScore();
-
-        document.getElementById("leadStatus").innerText =
-            "Your SIP Readiness Score: " + score + " (submit your details to view the full explanation)";
-
-        showPage(6);
+  // Next buttons
+  document.querySelectorAll(".next-btn").forEach(btn => {
+    btn.addEventListener("click", function () {
+      showPage(current + 1);
     });
+  });
 
-    // -------------------------------
-    // Submit to Google Sheet
-    // -------------------------------
-    function submitToGoogleSheet(payload) {
-
-        const formData = new URLSearchParams();
-        formData.append("formType", "readiness");
-        formData.append("name", payload.name);
-        formData.append("mobile", payload.mobile);
-        formData.append("email", payload.email);
-        formData.append("answers_json", JSON.stringify(answers));
-        formData.append("score", payload.score);
-        formData.append("source", "readiness_page");
-
-        return fetch("https://script.google.com/macros/s/AKfycbzfPKyf6reazDCBL8Ql8wqU73KerPyi7cjdHI1BKXULBERuG1MAElH058KPEmAvOIu87g/exec", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
-            body: formData.toString()
-        }).then(r => r.json());
-    }
-
-    // -------------------------------
-    // Lead Form Submit (OLD FLOW RESTORED)
-    // -------------------------------
-    document.getElementById("leadForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const score = calculateScore();
-
-        const payload = {
-            name: document.getElementById("name").value.trim(),
-            mobile: document.getElementById("mobile").value.trim(),
-            email: document.getElementById("email").value.trim(),
-            score: score
-        };
-
-        const statusEl = document.getElementById("leadStatus");
-        statusEl.textContent = "Submitting...";
-
-        submitToGoogleSheet(payload)
-        .then(res => {
-            if (!res.ok) {
-                statusEl.textContent = "Error: " + res.error;
-                return;
-            }
-
-            // -----------------------------
-            // ⭐ EXACT OLD VERSION MESSAGE FLOW ⭐
-            // -----------------------------
-            let message = "";
-            if (score < 10) {
-                message = "Your readiness is LOW. But don't worry, we will help you prepare step by step.";
-            } else if (score < 20) {
-                message = "Your readiness is MODERATE. You are on the right track.";
-            } else {
-                message = "Your readiness is HIGH. You are ready to invest with confidence!";
-            }
-
-            statusEl.innerHTML = `
-                <div style="text-align:center; margin-top:20px;">
-                    <div style="font-size:2rem; font-weight:700; color:#f0b76b;">
-                        ${score}
-                    </div>
-                    <div style="margin-top:10px; font-size:1rem; color:#fff;">
-                        ${message}
-                    </div>
-                </div>
-            `;
-
-            // Disable form inputs
-            document.getElementById("name").disabled = true;
-            document.getElementById("mobile").disabled = true;
-            document.getElementById("email").disabled = true;
-        })
-        .catch(() => {
-            statusEl.textContent = "Network error. Try again.";
-        });
+  // Back buttons
+  document.querySelectorAll(".prev-btn").forEach(btn => {
+    btn.addEventListener("click", function () {
+      if (current > 1) showPage(current - 1);
     });
+  });
 
-    // Load intro
-    showPage(0);
+  // -------------------------------
+  // Calculate score (0–25)
+  // -------------------------------
+  function calculateScore() {
+    let total = 0;
+    Object.values(answers).forEach(v => {
+      total += parseInt(v, 10) || 0;
+    });
+    localStorage.setItem("readiness_score", total);
+    return total;
+  }
+
+  // -------------------------------
+  // Finish questionnaire → go to lead form (page 6)
+  // -------------------------------
+  document.getElementById("finishBtn").addEventListener("click", function () {
+    const score = calculateScore();
+    const statusEl = document.getElementById("leadStatus");
+    statusEl.textContent =
+      "Your SIP Readiness Score is calculated. Please share your details to view your full report.";
+    showPage(6);
+  });
+
+  // -------------------------------
+  // Submit to Google Sheet
+  //  (unchanged logic – DO NOT TOUCH FOR DATA)
+  // -------------------------------
+  function submitToGoogleSheet(payload) {
+    const formData = new URLSearchParams();
+    formData.append("formType", "readiness");
+    formData.append("name", payload.name);
+    formData.append("mobile", payload.mobile);
+    formData.append("email", payload.email);
+    formData.append("answers_json", JSON.stringify(answers));
+    formData.append("score", payload.score);
+    formData.append("source", "readiness_page");
+
+    return fetch("https://script.google.com/macros/s/AKfycbzfPKyf6reazDCBL8Ql8wqU73KerPyi7cjdHI1BKXULBERuG1MAElH058KPEmAvOIu87g/exec", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+      body: formData.toString()
+    }).then(r => r.json());
+  }
+
+  // -------------------------------
+  // Lead form submit → save + show LUXURY REPORT
+  // -------------------------------
+  document.getElementById("leadForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const score = calculateScore();
+
+    const payload = {
+      name: document.getElementById("name").value.trim(),
+      mobile: document.getElementById("mobile").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      score: score
+    };
+
+    const statusEl = document.getElementById("leadStatus");
+    statusEl.textContent = "Submitting...";
+
+    submitToGoogleSheet(payload)
+      .then(res => {
+        if (!res.ok) {
+          statusEl.textContent = "Error: " + (res.error || "Unable to save your details.");
+          return;
+        }
+
+        // -----------------------------
+        // PREMIUM 5-TIER SCORE REPORT
+        // -----------------------------
+        let tierTitle = "";
+        let tierLabel = "";
+        let message = "";
+
+        if (score <= 6) {
+          tierLabel = "Very Low Readiness";
+          tierTitle = "Foundation Not Yet In Place";
+          message =
+            "Your current readiness suggests that key financial safety elements are missing. " +
+            "Before starting a SIP journey, establishing stability is essential—such as emergency funds, " +
+            "debt control, and basic protection. With guided steps, you can strengthen your foundation and progress confidently.";
+        } else if (score <= 14) {
+          tierLabel = "Low Readiness";
+          tierTitle = "Early Stage Readiness";
+          message =
+            "You have begun developing financial discipline, but several readiness pillars still need improvement. " +
+            "With structured planning and small corrective actions, you can move steadily towards a more resilient investment posture.";
+        } else if (score <= 18) {
+          tierLabel = "Moderate Readiness";
+          tierTitle = "Growing Stability & Awareness";
+          message =
+            "Your financial behaviours and investment understanding show promising progress. " +
+            "Strengthening consistency and clarity around goals will elevate your readiness and help you build long-term wealth with confidence.";
+        } else if (score <= 22) {
+          tierLabel = "High Readiness";
+          tierTitle = "Strong SIP Readiness";
+          message =
+            "You exhibit disciplined habits, a stable financial foundation, and clear purpose. " +
+            "Your behaviour aligns well with successful long-term investors. You are well-positioned to begin or scale your SIP plan.";
+        } else { // 23–25
+          tierLabel = "Exceptional Readiness";
+          tierTitle = "Exceptional Financial Readiness";
+          message =
+            "You demonstrate outstanding financial discipline, clarity of purpose, and long-term investment temperament. " +
+            "This level of readiness is characteristic of highly consistent wealth builders. You are exceptionally well-prepared to optimise SIP investing.";
+        }
+
+        // Luxury-style report injected into leadStatus
+        statusEl.innerHTML = `
+          <div style="
+            margin-top: 24px;
+            padding: 20px 18px;
+            border-radius: 18px;
+            border: 1px solid rgba(240,183,107,0.4);
+            background: radial-gradient(circle at top, rgba(240,183,107,0.10), rgba(6,10,28,0.96));
+          ">
+            <div style="text-align:center; margin-bottom: 10px;">
+              <div style="
+                font-size: 0.85rem;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: var(--muted);
+              ">
+                SIP Readiness Score Report
+              </div>
+            </div>
+
+            <div style="text-align:center; margin-bottom: 14px;">
+              <div style="
+                font-size: 2.4rem;
+                font-weight: 700;
+                font-family: 'Playfair Display', serif;
+                background: linear-gradient(120deg, #ffe6c0, #f0b76b, #b9782f);
+                -webkit-background-clip: text;
+                color: transparent;
+              ">
+                ${score} / 25
+              </div>
+              <div style="
+                display: inline-block;
+                margin-top: 6px;
+                padding: 4px 10px;
+                border-radius: 999px;
+                border: 1px solid rgba(240,183,107,0.6);
+                font-size: 0.78rem;
+                text-transform: uppercase;
+                letter-spacing: 0.12em;
+                color: #f0b76b;
+                background: rgba(0,0,0,0.35);
+              ">
+                ${tierLabel}
+              </div>
+            </div>
+
+            <div style="margin-top: 18px;">
+              <div style="
+                font-size: 1.05rem;
+                font-weight: 600;
+                margin-bottom: 6px;
+                color: #ffe5ba;
+                text-align: center;
+              ">
+                ${tierTitle}
+              </div>
+              <p style="
+                font-size: 0.9rem;
+                line-height: 1.7;
+                color: var(--muted);
+                margin: 8px 0 0 0;
+                text-align: left;
+              ">
+                ${message}
+              </p>
+            </div>
+          </div>
+        `;
+
+        // Disable inputs after successful submission
+        document.getElementById("name").disabled = true;
+        document.getElementById("mobile").disabled = true;
+        document.getElementById("email").disabled = true;
+      })
+      .catch(() => {
+        statusEl.textContent = "Network error. Please try again.";
+      });
+  });
+
+  // Start on intro page
+  showPage(0);
 
 });
 </script>
