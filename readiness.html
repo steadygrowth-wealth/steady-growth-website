@@ -682,7 +682,7 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-  let current = 0; // intro page
+  let current = 0;
   const pages = document.querySelectorAll(".section-page");
 
   // Store answers
@@ -701,11 +701,10 @@ document.addEventListener("DOMContentLoaded", function () {
     updateButtons();
   }
 
-  // Start Assessment → go to Section 1
   document.getElementById("startBtn").addEventListener("click", () => showPage(1));
 
   // ===============================
-  // YES/NO BUTTON SELECTION
+  // YES-NO BUTTON LOGIC
   // ===============================
   document.querySelectorAll(".yn-btn").forEach(btn => {
     btn.addEventListener("click", function () {
@@ -715,14 +714,15 @@ document.addEventListener("DOMContentLoaded", function () {
       parent.querySelectorAll(".yn-btn").forEach(b => b.classList.remove("selected"));
       btn.classList.add("selected");
 
-      answers[key] = (btn.dataset.val === "yes" ? 1 : 0);
+      answers[key] = btn.dataset.val === "yes" ? 1 : 0;
       localStorage.setItem("readiness_answers", JSON.stringify(answers));
+
       updateButtons();
     });
   });
 
   // ===============================
-  // CHECK IF PAGE COMPLETE (5 answers selected)
+  // CHECK IF PAGE COMPLETE
   // ===============================
   function isPageComplete(pageNum) {
     const section = document.querySelector(`.section-page[data-page="${pageNum}"]`);
@@ -736,7 +736,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ===============================
-  // UPDATE NEXT / FINISH BUTTON VISIBILITY
+  // UPDATE NEXT & FINISH BUTTONS
   // ===============================
   function updateButtons() {
     document.querySelectorAll(".next-btn").forEach(b => b.style.display = "none");
@@ -750,7 +750,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const nextBtn = pages[current].querySelector(".next-btn");
         if (nextBtn) nextBtn.style.display = "block";
       }
-      return;
     }
 
     if (current === 5 && isPageComplete(5)) {
@@ -758,20 +757,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Next buttons
+  // NEXT buttons
   document.querySelectorAll(".next-btn").forEach(btn => {
     btn.addEventListener("click", () => showPage(current + 1));
   });
 
-  // Back buttons
+  // BACK buttons
   document.querySelectorAll(".prev-btn").forEach(btn => {
-    btn.addEventListener("click", function () {
+    btn.addEventListener("click", () => {
       if (current > 1) showPage(current - 1);
     });
   });
 
   // ===============================
-  // CALCULATE TOTAL SCORE
+  // CALCULATE SCORE
   // ===============================
   function calculateScore() {
     let total = 0;
@@ -781,20 +780,21 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ===============================
-  // FINISH BUTTON → SHOW LEAD FORM
+  // FINISH BUTTON
   // ===============================
   document.getElementById("finishBtn").addEventListener("click", function () {
     calculateScore();
-    const statusEl = document.getElementById("leadStatus");
-    statusEl.textContent = "Your SIP Readiness Score is calculated. Please enter your details to unlock your premium score report.";
+    document.getElementById("leadStatus").textContent =
+      "Your SIP Readiness Score is calculated. Please enter your details to view your personalised report.";
     showPage(6);
   });
 
   // ===============================
-  // POST TO GOOGLE SHEET (unchanged)
+  // SEND TO GOOGLE SHEET (unchanged)
   // ===============================
   function submitToGoogleSheet(payload) {
     const formData = new URLSearchParams();
+
     formData.append("formType", "readiness");
     formData.append("name", payload.name);
     formData.append("mobile", payload.mobile);
@@ -814,7 +814,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ===============================
-  // LEAD FORM SUBMIT → SHOW SCORE REPORT
+  // LEAD FORM SUBMIT
   // ===============================
   document.getElementById("leadForm").addEventListener("submit", function (e) {
     e.preventDefault();
@@ -833,41 +833,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
     submitToGoogleSheet(payload).then(res => {
       if (!res.ok) {
-        statusEl.textContent = "Error: " + (res.error || "Unable to save your details.");
+        statusEl.textContent = "Error saving data.";
         return;
       }
 
-      // Determine tier
+      // ===========================
+      // SCORE TIERS (5-TIER SYSTEM)
+      // ===========================
       let tierLabel = "", tierTitle = "", message = "";
 
       if (score <= 6) {
         tierLabel = "Very Low Readiness";
         tierTitle = "Foundation Not Yet In Place";
-        message =
-          "Your readiness suggests essential financial safety layers are missing. Before starting SIPs, building a stable financial base is crucial. With structured guidance, you can improve your readiness progressively.";
-      } else if (score <= 13) {
+        message = "Your readiness suggests essential financial safety layers are missing. Strengthening your financial base will help you confidently begin SIP investing.";
+      } else if (score <= 14) {
         tierLabel = "Low Readiness";
         tierTitle = "Early Stage Readiness";
-        message =
-          "You are beginning to build financial discipline but still have important gaps to fill. With consistent steps and proper guidance, you can strengthen your SIP readiness significantly.";
+        message = "You are beginning to build discipline, but several readiness pillars still need development. Steady improvement will strengthen your SIP foundation.";
       } else if (score <= 18) {
         tierLabel = "Moderate Readiness";
         tierTitle = "Growing Stability & Awareness";
-        message =
-          "You display good financial habits with room for improvement. With a little more clarity on goals and consistency, your long-term SIP journey can be very rewarding.";
+        message = "You have promising financial behaviours. With more clarity and consistency, your SIP journey can become strongly aligned to long-term goals.";
       } else if (score <= 22) {
         tierLabel = "High Readiness";
         tierTitle = "Strong SIP Readiness";
-        message =
-          "You have strong discipline, clarity, and stability. Your behaviour aligns with successful long-term investors. You are well-positioned to begin or scale your SIP strategy.";
+        message = "You show strong discipline and preparedness. You are well-positioned to start or scale your SIP investments confidently.";
       } else {
         tierLabel = "Exceptional Readiness";
         tierTitle = "Exceptional Financial Readiness";
-        message =
-          "Your financial behaviour, stability, clarity, and discipline are outstanding. You are exceptionally well-prepared for long-term SIP wealth creation.";
+        message = "Your discipline, clarity, and investment temperament are outstanding. You are exceptionally ready for long-term SIP wealth creation.";
       }
 
-      // Render luxury report
+      // ===============================
+      // RENDER LUXURY SCORE REPORT
+      // ===============================
       statusEl.innerHTML = `
         <div style="
           margin-top: 24px;
@@ -877,18 +876,18 @@ document.addEventListener("DOMContentLoaded", function () {
           background: radial-gradient(circle at top, rgba(240,183,107,0.10), rgba(6,10,28,0.96));
         ">
 
-          <div style="text-align:center; margin-bottom: 10px;">
+          <div style="text-align:center;">
             <div style="
               font-size: 0.85rem;
               letter-spacing: 0.12em;
-              text-transform: uppercase;
               color: var(--muted);
+              text-transform: uppercase;
             ">
               SIP Readiness Score Report
             </div>
           </div>
 
-          <div style="text-align:center; margin-bottom: 14px;">
+          <div style="text-align:center; margin-top: 14px;">
             <div style="
               font-size: 2.4rem;
               font-weight: 700;
@@ -901,74 +900,61 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
 
             <div style="
-              display: inline-block;
               margin-top: 6px;
               padding: 4px 10px;
               border-radius: 999px;
               border: 1px solid rgba(240,183,107,0.6);
-              font-size: 0.78rem;
-              letter-spacing: 0.12em;
               color: #f0b76b;
+              font-size: 0.78rem;
+              text-transform: uppercase;
               background: rgba(0,0,0,0.35);
+              display: inline-block;
             ">
               ${tierLabel}
             </div>
           </div>
 
-          <div style="margin-top: 18px;">
-            <div style="
-              font-size: 1.05rem;
-              font-weight: 600;
-              margin-bottom: 6px;
-              color: #ffe5ba;
-              text-align: center;
-            ">
+          <div style="margin-top: 20px; text-align:center;">
+            <div style="font-size: 1.05rem; font-weight: 600; color: #ffe5ba;">
               ${tierTitle}
             </div>
-            <p style="
-              font-size: 0.9rem;
-              line-height: 1.7;
-              color: var(--muted);
-            ">
+            <p style="font-size: 0.9rem; color: var(--muted); line-height: 1.7; margin-top: 10px;">
               ${message}
             </p>
           </div>
 
-          <div style="margin-top: 24px; text-align:center;">
+          <div style="margin-top: 26px; text-align:center;">
             <button id="startJourneyBtn" style="
               padding: 12px 22px;
+              width: 100%; max-width: 320px;
               border-radius: 999px;
               background: radial-gradient(circle at 10% 20%, #ffe6c0, #f0b76b 45%, #b9782f);
               color: #1b1406;
-              font-weight: 600;
               border: none;
+              font-weight: 600;
               cursor: pointer;
               margin-bottom: 12px;
-              width: 100%;
-              max-width: 320px;
             ">
               Start Your Investment Journey
             </button>
 
             <button id="backHomeBtn" style="
               padding: 10px 22px;
+              width: 100%; max-width: 320px;
               border-radius: 999px;
-              background: transparent;
               border: 1px solid rgba(255,255,255,0.28);
+              background: transparent;
               color: var(--muted);
               font-weight: 500;
               cursor: pointer;
-              width: 100%;
-              max-width: 320px;
             ">
               Back to Home Page
             </button>
           </div>
-
         </div>
       `;
 
-      // Activate CTA buttons
+      // BUTTON ACTIONS
       document.getElementById("startJourneyBtn").addEventListener("click", () => {
         window.location.href = "/risk_first_page.html";
       });
@@ -977,17 +963,13 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = "/";
       });
 
-      // Disable inputs
-      document.getElementById("name").disabled = true;
-      document.getElementById("mobile").disabled = true;
-      document.getElementById("email").disabled = true;
     })
     .catch(() => {
-      statusEl.textContent = "Network error. Please try again.";
+      document.getElementById("leadStatus").textContent = "Network error. Please try again.";
     });
   });
 
-  // Start at Intro Page
+  // Start at page 0
   showPage(0);
 
 });
