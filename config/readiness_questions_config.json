@@ -1,0 +1,31 @@
+{
+  "q1":  { "class": "FF", "positive_if": "yes" },
+  "q2":  { "class": "FF", "positive_if": "yes" },
+  "q3":  { "class": "FF", "positive_if": "yes" },
+  "q4":  { "class": "FF", "positive_if": "yes" },
+  "q5":  { "class": "FF", "positive_if": "yes" },
+
+  "q6":  { "class": "CP", "positive_if": "yes" },
+  "q7":  { "class": "CP", "positive_if": "yes" },
+  "q8":  { "class": "CP", "positive_if": "yes" },
+  "q9":  { "class": "CP", "positive_if": "yes" },
+  "q10": { "class": "CP", "positive_if": "yes" },
+
+  "q11": { "class": "RB", "positive_if": "yes" },
+  "q12": { "class": "RB", "positive_if": "yes" },
+  "q13": { "class": "RB", "positive_if": "yes" },
+  "q14": { "class": "RB", "positive_if": "yes" },
+  "q15": { "class": "RB", "positive_if": "yes" },
+
+  "q16": { "class": "PU", "positive_if": "yes" },
+  "q17": { "class": "PU", "positive_if": "yes" },
+  "q18": { "class": "PU", "positive_if": "yes" },
+  "q19": { "class": "PU", "positive_if": "yes" },
+  "q20": { "class": "PU", "positive_if": "yes" },
+
+  "q21": { "class": "CD", "positive_if": "yes" },
+  "q22": { "class": "CD", "positive_if": "yes" },
+  "q23": { "class": "CD", "positive_if": "yes" },
+  "q24": { "class": "CD", "positive_if": "yes" },
+  "q25": { "class": "CD", "positive_if": "yes" }
+}
