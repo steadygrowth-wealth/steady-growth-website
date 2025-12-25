@@ -230,81 +230,39 @@
 
 <!-- ========================= SCRIPTS ========================= -->
 <script>
-const categoryRadios = document.querySelectorAll('input[name="category"]');
-const sipTypeBlock = document.getElementById('sipTypeBlock');
-const topupBlock = document.getElementById('topupBlock');
+const riskInsight = document.getElementById("riskInsight");
+const timeInsight = document.getElementById("timeInsight");
 
-const rateSlider = document.getElementById('rate');
-const rateVal = document.getElementById('rateVal');
+function updateInsights() {
+  const r = +rateSlider.value;
+  const y = +document.getElementById("years").value;
 
-rateSlider.addEventListener('input', () => {
-  rateVal.textContent = rateSlider.value + '%';
-});
-
-categoryRadios.forEach(r => {
-  r.addEventListener('change', () => {
-    sipTypeBlock.classList.toggle('hidden', r.value !== 'sip');
-    topupBlock.classList.add('hidden');
-  });
-});
-
-document.querySelectorAll('input[name="sipType"]').forEach(r => {
-  r.addEventListener('change', () => {
-    topupBlock.classList.toggle('hidden', r.value !== 'withTopup');
-  });
-});
-
-document.getElementById('calculateBtn').addEventListener('click', () => {
-
-  const amount = +amountInput.value;
-  const rate = +rateSlider.value / 100;
-  const years = +document.getElementById('years').value;
-  const months = +document.getElementById('months').value;
-  const totalMonths = years * 12 + months;
-  const monthlyRate = rate / 12;
-
-  let invested = 0, fv = 0;
-
-  if (document.querySelector('input[name="category"]:checked').value === 'lumpsum') {
-
-    invested = amount;
-    fv = amount * Math.pow(1 + rate, totalMonths / 12);
-
+  // Return insight
+  if (r <= 7) {
+    riskInsight.textContent = "This return assumption reflects a conservative, debt-oriented approach.";
+  } else if (r <= 11) {
+    riskInsight.textContent = "This is a balanced return assumption, commonly used for diversified portfolios.";
   } else {
-
-    let sip = amount;
-
-    if (document.querySelector('input[name="sipType"]:checked').value === 'noTopup') {
-
-      invested = sip * totalMonths;
-      fv = sip * ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate) * (1 + monthlyRate);
-
-    } else {
-
-      const freq = +document.querySelector('input[name="topupFreq"]:checked').value;
-      const topupType = document.querySelector('input[name="topupType"]:checked').value;
-      const topupVal = +document.getElementById('topupValue').value;
-
-      for (let m = 1; m <= totalMonths; m++) {
-        fv = fv * (1 + monthlyRate) + sip;
-        invested += sip;
-
-        if (m % freq === 0) {
-          sip = topupType === 'flat'
-            ? sip + topupVal
-            : sip * (1 + topupVal / 100);
-        }
-      }
-    }
+    riskInsight.textContent = "Higher return expectations usually involve higher volatility and require discipline.";
   }
 
-  document.getElementById('invested').textContent = invested.toFixed(0);
-  document.getElementById('finalValue').textContent = fv.toFixed(0);
-  document.getElementById('gain').textContent = (fv - invested).toFixed(0);
+  // Time insight
+  if (y < 5) {
+    timeInsight.textContent = "Shorter time horizons may increase uncertainty in market-linked investments.";
+  } else if (y < 10) {
+    timeInsight.textContent = "Medium-term investing benefits from consistency and periodic review.";
+  } else {
+    timeInsight.textContent = "Longer time horizons significantly improve the probability of favourable outcomes.";
+  }
+}
 
-  document.getElementById('resultBox').classList.remove('hidden');
-});
+rateSlider.addEventListener("input", updateInsights);
+document.getElementById("years").addEventListener("input", updateInsights);
+
+// init
+updateInsights();
 </script>
+
 
 </body>
 </html>
