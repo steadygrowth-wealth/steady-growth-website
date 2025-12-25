@@ -342,6 +342,10 @@ document.querySelectorAll('input[name="approach"]').forEach(radio => {
     hideAllStages();
     stages.action.classList.remove("hidden");
 
+    document.querySelectorAll('input[name="sipMode"]').forEach(r => r.checked = false);
+    document.querySelectorAll('input[name="topupType"]').forEach(r => r.checked = false);
+
+
     if (radio.value === "lumpsum") {
       stages.lumpsum.classList.remove("hidden");
     }
