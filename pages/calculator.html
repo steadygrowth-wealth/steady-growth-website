@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Investment Process – Steady Growth</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- External Stylesheets -->
+  <link rel="stylesheet" href="../styles/global.css">
+  <link rel="stylesheet" href="../styles/mobile-menu.css">
+  <link rel="stylesheet" href="../styles/process.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../assets/img/logo.png">
+
+</head>
+
+<body class="page-process">
+
+<!-- ========================= HEADER ========================= -->
+<header>
+  <div class="container nav">
+    
+    <!-- BRAND -->
+    <a href="../index.html" class="brand">
+      <div class="brand-logo">
+        <img src="../assets/img/logo.png" alt="Steady Growth Logo">
+      </div>
+      <div class="brand-text">
+        <div class="brand-name">Steady Growth</div>
+        <div class="brand-sub">Mutual Fund Distribution</div>
+      </div>
+    </a>
+
+    <!-- DESKTOP NAV -->
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="./about.html">About</a>
+      <a href="./services.html">Services</a>
+      <a href="./process.html">Process</a>
+      <a href="./faq.html">FAQs</a>
+      <a href="./contact.html">Contact</a>
+    </nav>
+
+    <!-- DESKTOP CTA -->
+    <div class="nav-cta">
+      <a href="./../investor_details.html" class="btn btn-ghost">Request a Call</a>
+    </div>
+
+    <!-- MOBILE MENU TOGGLE -->
+    <div class="nav-toggle" id="navToggle">
+      <span></span><span></span><span></span>
+    </div>
+
+  </div>
+
+  <!-- FULLSCREEN MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+
+    <!-- CLOSE BUTTON -->
+    <div class="menu-close" id="menuClose">✕</div>
+
+    <nav class="mobile-nav-links">
+      <a href="../index.html">Home</a>
+      <a href="./about.html">About</a>
+      <a href="./services.html">Services</a>
+      <a href="./process.html">Process</a>
+      <a href="./faq.html">FAQs</a>
+      <a href="./contact.html">Contact</a>
+
+      <!-- Ghost CTA (bottom) -->
+      <a href="./../investor_details.html" class="btn btn-ghost menu-cta-ghost">
+        Request a Call
+      </a>
+    </nav>
+
+  </div>
+</header>
+
+<!-- ========================= HERO ========================= -->
+<section class="hero-premium">
+  <div class="container hero-inner">
+
+    <span class="hero-tag">Investment Return Calculator</span>
+
+    <h1 class="hero-title-lg">Estimate your future wealth across different investment approaches.</h1>
+
+    <p class="hero-lead">
+      Estimate potential outcomes with clarity — before taking the first investment step.
+    </p>
+
+  </div>
+</section>
+
+
+
+<!-- ========================= INVESTMENT CALCULATOR ========================= -->
+<section class="process-steps-editorial">
+
+  <div class="step-row">
+    <div class="step-index">06</div>
+    <div class="step-content">
+      <h3>Investment Return Calculator</h3>
+      <p>Estimate your future wealth across different investment approaches.</p>
+
+      <!-- CATEGORY -->
+      <div class="calc-block">
+        <label class="calc-label">Investment Type</label>
+        <div class="calc-options">
+          <label><input type="radio" name="category" value="lumpsum" checked> Lumpsum</label>
+          <label><input type="radio" name="category" value="sip"> SIP</label>
+        </div>
+      </div>
+
+      <!-- SIP TYPE -->
+      <div class="calc-block hidden" id="sipTypeBlock">
+        <label class="calc-label">SIP Type</label>
+        <div class="calc-options">
+          <label><input type="radio" name="sipType" value="noTopup" checked> Without Top-Up</label>
+          <label><input type="radio" name="sipType" value="withTopup"> With Top-Up</label>
+        </div>
+      </div>
+
+      <!-- COMMON INPUTS -->
+      <div class="calc-grid">
+
+        <div class="calc-field">
+          <label>Investment Amount (₹)</label>
+          <input type="number" id="amount" value="5000">
+        </div>
+
+        <div class="calc-field">
+          <label>Expected Return (%)</label>
+          <input type="range" id="rate" min="1" max="20" value="10">
+          <span class="range-value" id="rateVal">10%</span>
+        </div>
+
+        <div class="calc-field">
+          <label>Time Horizon</label>
+          <div class="calc-inline">
+            <input type="number" id="years" value="10" min="0"> Years
+            <input type="number" id="months" value="0" min="0" max="11"> Months
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TOP-UP SETTINGS -->
+      <div id="topupBlock" class="hidden">
+
+        <div class="calc-block">
+          <label class="calc-label">Top-Up Frequency</label>
+          <div class="calc-options">
+            <label><input type="radio" name="topupFreq" value="3"> Quarterly</label>
+            <label><input type="radio" name="topupFreq" value="6"> Half-Yearly</label>
+            <label><input type="radio" name="topupFreq" value="12" checked> Yearly</label>
+          </div>
+        </div>
+
+        <div class="calc-block">
+          <label class="calc-label">Top-Up Type</label>
+          <div class="calc-options">
+            <label><input type="radio" name="topupType" value="flat" checked> Flat Amount</label>
+            <label><input type="radio" name="topupType" value="percent"> Percentage</label>
+          </div>
+        </div>
+
+        <div class="calc-field">
+          <label>Top-Up Value</label>
+          <input type="number" id="topupValue" value="10">
+        </div>
+
+      </div>
+
+      <!-- ACTION -->
+      <div class="calc-action">
+        <button class="btn btn-primary" id="calculateBtn">Calculate</button>
+      </div>
+
+      <!-- RESULT -->
+      <div class="calc-result hidden" id="resultBox">
+        <p><strong>Total Invested:</strong> ₹<span id="invested"></span></p>
+        <p><strong>Estimated Value:</strong> ₹<span id="finalValue"></span></p>
+        <p><strong>Wealth Gain:</strong> ₹<span id="gain"></span></p>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<!-- ========================= CTA ========================= -->
+<section class="section-cta-gold">
+  <div class="container cta-inner">
+    <h2 class="cta-title">Ready to Begin Your Investment Journey?</h2>
+    <p class="cta-subtitle">
+      Let’s discuss your goals and create a disciplined investment plan.
+    </p>
+    <a href="./contact.html" class="btn btn-primary btn-large">
+      Contact Me →
+    </a>
+  </div>
+</section>
+
+
+
+<!-- ========================= FOOTER ========================= -->
+<footer class="disclaimer">
+  <div class="container">
+    <p class="disclaimer-text">
+      <strong>Disclaimer:</strong> Mutual Fund investments are subject to market risks. Please read all scheme-related documents carefully before investing.
+    </p>
+
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Steady Growth. All rights reserved.</span>
+      <span>Designed to encourage disciplined, long-term investing.</span>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ========================= SCRIPTS ========================= -->
+<script>
+const categoryRadios = document.querySelectorAll('input[name="category"]');
+const sipTypeBlock = document.getElementById('sipTypeBlock');
+const topupBlock = document.getElementById('topupBlock');
+
+const rateSlider = document.getElementById('rate');
+const rateVal = document.getElementById('rateVal');
+
+rateSlider.addEventListener('input', () => {
+  rateVal.textContent = rateSlider.value + '%';
+});
+
+categoryRadios.forEach(r => {
+  r.addEventListener('change', () => {
+    sipTypeBlock.classList.toggle('hidden', r.value !== 'sip');
+    topupBlock.classList.add('hidden');
+  });
+});
+
+document.querySelectorAll('input[name="sipType"]').forEach(r => {
+  r.addEventListener('change', () => {
+    topupBlock.classList.toggle('hidden', r.value !== 'withTopup');
+  });
+});
+
+document.getElementById('calculateBtn').addEventListener('click', () => {
+
+  const amount = +amountInput.value;
+  const rate = +rateSlider.value / 100;
+  const years = +document.getElementById('years').value;
+  const months = +document.getElementById('months').value;
+  const totalMonths = years * 12 + months;
+  const monthlyRate = rate / 12;
+
+  let invested = 0, fv = 0;
+
+  if (document.querySelector('input[name="category"]:checked').value === 'lumpsum') {
+
+    invested = amount;
+    fv = amount * Math.pow(1 + rate, totalMonths / 12);
+
+  } else {
+
+    let sip = amount;
+
+    if (document.querySelector('input[name="sipType"]:checked').value === 'noTopup') {
+
+      invested = sip * totalMonths;
+      fv = sip * ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate) * (1 + monthlyRate);
+
+    } else {
+
+      const freq = +document.querySelector('input[name="topupFreq"]:checked').value;
+      const topupType = document.querySelector('input[name="topupType"]:checked').value;
+      const topupVal = +document.getElementById('topupValue').value;
+
+      for (let m = 1; m <= totalMonths; m++) {
+        fv = fv * (1 + monthlyRate) + sip;
+        invested += sip;
+
+        if (m % freq === 0) {
+          sip = topupType === 'flat'
+            ? sip + topupVal
+            : sip * (1 + topupVal / 100);
+        }
+      }
+    }
+  }
+
+  document.getElementById('invested').textContent = invested.toFixed(0);
+  document.getElementById('finalValue').textContent = fv.toFixed(0);
+  document.getElementById('gain').textContent = (fv - invested).toFixed(0);
+
+  document.getElementById('resultBox').classList.remove('hidden');
+});
+</script>
+
+</body>
+</html>
