@@ -238,14 +238,17 @@
           </div>
 
           <div class="calc-field">
-            <label>Withdrawal Frequency</label>
-            <select id="swp-frequency">
-              <option value="1">Monthly</option>
-              <option value="3">Quarterly</option>
-              <option value="6">Half-Yearly</option>
-              <option value="12">Yearly</option>
-            </select>
-          </div>
+          <label>Withdrawal Frequency</label>
+          <select id="swp-frequency">
+            <option value="weekly">Weekly</option>
+            <option value="biweekly">Bi-Weekly</option>
+            <option value="monthly" selected>Monthly</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="halfyearly">Half-Yearly</option>
+            <option value="yearly">Yearly</option>
+          </select>
+        </div>
+
 
           <div class="calc-field">
             <label>Withdrawal Period</label>
@@ -498,7 +501,6 @@ if (approach === "sip") {
 
   const freqValue = document.getElementById("swp-frequency").value;
 
-  // Withdrawal equivalents per month
   const freqMap = {
     weekly: 52 / 12,
     biweekly: 26 / 12,
@@ -509,12 +511,11 @@ if (approach === "sip") {
   };
 
   const withdrawalsPerMonth = freqMap[freqValue];
+  const monthlyRate = annualRate / 12;
 
   const gapMonths =
     (+document.getElementById("swp-years").value * 12) +
     (+document.getElementById("swp-months").value);
-
-  const monthlyRate = annualRate / 12;
 
   const MAX_MONTHS = 40 * 12;
 
@@ -527,10 +528,9 @@ if (approach === "sip") {
     corpus *= (1 + monthlyRate);
 
     // Withdraw only after gap
-    if (month > gapMonths && withdrawalsPerMonth > 0) {
+    if (month > gapMonths) {
 
       const monthlyWithdrawal = withdrawalAmount * withdrawalsPerMonth;
-
       corpus -= monthlyWithdrawal;
       totalWithdrawn += monthlyWithdrawal;
 
@@ -541,6 +541,33 @@ if (approach === "sip") {
       }
     }
   }
+
+  if (depletionMonth !== null) {
+
+    const years = Math.floor(depletionMonth / 12);
+    const months = depletionMonth % 12;
+
+    document.getElementById("res-invested").textContent =
+      `${years} Years ${months} Months`;
+
+    document.getElementById("res-gain").textContent =
+      formatINR(totalWithdrawn);
+
+    document.getElementById("res-value").textContent =
+      "Corpus exhausted";
+
+  } else {
+
+    document.getElementById("res-invested").textContent =
+      "40 Years";
+
+    document.getElementById("res-gain").textContent =
+      formatINR(totalWithdrawn);
+
+    document.getElementById("res-value").textContent =
+      formatINR(corpus);
+  }
+}
 
   // ================= OUTPUT =================
 
