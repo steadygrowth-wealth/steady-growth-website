@@ -247,38 +247,70 @@
 
 <!-- ========================= SCRIPTS ========================= -->
 <script>
-const riskInsight = document.getElementById("riskInsight");
-const timeInsight = document.getElementById("timeInsight");
+document.getElementById('calculateBtn').addEventListener('click', () => {
 
-function updateInsights() {
-  const r = +rateSlider.value;
-  const y = +document.getElementById("years").value;
+  const amount = +document.getElementById("amount").value;
+  const rate = +rateSlider.value / 100;
+  const years = +document.getElementById('years').value;
+  const months = +document.getElementById('months').value;
+  const totalMonths = years * 12 + months;
+  const monthlyRate = rate / 12;
 
-  // Return insight
-  if (r <= 7) {
-    riskInsight.textContent = "This return assumption reflects a conservative, debt-oriented approach.";
-  } else if (r <= 11) {
-    riskInsight.textContent = "This is a balanced return assumption, commonly used for diversified portfolios.";
+  let invested = 0, fv = 0;
+  let regularSipFV = 0;
+
+  const category = document.querySelector('input[name="category"]:checked').value;
+
+  if (category === 'lumpsum') {
+
+    invested = amount;
+    fv = amount * Math.pow(1 + rate, totalMonths / 12);
+
+    document.getElementById("topupDelta").classList.add("hidden");
+
   } else {
-    riskInsight.textContent = "Higher return expectations usually involve higher volatility and require discipline.";
+
+    let sip = amount;
+
+    // Regular SIP benchmark
+    regularSipFV = sip * ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate) * (1 + monthlyRate);
+
+    if (document.querySelector('input[name="sipType"]:checked').value === 'noTopup') {
+
+      invested = sip * totalMonths;
+      fv = regularSipFV;
+      document.getElementById("topupDelta").classList.add("hidden");
+
+    } else {
+
+      const freq = +document.querySelector('input[name="topupFreq"]:checked').value;
+      const topupType = document.querySelector('input[name="topupType"]:checked').value;
+      const topupVal = +document.getElementById('topupValue').value;
+
+      for (let m = 1; m <= totalMonths; m++) {
+        fv = fv * (1 + monthlyRate) + sip;
+        invested += sip;
+
+        if (m % freq === 0) {
+          sip = topupType === 'flat'
+            ? sip + topupVal
+            : sip * (1 + topupVal / 100);
+        }
+      }
+
+      const delta = fv - regularSipFV;
+      document.getElementById("deltaValue").textContent = delta.toFixed(0);
+      document.getElementById("topupDelta").classList.remove("hidden");
+    }
   }
 
-  // Time insight
-  if (y < 5) {
-    timeInsight.textContent = "Shorter time horizons may increase uncertainty in market-linked investments.";
-  } else if (y < 10) {
-    timeInsight.textContent = "Medium-term investing benefits from consistency and periodic review.";
-  } else {
-    timeInsight.textContent = "Longer time horizons significantly improve the probability of favourable outcomes.";
-  }
-}
-
-rateSlider.addEventListener("input", updateInsights);
-document.getElementById("years").addEventListener("input", updateInsights);
-
-// init
-updateInsights();
+  document.getElementById('invested').textContent = invested.toFixed(0);
+  document.getElementById('finalValue').textContent = fv.toFixed(0);
+  document.getElementById('gain').textContent = (fv - invested).toFixed(0);
+  document.getElementById('resultBox').classList.remove('hidden');
+});
 </script>
+
 
 
 </body>
