@@ -253,8 +253,17 @@
 
       <!-- ACTION -->
       <div class="calc-action hidden" id="calc-action">
-        <button class="btn btn-primary">Calculate</button>
+        <button class="btn btn-primary" id="calculateBtn">Calculate</button>
       </div>
+
+      <div class="calc-stage hidden" id="stage-result">
+        <div class="calc-result">
+          <p><strong>Total Invested:</strong> ₹ <span id="res-invested">0</span></p>
+          <p><strong>Estimated Value:</strong> ₹ <span id="res-value">0</span></p>
+          <p><strong>Wealth Gain:</strong> ₹ <span id="res-gain">0</span></p>
+        </div>
+      </div>
+
 
     </div>
   </div>
@@ -348,6 +357,72 @@ document.querySelectorAll('input[name="topupType"]').forEach(r => {
     slider.addEventListener("input", () => label.textContent = slider.value + "%");
   }
 });
+
+
+  document.getElementById("calculateBtn").addEventListener("click", () => {
+  const approach = document.querySelector('input[name="approach"]:checked')?.value;
+  if (!approach) return alert("Please select an investment approach");
+
+  let invested = 0, value = 0;
+
+  /* =====================
+     LUMPSUM
+  ===================== */
+  if (approach === "lumpsum") {
+    const P = +document.getElementById("lump-amount").value;
+    const r = +document.getElementById("lump-return").value / 100;
+    const months =
+      (+document.getElementById("lump-years").value * 12) +
+      (+document.getElementById("lump-months").value);
+
+    invested = P;
+    value = P * Math.pow(1 + r, months / 12);
+  }
+
+  /* =====================
+     SIP (NO TOP-UP ONLY FOR NOW)
+  ===================== */
+  if (approach === "sip") {
+    const P = +document.getElementById("sip-amount").value;
+    const r = +document.getElementById("sip-return").value / 100 / 12;
+    const months =
+      (+document.getElementById("sip-years").value * 12) +
+      (+document.getElementById("sip-months").value);
+
+    invested = P * months;
+    value = P * ((Math.pow(1 + r, months) - 1) / r) * (1 + r);
+  }
+
+  /* =====================
+     SWP (BASIC VERSION)
+  ===================== */
+  if (approach === "swp") {
+    let corpus = +document.getElementById("swp-amount").value;
+    const r = +document.getElementById("swp-return").value / 100 / 12;
+    const withdraw = +document.getElementById("swp-withdraw").value;
+    const months =
+      (+document.getElementById("swp-years").value * 12) +
+      (+document.getElementById("swp-months").value);
+
+    let totalWithdrawn = 0;
+
+    for (let i = 0; i < months; i++) {
+      corpus = corpus * (1 + r) - withdraw;
+      totalWithdrawn += withdraw;
+      if (corpus <= 0) break;
+    }
+
+    invested = totalWithdrawn;
+    value = Math.max(corpus, 0);
+  }
+
+  document.getElementById("res-invested").textContent = invested.toFixed(0);
+  document.getElementById("res-value").textContent = value.toFixed(0);
+  document.getElementById("res-gain").textContent = (value - invested).toFixed(0);
+
+  document.getElementById("stage-result").classList.remove("hidden");
+});
+
 </script>
 
 
