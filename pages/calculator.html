@@ -189,15 +189,25 @@
       </div>
 
       <!-- TOP-UP TYPE -->
-      <div class="calc-stage hidden" id="stage-topup-type">
-        <div class="calc-block">
-          <label class="calc-label">Top-Up Type</label>
-          <div class="calc-options">
-            <label><input type="radio" name="topupType" value="flat"> Flat Top-Up</label>
-            <label><input type="radio" name="topupType" value="percent"> Percentage Top-Up</label>
+      <div class="calc-stage hidden" id="stage-topup-value">
+        <div class="calc-grid">
+          <div class="calc-field">
+            <label id="topup-label">Top-Up Value</label>
+            <div class="calc-inline">
+              <span id="topup-prefix">₹</span>
+              <input
+                type="number"
+                id="topup-value"
+                min="0"
+                value="0"
+                step="1"
+              />
+              <span id="topup-suffix" class="hidden">%</span>
+            </div>
           </div>
         </div>
       </div>
+
 
       <!-- TOP-UP VALUE -->
       <div class="calc-stage hidden" id="stage-topup-value">
