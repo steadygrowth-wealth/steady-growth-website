@@ -359,9 +359,27 @@ document.querySelectorAll('input[name="sipMode"]').forEach(radio => {
 ========================= */
 document.querySelectorAll('input[name="topupType"]').forEach(radio => {
   radio.addEventListener("change", () => {
+    const prefix = document.getElementById("topup-prefix");
+    const suffix = document.getElementById("topup-suffix");
+    const input = document.getElementById("topup-value");
+
+    input.value = 0;
+    input.min = 0;
+
+    if (radio.value === "flat") {
+      prefix.classList.remove("hidden"); // ₹ visible
+      suffix.classList.add("hidden");
+      input.step = 100; // sensible rupee step
+    } else {
+      prefix.classList.add("hidden");
+      suffix.classList.remove("hidden"); // % visible
+      input.step = 0.1;
+    }
+
     stages.topupValue.classList.remove("hidden");
   });
 });
+
 
 /* =========================
    SLIDER LABELS
