@@ -542,34 +542,7 @@ if (approach === "sip") {
     }
   }
 
-  if (depletionMonth !== null) {
-
-    const years = Math.floor(depletionMonth / 12);
-    const months = depletionMonth % 12;
-
-    document.getElementById("res-invested").textContent =
-      `${years} Years ${months} Months`;
-
-    document.getElementById("res-gain").textContent =
-      formatINR(totalWithdrawn);
-
-    document.getElementById("res-value").textContent =
-      "Corpus exhausted";
-
-  } else {
-
-    document.getElementById("res-invested").textContent =
-      "40 Years";
-
-    document.getElementById("res-gain").textContent =
-      formatINR(totalWithdrawn);
-
-    document.getElementById("res-value").textContent =
-      formatINR(corpus);
-  }
-}
-
-  // ================= OUTPUT =================
+  // ===== RESULT OUTPUT =====
 
   if (depletionMonth !== null) {
 
@@ -597,6 +570,7 @@ if (approach === "sip") {
       formatINR(corpus);
   }
 }
+
 
 </script>
 
