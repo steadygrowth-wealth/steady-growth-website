@@ -312,69 +312,104 @@ function hideAllStages() {
   Object.values(stages).forEach(s => s.classList.add("hidden"));
 }
 
-/* APPROACH SELECTION */
+/* =========================
+   STEP 1: APPROACH
+========================= */
 document.querySelectorAll('input[name="approach"]').forEach(radio => {
   radio.addEventListener("change", () => {
     hideAllStages();
     stages.action.classList.remove("hidden");
 
-    if (radio.value === "lumpsum") stages.lumpsum.classList.remove("hidden");
-    if (radio.value === "sip") stages.sipMode.classList.remove("hidden");
-    if (radio.value === "swp") stages.swp.classList.remove("hidden");
+    if (radio.value === "lumpsum") {
+      stages.lumpsum.classList.remove("hidden");
+    }
+
+    if (radio.value === "sip") {
+      stages.sipMode.classList.remove("hidden");
+      // IMPORTANT: DO NOT show SIP inputs yet
+    }
+
+    if (radio.value === "swp") {
+      stages.swp.classList.remove("hidden");
+    }
   });
 });
 
-/* SIP MODE SELECTION */
+/* =========================
+   STEP 2: SIP MODE
+========================= */
 document.querySelectorAll('input[name="sipMode"]').forEach(radio => {
   radio.addEventListener("change", () => {
     stages.sipCommon.classList.remove("hidden");
-    stages.topupType.classList.toggle("hidden", radio.value !== "withTopup");
-    stages.topupValue.classList.add("hidden");
+
+    if (radio.value === "withTopup") {
+      stages.topupType.classList.remove("hidden");
+    } else {
+      stages.topupType.classList.add("hidden");
+      stages.topupValue.classList.add("hidden");
+    }
   });
 });
 
-/* TOP-UP TYPE */
+/* =========================
+   STEP 3: TOP-UP TYPE
+========================= */
 document.querySelectorAll('input[name="topupType"]').forEach(radio => {
   radio.addEventListener("change", () => {
     stages.topupValue.classList.remove("hidden");
   });
 });
 
-/* SLIDER LABELS */
+/* =========================
+   SLIDER LABELS
+========================= */
 ["lump","sip","swp"].forEach(p => {
   const slider = document.getElementById(`${p}-return`);
   const label = document.getElementById(`${p}-return-val`);
   if (slider && label) {
-    slider.addEventListener("input", () => label.textContent = slider.value + "%");
+    slider.addEventListener("input", () => {
+      label.textContent = slider.value + "%";
+    });
   }
 });
 
-/* CALCULATE */
+/* =========================
+   CALCULATE
+========================= */
 document.getElementById("calculateBtn").addEventListener("click", () => {
   const approach = document.querySelector('input[name="approach"]:checked')?.value;
   let invested = 0, value = 0;
 
   if (approach === "lumpsum") {
-    const P = +lump-amount.value;
-    const r = +lump-return.value / 100;
-    const m = (+lump-years.value * 12) + (+lump-months.value);
+    const P = +document.getElementById("lump-amount").value;
+    const r = +document.getElementById("lump-return").value / 100;
+    const m =
+      (+document.getElementById("lump-years").value * 12) +
+      (+document.getElementById("lump-months").value);
+
     invested = P;
     value = P * Math.pow(1 + r, m / 12);
   }
 
   if (approach === "sip") {
-    const P = +sip-amount.value;
-    const r = +sip-return.value / 100 / 12;
-    const m = (+sip-years.value * 12) + (+sip-months.value);
+    const P = +document.getElementById("sip-amount").value;
+    const r = +document.getElementById("sip-return").value / 100 / 12;
+    const m =
+      (+document.getElementById("sip-years").value * 12) +
+      (+document.getElementById("sip-months").value);
+
     invested = P * m;
     value = P * ((Math.pow(1 + r, m) - 1) / r) * (1 + r);
   }
 
   if (approach === "swp") {
-    let corpus = +swp-amount.value;
-    const r = +swp-return.value / 100 / 12;
-    const w = +swp-withdraw.value;
-    const m = (+swp-years.value * 12) + (+swp-months.value);
+    let corpus = +document.getElementById("swp-amount").value;
+    const r = +document.getElementById("swp-return").value / 100 / 12;
+    const w = +document.getElementById("swp-withdraw").value;
+    const m =
+      (+document.getElementById("swp-years").value * 12) +
+      (+document.getElementById("swp-months").value);
+
     let withdrawn = 0;
 
     for (let i = 0; i < m; i++) {
@@ -387,12 +422,14 @@ document.getElementById("calculateBtn").addEventListener("click", () => {
     value = Math.max(corpus, 0);
   }
 
-  res-invested.textContent = invested.toFixed(0);
-  res-value.textContent = value.toFixed(0);
-  res-gain.textContent = (value - invested).toFixed(0);
+  document.getElementById("res-invested").textContent = invested.toFixed(0);
+  document.getElementById("res-value").textContent = value.toFixed(0);
+  document.getElementById("res-gain").textContent = (value - invested).toFixed(0);
+
   stages.result.classList.remove("hidden");
 });
 </script>
+
 
 
 </body>
