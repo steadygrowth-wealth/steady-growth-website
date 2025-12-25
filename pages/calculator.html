@@ -116,9 +116,7 @@
         </div>
       </div>
 
-      <!-- =========================
-           LUMPSUM
-      ========================= -->
+      <!-- LUMPSUM -->
       <div class="calc-stage hidden" id="stage-lumpsum">
         <div class="calc-grid">
           <div class="calc-field">
@@ -142,12 +140,10 @@
         </div>
       </div>
 
-      <!-- =========================
-           SIP MODE
-      ========================= -->
+      <!-- SIP MODE (ONLY THIS SHOWS INITIALLY FOR SIP) -->
       <div class="calc-stage hidden" id="stage-sip-mode">
         <div class="calc-block">
-          <label class="calc-label">SIP Mode</label>
+          <label class="calc-label">SIP Type</label>
           <div class="calc-options">
             <label><input type="radio" name="sipMode" value="noTopup"> Without Top-Up</label>
             <label><input type="radio" name="sipMode" value="withTopup"> With Top-Up</label>
@@ -155,7 +151,7 @@
         </div>
       </div>
 
-      <!-- SIP COMMON INPUTS -->
+      <!-- SIP COMMON INPUTS (SHOWN ONLY AFTER SIP MODE CHOSEN) -->
       <div class="calc-stage hidden" id="stage-sip-common">
         <div class="calc-grid">
           <div class="calc-field">
@@ -189,7 +185,7 @@
         </div>
       </div>
 
-      <!-- SIP TOP-UP TYPE -->
+      <!-- TOP-UP TYPE -->
       <div class="calc-stage hidden" id="stage-topup-type">
         <div class="calc-block">
           <label class="calc-label">Top-Up Type</label>
@@ -200,7 +196,7 @@
         </div>
       </div>
 
-      <!-- SIP TOP-UP INPUT -->
+      <!-- TOP-UP VALUE -->
       <div class="calc-stage hidden" id="stage-topup-value">
         <div class="calc-grid">
           <div class="calc-field">
@@ -210,9 +206,7 @@
         </div>
       </div>
 
-      <!-- =========================
-           SWP
-      ========================= -->
+      <!-- SWP -->
       <div class="calc-stage hidden" id="stage-swp">
         <div class="calc-grid">
           <div class="calc-field">
@@ -256,6 +250,7 @@
         <button class="btn btn-primary" id="calculateBtn">Calculate</button>
       </div>
 
+      <!-- RESULT -->
       <div class="calc-stage hidden" id="stage-result">
         <div class="calc-result">
           <p><strong>Total Invested:</strong> ₹ <span id="res-invested">0</span></p>
@@ -264,12 +259,12 @@
         </div>
       </div>
 
-
     </div>
   </div>
 </section>
 
 
+  
 <!-- ========================= CTA ========================= -->
 <section class="section-cta-gold">
   <div class="container cta-inner">
@@ -309,47 +304,43 @@ const stages = {
   topupType: document.getElementById("stage-topup-type"),
   topupValue: document.getElementById("stage-topup-value"),
   swp: document.getElementById("stage-swp"),
-  action: document.getElementById("calc-action")
+  action: document.getElementById("calc-action"),
+  result: document.getElementById("stage-result")
 };
 
-function hideAll() {
+function hideAllStages() {
   Object.values(stages).forEach(s => s.classList.add("hidden"));
 }
 
-document.querySelectorAll('input[name="approach"]').forEach(r => {
-  r.addEventListener("change", () => {
-    hideAll();
+/* APPROACH SELECTION */
+document.querySelectorAll('input[name="approach"]').forEach(radio => {
+  radio.addEventListener("change", () => {
+    hideAllStages();
     stages.action.classList.remove("hidden");
 
-    if (r.value === "lumpsum") {
-      stages.lumpsum.classList.remove("hidden");
-    }
-
-    if (r.value === "sip") {
-      stages.sipMode.classList.remove("hidden");
-      stages.sipCommon.classList.remove("hidden");
-    }
-
-    if (r.value === "swp") {
-      stages.swp.classList.remove("hidden");
-    }
+    if (radio.value === "lumpsum") stages.lumpsum.classList.remove("hidden");
+    if (radio.value === "sip") stages.sipMode.classList.remove("hidden");
+    if (radio.value === "swp") stages.swp.classList.remove("hidden");
   });
 });
 
-document.querySelectorAll('input[name="sipMode"]').forEach(r => {
-  r.addEventListener("change", () => {
-    stages.topupType.classList.toggle("hidden", r.value !== "withTopup");
+/* SIP MODE SELECTION */
+document.querySelectorAll('input[name="sipMode"]').forEach(radio => {
+  radio.addEventListener("change", () => {
+    stages.sipCommon.classList.remove("hidden");
+    stages.topupType.classList.toggle("hidden", radio.value !== "withTopup");
     stages.topupValue.classList.add("hidden");
   });
 });
 
-document.querySelectorAll('input[name="topupType"]').forEach(r => {
-  r.addEventListener("change", () => {
+/* TOP-UP TYPE */
+document.querySelectorAll('input[name="topupType"]').forEach(radio => {
+  radio.addEventListener("change", () => {
     stages.topupValue.classList.remove("hidden");
   });
 });
 
-// Slider labels
+/* SLIDER LABELS */
 ["lump","sip","swp"].forEach(p => {
   const slider = document.getElementById(`${p}-return`);
   const label = document.getElementById(`${p}-return-val`);
@@ -358,73 +349,50 @@ document.querySelectorAll('input[name="topupType"]').forEach(r => {
   }
 });
 
-
-  document.getElementById("calculateBtn").addEventListener("click", () => {
+/* CALCULATE */
+document.getElementById("calculateBtn").addEventListener("click", () => {
   const approach = document.querySelector('input[name="approach"]:checked')?.value;
-  if (!approach) return alert("Please select an investment approach");
-
   let invested = 0, value = 0;
 
-  /* =====================
-     LUMPSUM
-  ===================== */
   if (approach === "lumpsum") {
-    const P = +document.getElementById("lump-amount").value;
-    const r = +document.getElementById("lump-return").value / 100;
-    const months =
-      (+document.getElementById("lump-years").value * 12) +
-      (+document.getElementById("lump-months").value);
-
+    const P = +lump-amount.value;
+    const r = +lump-return.value / 100;
+    const m = (+lump-years.value * 12) + (+lump-months.value);
     invested = P;
-    value = P * Math.pow(1 + r, months / 12);
+    value = P * Math.pow(1 + r, m / 12);
   }
 
-  /* =====================
-     SIP (NO TOP-UP ONLY FOR NOW)
-  ===================== */
   if (approach === "sip") {
-    const P = +document.getElementById("sip-amount").value;
-    const r = +document.getElementById("sip-return").value / 100 / 12;
-    const months =
-      (+document.getElementById("sip-years").value * 12) +
-      (+document.getElementById("sip-months").value);
-
-    invested = P * months;
-    value = P * ((Math.pow(1 + r, months) - 1) / r) * (1 + r);
+    const P = +sip-amount.value;
+    const r = +sip-return.value / 100 / 12;
+    const m = (+sip-years.value * 12) + (+sip-months.value);
+    invested = P * m;
+    value = P * ((Math.pow(1 + r, m) - 1) / r) * (1 + r);
   }
 
-  /* =====================
-     SWP (BASIC VERSION)
-  ===================== */
   if (approach === "swp") {
-    let corpus = +document.getElementById("swp-amount").value;
-    const r = +document.getElementById("swp-return").value / 100 / 12;
-    const withdraw = +document.getElementById("swp-withdraw").value;
-    const months =
-      (+document.getElementById("swp-years").value * 12) +
-      (+document.getElementById("swp-months").value);
+    let corpus = +swp-amount.value;
+    const r = +swp-return.value / 100 / 12;
+    const w = +swp-withdraw.value;
+    const m = (+swp-years.value * 12) + (+swp-months.value);
+    let withdrawn = 0;
 
-    let totalWithdrawn = 0;
-
-    for (let i = 0; i < months; i++) {
-      corpus = corpus * (1 + r) - withdraw;
-      totalWithdrawn += withdraw;
+    for (let i = 0; i < m; i++) {
+      corpus = corpus * (1 + r) - w;
+      withdrawn += w;
       if (corpus <= 0) break;
     }
 
-    invested = totalWithdrawn;
+    invested = withdrawn;
     value = Math.max(corpus, 0);
   }
 
-  document.getElementById("res-invested").textContent = invested.toFixed(0);
-  document.getElementById("res-value").textContent = value.toFixed(0);
-  document.getElementById("res-gain").textContent = (value - invested).toFixed(0);
-
-  document.getElementById("stage-result").classList.remove("hidden");
+  res-invested.textContent = invested.toFixed(0);
+  res-value.textContent = value.toFixed(0);
+  res-gain.textContent = (value - invested).toFixed(0);
+  stages.result.classList.remove("hidden");
 });
-
 </script>
-
 
 
 </body>
