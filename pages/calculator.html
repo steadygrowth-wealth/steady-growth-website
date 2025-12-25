@@ -366,12 +366,16 @@ document.querySelectorAll('input[name="topupType"]').forEach(radio => {
 ["lump","sip","swp"].forEach(p => {
   const slider = document.getElementById(`${p}-return`);
   const label = document.getElementById(`${p}-return-val`);
+
   if (slider && label) {
-    slider.addEventListener("input", () => {
-      label.textContent = slider.value + "%";
-    });
+    const update = () => {
+      label.textContent = parseFloat(slider.value).toFixed(1) + "%";
+    };
+    slider.addEventListener("input", update);
+    update(); // initialize on load
   }
 });
+
 
 /* =========================
    CALCULATE
