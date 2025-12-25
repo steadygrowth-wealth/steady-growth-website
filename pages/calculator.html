@@ -140,7 +140,8 @@
         </div>
       </div>
 
-      <!-- SIP MODE (ONLY THIS SHOWS INITIALLY FOR SIP) -->
+      
+      <!-- SIP MODE -->
       <div class="calc-stage hidden" id="stage-sip-mode">
         <div class="calc-block">
           <label class="calc-label">SIP Type</label>
@@ -150,21 +151,22 @@
           </div>
         </div>
       </div>
-
-      <!-- SIP COMMON INPUTS (SHOWN ONLY AFTER SIP MODE CHOSEN) -->
+      
+      <!-- SIP INPUTS -->
       <div class="calc-stage hidden" id="stage-sip-common">
         <div class="calc-grid">
+      
           <div class="calc-field">
-            <label>SIP Amount (₹)</label>
-            <input type="number" id="sip-amount" value="5000">
+            <label>SIP Amount (₹ per installment)</label>
+            <input type="number" id="sip-amount" min="1" value="5000">
           </div>
-
+      
           <div class="calc-field">
             <label>Expected Return (%)</label>
-            <input type="range" id="sip-return" min="0" max="30" step="0.01" value="12.0">
-            <span class="range-value" id="sip-return-val">12%</span>
+            <input type="range" id="sip-return" min="0" max="30" step="0.1" value="12">
+            <span class="range-value" id="sip-return-val">12.0%</span>
           </div>
-
+      
           <div class="calc-field">
             <label>Time Horizon</label>
             <div class="calc-inline">
@@ -172,60 +174,48 @@
               <input type="number" id="sip-months" value="0" min="0" max="11"> Months
             </div>
           </div>
-
+      
           <div class="calc-field">
+            <label>Investment Frequency</label>
             <select id="sip-frequency">
-            <option value="daily">Daily</option>
-            <option value="weekly">Weekly</option>
-            <option value="biweekly">Bi-Weekly</option>
-            <option value="monthly" selected>Monthly</option>
-            <option value="quarterly">Quarterly</option>
-            <option value="halfyearly">Half-Yearly</option>
-            <option value="yearly">Yearly</option>
-          </select>
-
+              <option value="daily">Daily (Market Days)</option>
+              <option value="weekly">Weekly</option>
+              <option value="biweekly">Bi-Weekly</option>
+              <option value="monthly" selected>Monthly</option>
+              <option value="quarterly">Quarterly</option>
+              <option value="halfyearly">Half-Yearly</option>
+              <option value="yearly">Yearly</option>
+            </select>
           </div>
+      
         </div>
       </div>
-
-
+      
       <!-- TOP-UP TYPE -->
       <div class="calc-stage hidden" id="stage-topup-type">
         <div class="calc-block">
           <label class="calc-label">Top-Up Type</label>
           <div class="calc-options">
-            <label>
-              <input type="radio" name="topupType" value="flat">
-              Flat Top-Up (₹)
-            </label>
-            <label>
-              <input type="radio" name="topupType" value="percent">
-              Percentage Top-Up (%)
-            </label>
+            <label><input type="radio" name="topupType" value="flat"> Flat Top-Up (₹)</label>
+            <label><input type="radio" name="topupType" value="percent"> Percentage Top-Up (%)</label>
           </div>
         </div>
       </div>
-
-
-
+      
       <!-- TOP-UP VALUE -->
       <div class="calc-stage hidden" id="stage-topup-value">
         <div class="calc-grid">
           <div class="calc-field">
-            <label id="topup-label">Top-Up Value</label>
+            <label>Top-Up Value (applied yearly)</label>
             <div class="calc-inline">
               <span id="topup-prefix">₹</span>
-              <input
-                type="number"
-                id="topup-value"
-                min="0"
-                value="0"
-              />
+              <input type="number" id="topup-value" min="0" value="0">
               <span id="topup-suffix" class="hidden">%</span>
             </div>
           </div>
         </div>
       </div>
+
 
 
       <!-- SWP -->
