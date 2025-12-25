@@ -188,7 +188,27 @@
         </div>
       </div>
 
+
       <!-- TOP-UP TYPE -->
+      <div class="calc-stage hidden" id="stage-topup-type">
+        <div class="calc-block">
+          <label class="calc-label">Top-Up Type</label>
+          <div class="calc-options">
+            <label>
+              <input type="radio" name="topupType" value="flat">
+              Flat Top-Up (₹)
+            </label>
+            <label>
+              <input type="radio" name="topupType" value="percent">
+              Percentage Top-Up (%)
+            </label>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- TOP-UP VALUE -->
       <div class="calc-stage hidden" id="stage-topup-value">
         <div class="calc-grid">
           <div class="calc-field">
@@ -200,7 +220,6 @@
                 id="topup-value"
                 min="0"
                 value="0"
-                step="1"
               />
               <span id="topup-suffix" class="hidden">%</span>
             </div>
@@ -208,16 +227,6 @@
         </div>
       </div>
 
-
-      <!-- TOP-UP VALUE -->
-      <div class="calc-stage hidden" id="stage-topup-value">
-        <div class="calc-grid">
-          <div class="calc-field">
-            <label>Top-Up Value</label>
-            <input type="number" id="topup-value" value="10">
-          </div>
-        </div>
-      </div>
 
       <!-- SWP -->
       <div class="calc-stage hidden" id="stage-swp">
@@ -364,6 +373,7 @@ document.querySelectorAll('input[name="sipMode"]').forEach(radio => {
   });
 });
 
+
 /* =========================
    STEP 3: TOP-UP TYPE
 ========================= */
@@ -377,12 +387,12 @@ document.querySelectorAll('input[name="topupType"]').forEach(radio => {
     input.min = 0;
 
     if (radio.value === "flat") {
-      prefix.classList.remove("hidden"); // ₹ visible
+      prefix.classList.remove("hidden"); // ₹
       suffix.classList.add("hidden");
-      input.step = 100; // sensible rupee step
+      input.step = 100;
     } else {
       prefix.classList.add("hidden");
-      suffix.classList.remove("hidden"); // % visible
+      suffix.classList.remove("hidden"); // %
       input.step = 0.1;
     }
 
