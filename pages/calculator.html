@@ -324,8 +324,15 @@ const stages = {
 };
 
 function hideAllStages() {
-  Object.values(stages).forEach(s => s.classList.add("hidden"));
+  stages.lumpsum.classList.add("hidden");
+  stages.sipMode.classList.add("hidden");
+  stages.sipCommon.classList.add("hidden");
+  stages.topupType.classList.add("hidden");
+  stages.topupValue.classList.add("hidden");
+  stages.swp.classList.add("hidden");
+  stages.result.classList.add("hidden");
 }
+
 
 /* =========================
    STEP 1: APPROACH
