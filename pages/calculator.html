@@ -97,123 +97,169 @@
 
 
 
-<!-- ========================= INVESTMENT CALCULATOR ========================= -->
+<!-- =========================
+     INVESTMENT CALCULATOR
+========================= -->
 <section class="process-steps-editorial">
-
   <div class="step-row">
-    <div class="step-index">06</div>
     <div class="step-content">
-      <h3>Investment Return Calculator</h3>
-      <p>Estimate your future wealth across different investment approaches.</p>
 
-      <!-- CATEGORY -->
-      <div class="calc-block">
-        <label class="calc-label">Investment Type</label>
-        <div class="calc-options">
-          <label><input type="radio" name="category" value="lumpsum" checked> Lumpsum</label>
-          <label><input type="radio" name="category" value="sip"> SIP</label>
-        </div>
-      </div>
-
-      <!-- SIP TYPE -->
-      <div class="calc-block hidden" id="sipTypeBlock">
-        <label class="calc-label">SIP Type</label>
-        <div class="calc-options">
-          <label><input type="radio" name="sipType" value="noTopup" checked> Without Top-Up</label>
-          <label><input type="radio" name="sipType" value="withTopup"> With Top-Up</label>
-        </div>
-      </div>
-
-      <!-- COMMON INPUTS -->
-      <div class="calc-grid">
-
-        <div class="calc-field">
-          <label>Investment Amount (₹)</label>
-          <input type="number" id="amount" value="5000">
-        </div>
-
-        <div class="calc-field">
-          <label>Expected Return (%)</label>
-          <input type="range" id="rate" min="1" max="20" value="10">
-          <span class="range-value" id="rateVal">10%</span>
-        </div>
-
-        <div class="calc-field">
-          <label>Time Horizon</label>
-          <div class="calc-inline">
-            <input type="number" id="years" value="10" min="0"> Years
-            <input type="number" id="months" value="0" min="0" max="11"> Months
-          </div>
-        </div>
-
-        <!-- INSIGHTS -->
-      <div class="calc-insights" id="insightsBox">
-        <p id="riskInsight" class="insight-text"></p>
-        <p id="timeInsight" class="insight-text"></p>
-      </div>
-
-      </div>
-
-      <!-- TOP-UP SETTINGS -->
-      <div id="topupBlock" class="hidden">
-
+      <!-- STEP 1: APPROACH -->
+      <div class="calc-stage" id="stage-approach">
         <div class="calc-block">
-          <label class="calc-label">Top-Up Frequency</label>
+          <label class="calc-label">Investment Approach</label>
           <div class="calc-options">
-            <label><input type="radio" name="topupFreq" value="3"> Quarterly</label>
-            <label><input type="radio" name="topupFreq" value="6"> Half-Yearly</label>
-            <label><input type="radio" name="topupFreq" value="12" checked> Yearly</label>
+            <label><input type="radio" name="approach" value="lumpsum"> Lumpsum</label>
+            <label><input type="radio" name="approach" value="sip"> SIP</label>
+            <label><input type="radio" name="approach" value="swp"> SWP</label>
           </div>
         </div>
+      </div>
 
+      <!-- =========================
+           LUMPSUM
+      ========================= -->
+      <div class="calc-stage hidden" id="stage-lumpsum">
+        <div class="calc-grid">
+          <div class="calc-field">
+            <label>Principal Amount (₹)</label>
+            <input type="number" id="lump-amount" value="500000">
+          </div>
+
+          <div class="calc-field">
+            <label>Expected Return (%)</label>
+            <input type="range" id="lump-return" min="1" max="20" value="10">
+            <span class="range-value" id="lump-return-val">10%</span>
+          </div>
+
+          <div class="calc-field">
+            <label>Time Horizon</label>
+            <div class="calc-inline">
+              <input type="number" id="lump-years" value="10"> Years
+              <input type="number" id="lump-months" value="0"> Months
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =========================
+           SIP MODE
+      ========================= -->
+      <div class="calc-stage hidden" id="stage-sip-mode">
+        <div class="calc-block">
+          <label class="calc-label">SIP Mode</label>
+          <div class="calc-options">
+            <label><input type="radio" name="sipMode" value="noTopup"> Without Top-Up</label>
+            <label><input type="radio" name="sipMode" value="withTopup"> With Top-Up</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIP COMMON INPUTS -->
+      <div class="calc-stage hidden" id="stage-sip-common">
+        <div class="calc-grid">
+          <div class="calc-field">
+            <label>SIP Amount (₹)</label>
+            <input type="number" id="sip-amount" value="5000">
+          </div>
+
+          <div class="calc-field">
+            <label>Expected Return (%)</label>
+            <input type="range" id="sip-return" min="1" max="20" value="12">
+            <span class="range-value" id="sip-return-val">12%</span>
+          </div>
+
+          <div class="calc-field">
+            <label>Time Horizon</label>
+            <div class="calc-inline">
+              <input type="number" id="sip-years" value="15"> Years
+              <input type="number" id="sip-months" value="0"> Months
+            </div>
+          </div>
+
+          <div class="calc-field">
+            <label>Investment Frequency</label>
+            <select id="sip-frequency">
+              <option value="1">Monthly</option>
+              <option value="3">Quarterly</option>
+              <option value="6">Half-Yearly</option>
+              <option value="12">Yearly</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIP TOP-UP TYPE -->
+      <div class="calc-stage hidden" id="stage-topup-type">
         <div class="calc-block">
           <label class="calc-label">Top-Up Type</label>
           <div class="calc-options">
-            <label><input type="radio" name="topupType" value="flat" checked> Flat Amount</label>
-            <label><input type="radio" name="topupType" value="percent"> Percentage</label>
+            <label><input type="radio" name="topupType" value="flat"> Flat Top-Up</label>
+            <label><input type="radio" name="topupType" value="percent"> Percentage Top-Up</label>
           </div>
         </div>
+      </div>
 
-        <div class="calc-field">
-          <label>Top-Up Value</label>
-          <input type="number" id="topupValue" value="10">
+      <!-- SIP TOP-UP INPUT -->
+      <div class="calc-stage hidden" id="stage-topup-value">
+        <div class="calc-grid">
+          <div class="calc-field">
+            <label>Top-Up Value</label>
+            <input type="number" id="topup-value" value="10">
+          </div>
         </div>
+      </div>
 
-        <p class="calc-hint">
-          SIP top-ups help align investments with income growth and can meaningfully enhance long-term outcomes.
-        </p>
+      <!-- =========================
+           SWP
+      ========================= -->
+      <div class="calc-stage hidden" id="stage-swp">
+        <div class="calc-grid">
+          <div class="calc-field">
+            <label>Initial Investment (₹)</label>
+            <input type="number" id="swp-amount" value="5000000">
+          </div>
 
+          <div class="calc-field">
+            <label>Expected Return (%)</label>
+            <input type="range" id="swp-return" min="1" max="15" value="8">
+            <span class="range-value" id="swp-return-val">8%</span>
+          </div>
 
+          <div class="calc-field">
+            <label>Withdrawal Amount (₹)</label>
+            <input type="number" id="swp-withdraw" value="30000">
+          </div>
+
+          <div class="calc-field">
+            <label>Withdrawal Frequency</label>
+            <select id="swp-frequency">
+              <option value="1">Monthly</option>
+              <option value="3">Quarterly</option>
+              <option value="6">Half-Yearly</option>
+              <option value="12">Yearly</option>
+            </select>
+          </div>
+
+          <div class="calc-field">
+            <label>Withdrawal Period</label>
+            <div class="calc-inline">
+              <input type="number" id="swp-years" value="20"> Years
+              <input type="number" id="swp-months" value="0"> Months
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- ACTION -->
-      <div class="calc-action">
-        <button class="btn btn-primary" id="calculateBtn">Calculate</button>
-      </div>
-
-      <!-- RESULT -->
-      <div class="calc-result hidden" id="resultBox">
-        <p><strong>Total Invested:</strong> ₹<span id="invested"></span></p>
-        <p><strong>Estimated Value:</strong> ₹<span id="finalValue"></span></p>
-        <p><strong>Wealth Gain:</strong> ₹<span id="gain"></span></p>
-        <p id="topupDelta" class="hidden">
-          <strong>Extra wealth created by Top-Up:</strong> ₹<span id="deltaValue"></span>
-        </p>
-        
-        <p class="calc-note">
-          These are illustrative estimates. Actual returns will vary based on market conditions and behaviour.
-        </p>
-        
-        <a href="./contact.html" class="btn btn-ghost" style="margin-top: 12px;">
-          Discuss a personalised plan →
-        </a>
-
+      <div class="calc-action hidden" id="calc-action">
+        <button class="btn btn-primary">Calculate</button>
       </div>
 
     </div>
   </div>
-
 </section>
+
 
 <!-- ========================= CTA ========================= -->
 <section class="section-cta-gold">
@@ -247,67 +293,60 @@
 
 <!-- ========================= SCRIPTS ========================= -->
 <script>
-document.getElementById('calculateBtn').addEventListener('click', () => {
+const stages = {
+  lumpsum: document.getElementById("stage-lumpsum"),
+  sipMode: document.getElementById("stage-sip-mode"),
+  sipCommon: document.getElementById("stage-sip-common"),
+  topupType: document.getElementById("stage-topup-type"),
+  topupValue: document.getElementById("stage-topup-value"),
+  swp: document.getElementById("stage-swp"),
+  action: document.getElementById("calc-action")
+};
 
-  const amount = +document.getElementById("amount").value;
-  const rate = +rateSlider.value / 100;
-  const years = +document.getElementById('years').value;
-  const months = +document.getElementById('months').value;
-  const totalMonths = years * 12 + months;
-  const monthlyRate = rate / 12;
+function hideAll() {
+  Object.values(stages).forEach(s => s.classList.add("hidden"));
+}
 
-  let invested = 0, fv = 0;
-  let regularSipFV = 0;
+document.querySelectorAll('input[name="approach"]').forEach(r => {
+  r.addEventListener("change", () => {
+    hideAll();
+    stages.action.classList.remove("hidden");
 
-  const category = document.querySelector('input[name="category"]:checked').value;
-
-  if (category === 'lumpsum') {
-
-    invested = amount;
-    fv = amount * Math.pow(1 + rate, totalMonths / 12);
-
-    document.getElementById("topupDelta").classList.add("hidden");
-
-  } else {
-
-    let sip = amount;
-
-    // Regular SIP benchmark
-    regularSipFV = sip * ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate) * (1 + monthlyRate);
-
-    if (document.querySelector('input[name="sipType"]:checked').value === 'noTopup') {
-
-      invested = sip * totalMonths;
-      fv = regularSipFV;
-      document.getElementById("topupDelta").classList.add("hidden");
-
-    } else {
-
-      const freq = +document.querySelector('input[name="topupFreq"]:checked').value;
-      const topupType = document.querySelector('input[name="topupType"]:checked').value;
-      const topupVal = +document.getElementById('topupValue').value;
-
-      for (let m = 1; m <= totalMonths; m++) {
-        fv = fv * (1 + monthlyRate) + sip;
-        invested += sip;
-
-        if (m % freq === 0) {
-          sip = topupType === 'flat'
-            ? sip + topupVal
-            : sip * (1 + topupVal / 100);
-        }
-      }
-
-      const delta = fv - regularSipFV;
-      document.getElementById("deltaValue").textContent = delta.toFixed(0);
-      document.getElementById("topupDelta").classList.remove("hidden");
+    if (r.value === "lumpsum") {
+      stages.lumpsum.classList.remove("hidden");
     }
-  }
 
-  document.getElementById('invested').textContent = invested.toFixed(0);
-  document.getElementById('finalValue').textContent = fv.toFixed(0);
-  document.getElementById('gain').textContent = (fv - invested).toFixed(0);
-  document.getElementById('resultBox').classList.remove('hidden');
+    if (r.value === "sip") {
+      stages.sipMode.classList.remove("hidden");
+      stages.sipCommon.classList.remove("hidden");
+    }
+
+    if (r.value === "swp") {
+      stages.swp.classList.remove("hidden");
+    }
+  });
+});
+
+document.querySelectorAll('input[name="sipMode"]').forEach(r => {
+  r.addEventListener("change", () => {
+    stages.topupType.classList.toggle("hidden", r.value !== "withTopup");
+    stages.topupValue.classList.add("hidden");
+  });
+});
+
+document.querySelectorAll('input[name="topupType"]').forEach(r => {
+  r.addEventListener("change", () => {
+    stages.topupValue.classList.remove("hidden");
+  });
+});
+
+// Slider labels
+["lump","sip","swp"].forEach(p => {
+  const slider = document.getElementById(`${p}-return`);
+  const label = document.getElementById(`${p}-return-val`);
+  if (slider && label) {
+    slider.addEventListener("input", () => label.textContent = slider.value + "%");
+  }
 });
 </script>
 
