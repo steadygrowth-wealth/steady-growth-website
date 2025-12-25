@@ -383,6 +383,9 @@ document.querySelectorAll('input[name="topupType"]').forEach(radio => {
 /* =========================
    CALCULATE
 ========================= */
+  const formatINR = (num) =>
+  new Intl.NumberFormat("en-IN").format(Math.round(num));
+
 document.getElementById("calculateBtn").addEventListener("click", () => {
   const approach = document.querySelector('input[name="approach"]:checked')?.value;
   let invested = 0, value = 0;
@@ -455,9 +458,10 @@ if (approach === "sip") {
     value = Math.max(corpus, 0);
   }
 
-  document.getElementById("res-invested").textContent = invested.toFixed(0);
-  document.getElementById("res-value").textContent = value.toFixed(0);
-  document.getElementById("res-gain").textContent = (value - invested).toFixed(0);
+  document.getElementById("res-invested").textContent = formatINR(invested);
+  document.getElementById("res-gain").textContent = formatINR(value - invested);
+  document.getElementById("res-value").textContent = formatINR(value);
+
 
   stages.result.classList.remove("hidden");
 });
