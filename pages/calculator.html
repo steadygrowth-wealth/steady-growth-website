@@ -491,32 +491,86 @@ if (approach === "sip") {
 
 
   if (approach === "swp") {
-    let corpus = +document.getElementById("swp-amount").value;
-    const r = +document.getElementById("swp-return").value / 100 / 12;
-    const w = +document.getElementById("swp-withdraw").value;
-    const m =
-      (+document.getElementById("swp-years").value * 12) +
-      (+document.getElementById("swp-months").value);
 
-    let withdrawn = 0;
+  let corpus = +document.getElementById("swp-amount").value;
+  const annualRate = +document.getElementById("swp-return").value / 100;
+  const withdrawalAmount = +document.getElementById("swp-withdraw").value;
 
-    for (let i = 0; i < m; i++) {
-      corpus = corpus * (1 + r) - w;
-      withdrawn += w;
-      if (corpus <= 0) break;
+  const freqValue = document.getElementById("swp-frequency").value;
+
+  // Withdrawal equivalents per month
+  const freqMap = {
+    weekly: 52 / 12,
+    biweekly: 26 / 12,
+    monthly: 1,
+    quarterly: 1 / 3,
+    halfyearly: 1 / 6,
+    yearly: 1 / 12
+  };
+
+  const withdrawalsPerMonth = freqMap[freqValue];
+
+  const gapMonths =
+    (+document.getElementById("swp-years").value * 12) +
+    (+document.getElementById("swp-months").value);
+
+  const monthlyRate = annualRate / 12;
+
+  const MAX_MONTHS = 40 * 12;
+
+  let totalWithdrawn = 0;
+  let depletionMonth = null;
+
+  for (let month = 1; month <= MAX_MONTHS; month++) {
+
+    // Monthly compounding
+    corpus *= (1 + monthlyRate);
+
+    // Withdraw only after gap
+    if (month > gapMonths && withdrawalsPerMonth > 0) {
+
+      const monthlyWithdrawal = withdrawalAmount * withdrawalsPerMonth;
+
+      corpus -= monthlyWithdrawal;
+      totalWithdrawn += monthlyWithdrawal;
+
+      if (corpus <= 0) {
+        depletionMonth = month;
+        corpus = 0;
+        break;
+      }
     }
-
-    invested = withdrawn;
-    value = Math.max(corpus, 0);
   }
 
-  document.getElementById("res-invested").textContent = formatINR(invested);
-  document.getElementById("res-gain").textContent = formatINR(value - invested);
-  document.getElementById("res-value").textContent = formatINR(value);
+  // ================= OUTPUT =================
 
+  if (depletionMonth !== null) {
 
-  stages.result.classList.remove("hidden");
-});
+    const years = Math.floor(depletionMonth / 12);
+    const months = depletionMonth % 12;
+
+    document.getElementById("res-invested").textContent =
+      `${years} Years ${months} Months`;
+
+    document.getElementById("res-gain").textContent =
+      formatINR(totalWithdrawn);
+
+    document.getElementById("res-value").textContent =
+      "Corpus exhausted";
+
+  } else {
+
+    document.getElementById("res-invested").textContent =
+      "40 Years";
+
+    document.getElementById("res-gain").textContent =
+      formatINR(totalWithdrawn);
+
+    document.getElementById("res-value").textContent =
+      formatINR(corpus);
+  }
+}
+
 </script>
 
 
