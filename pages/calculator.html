@@ -312,6 +312,9 @@
 
 <!-- ========================= SCRIPTS ========================= -->
 <script>
+/* =========================
+   STAGE REFERENCES
+========================= */
 const stages = {
   lumpsum: document.getElementById("stage-lumpsum"),
   sipMode: document.getElementById("stage-sip-mode"),
@@ -324,16 +327,8 @@ const stages = {
 };
 
 function hideAllStages() {
-  stages.lumpsum.classList.add("hidden");
-  stages.sipMode.classList.add("hidden");
-  stages.sipCommon.classList.add("hidden");
-  stages.topupType.classList.add("hidden");
-  stages.topupValue.classList.add("hidden");
-  stages.swp.classList.add("hidden");
-  stages.result.classList.add("hidden");
-  stages.action.classList.add("hidden");
+  Object.values(stages).forEach(s => s.classList.add("hidden"));
 }
-
 
 /* =========================
    STEP 1: APPROACH
@@ -346,19 +341,9 @@ document.querySelectorAll('input[name="approach"]').forEach(radio => {
     document.querySelectorAll('input[name="sipMode"]').forEach(r => r.checked = false);
     document.querySelectorAll('input[name="topupType"]').forEach(r => r.checked = false);
 
-
-    if (radio.value === "lumpsum") {
-      stages.lumpsum.classList.remove("hidden");
-    }
-
-    if (radio.value === "sip") {
-      stages.sipMode.classList.remove("hidden");
-      // IMPORTANT: DO NOT show SIP inputs yet
-    }
-
-    if (radio.value === "swp") {
-      stages.swp.classList.remove("hidden");
-    }
+    if (radio.value === "lumpsum") stages.lumpsum.classList.remove("hidden");
+    if (radio.value === "sip") stages.sipMode.classList.remove("hidden");
+    if (radio.value === "swp") stages.swp.classList.remove("hidden");
   });
 });
 
@@ -378,7 +363,6 @@ document.querySelectorAll('input[name="sipMode"]').forEach(radio => {
   });
 });
 
-
 /* =========================
    STEP 3: TOP-UP TYPE
 ========================= */
@@ -392,12 +376,12 @@ document.querySelectorAll('input[name="topupType"]').forEach(radio => {
     input.min = 0;
 
     if (radio.value === "flat") {
-      prefix.classList.remove("hidden"); // ₹
+      prefix.classList.remove("hidden");
       suffix.classList.add("hidden");
       input.step = 100;
     } else {
       prefix.classList.add("hidden");
-      suffix.classList.remove("hidden"); // %
+      suffix.classList.remove("hidden");
       input.step = 0.1;
     }
 
@@ -405,187 +389,156 @@ document.querySelectorAll('input[name="topupType"]').forEach(radio => {
   });
 });
 
-
 /* =========================
    SLIDER LABELS
 ========================= */
 ["lump","sip","swp"].forEach(p => {
   const slider = document.getElementById(`${p}-return`);
   const label = document.getElementById(`${p}-return-val`);
-
   if (slider && label) {
-    const update = () => {
-      label.textContent = parseFloat(slider.value).toFixed(1) + "%";
-    };
+    const update = () => label.textContent = `${(+slider.value).toFixed(1)}%`;
     slider.addEventListener("input", update);
-    update(); // initialize on load
+    update();
   }
 });
 
+/* =========================
+   UTIL
+========================= */
+const formatINR = num =>
+  new Intl.NumberFormat("en-IN").format(Math.round(num));
 
 /* =========================
    CALCULATE
 ========================= */
-  const formatINR = (num) =>
-  new Intl.NumberFormat("en-IN").format(Math.round(num));
-
 document.getElementById("calculateBtn").addEventListener("click", () => {
   const approach = document.querySelector('input[name="approach"]:checked')?.value;
+  if (!approach) return;
+
   let invested = 0, value = 0;
 
+  /* ---------- LUMPSUM ---------- */
   if (approach === "lumpsum") {
     const P = +document.getElementById("lump-amount").value;
     const r = +document.getElementById("lump-return").value / 100;
-    const m =
+    const months =
       (+document.getElementById("lump-years").value * 12) +
       (+document.getElementById("lump-months").value);
 
     invested = P;
-    value = P * Math.pow(1 + r, m / 12);
+    value = P * Math.pow(1 + r, months / 12);
   }
 
-if (approach === "sip") {
+  /* ---------- SIP ---------- */
+  if (approach === "sip") {
 
-  let sipAmount = +document.getElementById("sip-amount").value;
-  if (sipAmount <= 0) {
-    alert("SIP amount must be greater than zero");
-    return;
-  }
+    const sipMode = document.querySelector('input[name="sipMode"]:checked');
+    if (!sipMode) {
+      alert("Please select SIP Type");
+      return;
+    }
 
-  const annualRate = +document.getElementById("sip-return").value / 100;
+    let sipAmount = +document.getElementById("sip-amount").value;
+    const annualRate = +document.getElementById("sip-return").value / 100;
 
-  const years =
-    (+document.getElementById("sip-years").value) +
-    (+document.getElementById("sip-months").value) / 12;
+    const years =
+      (+document.getElementById("sip-years").value) +
+      (+document.getElementById("sip-months").value) / 12;
 
-  const freqValue = document.getElementById("sip-frequency").value;
+    const freqMap = {
+      daily: 250,
+      weekly: 52,
+      biweekly: 26,
+      monthly: 12,
+      quarterly: 4,
+      halfyearly: 2,
+      yearly: 1
+    };
 
-  // Installments per year
-  const freqMap = {
-    daily: 250,       // market days
-    weekly: 52,
-    biweekly: 26,
-    monthly: 12,
-    quarterly: 4,
-    halfyearly: 2,
-    yearly: 1
-  };
+    const freq = freqMap[document.getElementById("sip-frequency").value];
+    const totalInstallments = Math.round(freq * years);
+    const ratePerInstallment = annualRate / freq;
 
-  const installmentsPerYear = freqMap[freqValue];
-  const totalInstallments = Math.round(installmentsPerYear * years);
-  const ratePerInstallment = annualRate / installmentsPerYear;
+    const topupType = document.querySelector('input[name="topupType"]:checked')?.value;
+    const topupValue = +document.getElementById("topup-value").value;
 
-  const sipMode = document.querySelector('input[name="sipMode"]:checked')?.value;
-  const topupType = document.querySelector('input[name="topupType"]:checked')?.value;
-  const topupValue = +document.getElementById("topup-value").value;
+    invested = 0;
+    value = 0;
 
-  invested = 0;
-  value = 0;
+    for (let i = 1; i <= totalInstallments; i++) {
+      invested += sipAmount;
+      value = value * (1 + ratePerInstallment) + sipAmount;
 
-  for (let i = 1; i <= totalInstallments; i++) {
-
-    invested += sipAmount;
-    value = value * (1 + ratePerInstallment) + sipAmount;
-
-    // Apply top-up once every year
-    if (
-      sipMode === "withTopup" &&
-      i % installmentsPerYear === 0 &&
-      topupValue > 0
-    ) {
-      if (topupType === "flat") {
-        sipAmount += topupValue;
-      }
-
-      if (topupType === "percent") {
-        sipAmount *= (1 + topupValue / 100);
+      if (
+        sipMode.value === "withTopup" &&
+        i % freq === 0 &&
+        topupValue > 0
+      ) {
+        sipAmount =
+          topupType === "flat"
+            ? sipAmount + topupValue
+            : sipAmount * (1 + topupValue / 100);
       }
     }
   }
-}
 
-
+  /* ---------- SWP ---------- */
   if (approach === "swp") {
 
-  let corpus = +document.getElementById("swp-amount").value;
-  const annualRate = +document.getElementById("swp-return").value / 100;
-  const withdrawalAmount = +document.getElementById("swp-withdraw").value;
+    let corpus = +document.getElementById("swp-amount").value;
+    const annualRate = +document.getElementById("swp-return").value / 100;
+    const withdrawalAmount = +document.getElementById("swp-withdraw").value;
 
-  const freqValue = document.getElementById("swp-frequency").value;
+    const freqMap = {
+      weekly: 52 / 12,
+      biweekly: 26 / 12,
+      monthly: 1,
+      quarterly: 1 / 3,
+      halfyearly: 1 / 6,
+      yearly: 1 / 12
+    };
 
-  const freqMap = {
-    weekly: 52 / 12,
-    biweekly: 26 / 12,
-    monthly: 1,
-    quarterly: 1 / 3,
-    halfyearly: 1 / 6,
-    yearly: 1 / 12
-  };
+    const withdrawalsPerMonth =
+      freqMap[document.getElementById("swp-frequency").value];
 
-  const withdrawalsPerMonth = freqMap[freqValue];
-  const monthlyRate = annualRate / 12;
+    const totalMonths =
+      (+document.getElementById("swp-years").value * 12) +
+      (+document.getElementById("swp-months").value);
 
-  const gapMonths =
-    (+document.getElementById("swp-years").value * 12) +
-    (+document.getElementById("swp-months").value);
+    const monthlyRate = annualRate / 12;
 
-  const MAX_MONTHS = 40 * 12;
+    let totalWithdrawn = 0;
 
-  let totalWithdrawn = 0;
-  let depletionMonth = null;
-
-  for (let month = 1; month <= MAX_MONTHS; month++) {
-
-    // Monthly compounding
-    corpus *= (1 + monthlyRate);
-
-    // Withdraw only after gap
-    if (month > gapMonths) {
-
-      const monthlyWithdrawal = withdrawalAmount * withdrawalsPerMonth;
-      corpus -= monthlyWithdrawal;
-      totalWithdrawn += monthlyWithdrawal;
-
+    for (let m = 1; m <= totalMonths; m++) {
+      corpus *= (1 + monthlyRate);
+      const withdrawal = withdrawalAmount * withdrawalsPerMonth;
+      corpus -= withdrawal;
+      totalWithdrawn += withdrawal;
       if (corpus <= 0) {
-        depletionMonth = month;
         corpus = 0;
         break;
       }
     }
-  }
-
-  // ===== RESULT OUTPUT =====
-
-  if (depletionMonth !== null) {
-
-    const years = Math.floor(depletionMonth / 12);
-    const months = depletionMonth % 12;
 
     document.getElementById("res-invested").textContent =
-      `${years} Years ${months} Months`;
-
+      formatINR(totalWithdrawn);
     document.getElementById("res-gain").textContent =
       formatINR(totalWithdrawn);
-
-    document.getElementById("res-value").textContent =
-      "Corpus exhausted";
-
-  } else {
-
-    document.getElementById("res-invested").textContent =
-      "40 Years";
-
-    document.getElementById("res-gain").textContent =
-      formatINR(totalWithdrawn);
-
     document.getElementById("res-value").textContent =
       formatINR(corpus);
+
+    stages.result.classList.remove("hidden");
+    return;
   }
-}
 
+  /* ---------- RESULT OUTPUT (LUMPSUM & SIP) ---------- */
+  document.getElementById("res-invested").textContent = formatINR(invested);
+  document.getElementById("res-value").textContent = formatINR(value);
+  document.getElementById("res-gain").textContent = formatINR(value - invested);
 
+  stages.result.classList.remove("hidden");
+});
 </script>
-
 
 
 </body>
