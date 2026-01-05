@@ -180,11 +180,21 @@
       
           <div class="calc-field">
             <label>Time Horizon</label>
-            <div class="calc-inline">
-              <input type="number" id="sip-years" value="15"> Years
-              <input type="number" id="sip-months" value="0" min="0" max="11"> Months
-            </div>
+          
+            <input
+              type="range"
+              id="time-horizon"
+              min="1"
+              max="600"
+              step="1"
+              value="180"
+            >
+          
+            <span class="range-value" id="time-horizon-label">
+              15 Years 0 Months
+            </span>
           </div>
+
       
           <div class="calc-field">
             <label>Investment Frequency</label>
