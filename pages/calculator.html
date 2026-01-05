@@ -272,12 +272,22 @@
 
 
           <div class="calc-field">
-            <label>Withdrawal Period</label>
-            <div class="calc-inline">
-              <input type="number" id="swp-years" value="20"> Years
-              <input type="number" id="swp-months" value="0" min="0" max="11"> Months
-            </div>
+            <label>Time Horizon</label>
+          
+            <input
+              type="range"
+              id="time-horizon"
+              min="1"
+              max="600"
+              step="1"
+              value="180"
+            >
+          
+            <span class="range-value" id="time-horizon-label">
+              15 Years 0 Months
+            </span>
           </div>
+
         </div>
       </div>
 
