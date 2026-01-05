@@ -362,6 +362,27 @@ function hideAllStages() {
 }
 
 /* =========================
+   TIME HORIZON SLIDER (GLOBAL)
+========================= */
+const timeSlider = document.querySelector('input[type="range"][id="time-horizon"]');
+const timeLabel  = document.getElementById("time-horizon-label");
+
+function updateTimeLabel() {
+  const totalMonths = +timeSlider.value;
+  const years = Math.floor(totalMonths / 12);
+  const months = totalMonths % 12;
+
+  let text = "";
+  if (years > 0) text += `${years} Year${years > 1 ? "s" : ""}`;
+  if (months > 0) text += ` ${months} Month${months > 1 ? "s" : ""}`;
+
+  timeLabel.textContent = text.trim();
+}
+
+timeSlider.addEventListener("input", updateTimeLabel);
+updateTimeLabel();
+
+/* =========================
    STEP 1: APPROACH
 ========================= */
 document.querySelectorAll('input[name="approach"]').forEach(radio => {
@@ -401,10 +422,9 @@ document.querySelectorAll('input[name="topupType"]').forEach(radio => {
   radio.addEventListener("change", () => {
     const prefix = document.getElementById("topup-prefix");
     const suffix = document.getElementById("topup-suffix");
-    const input = document.getElementById("topup-value");
+    const input  = document.getElementById("topup-value");
 
     input.value = 0;
-    input.min = 0;
 
     if (radio.value === "flat") {
       prefix.classList.remove("hidden");
@@ -421,11 +441,11 @@ document.querySelectorAll('input[name="topupType"]').forEach(radio => {
 });
 
 /* =========================
-   SLIDER LABELS
+   RETURN SLIDERS
 ========================= */
 ["lump","sip","swp"].forEach(p => {
   const slider = document.getElementById(`${p}-return`);
-  const label = document.getElementById(`${p}-return-val`);
+  const label  = document.getElementById(`${p}-return-val`);
   if (slider && label) {
     const update = () => label.textContent = `${(+slider.value).toFixed(1)}%`;
     slider.addEventListener("input", update);
@@ -443,8 +463,12 @@ const formatINR = num =>
    CALCULATE
 ========================= */
 document.getElementById("calculateBtn").addEventListener("click", () => {
+
   const approach = document.querySelector('input[name="approach"]:checked')?.value;
   if (!approach) return;
+
+  const totalMonths = +timeSlider.value;
+  const years = totalMonths / 12;
 
   let invested = 0, value = 0;
 
@@ -452,12 +476,9 @@ document.getElementById("calculateBtn").addEventListener("click", () => {
   if (approach === "lumpsum") {
     const P = +document.getElementById("lump-amount").value;
     const r = +document.getElementById("lump-return").value / 100;
-    const months =
-      (+document.getElementById("lump-years").value * 12) +
-      (+document.getElementById("lump-months").value);
 
     invested = P;
-    value = P * Math.pow(1 + r, months / 12);
+    value = P * Math.pow(1 + r, years);
   }
 
   /* ---------- SIP ---------- */
@@ -471,10 +492,6 @@ document.getElementById("calculateBtn").addEventListener("click", () => {
 
     let sipAmount = +document.getElementById("sip-amount").value;
     const annualRate = +document.getElementById("sip-return").value / 100;
-
-    const years =
-      (+document.getElementById("sip-years").value) +
-      (+document.getElementById("sip-months").value) / 12;
 
     const freqMap = {
       daily: 250,
@@ -490,7 +507,7 @@ document.getElementById("calculateBtn").addEventListener("click", () => {
     const totalInstallments = Math.round(freq * years);
     const ratePerInstallment = annualRate / freq;
 
-    const topupType = document.querySelector('input[name="topupType"]:checked')?.value;
+    const topupType  = document.querySelector('input[name="topupType"]:checked')?.value;
     const topupValue = +document.getElementById("topup-value").value;
 
     invested = 0;
@@ -500,15 +517,10 @@ document.getElementById("calculateBtn").addEventListener("click", () => {
       invested += sipAmount;
       value = value * (1 + ratePerInstallment) + sipAmount;
 
-      if (
-        sipMode.value === "withTopup" &&
-        i % freq === 0 &&
-        topupValue > 0
-      ) {
-        sipAmount =
-          topupType === "flat"
-            ? sipAmount + topupValue
-            : sipAmount * (1 + topupValue / 100);
+      if (sipMode.value === "withTopup" && i % freq === 0 && topupValue > 0) {
+        sipAmount = topupType === "flat"
+          ? sipAmount + topupValue
+          : sipAmount * (1 + topupValue / 100);
       }
     }
   }
@@ -532,45 +544,37 @@ document.getElementById("calculateBtn").addEventListener("click", () => {
     const withdrawalsPerMonth =
       freqMap[document.getElementById("swp-frequency").value];
 
-    const totalMonths =
-      (+document.getElementById("swp-years").value * 12) +
-      (+document.getElementById("swp-months").value);
-
     const monthlyRate = annualRate / 12;
-
     let totalWithdrawn = 0;
 
     for (let m = 1; m <= totalMonths; m++) {
       corpus *= (1 + monthlyRate);
-      const withdrawal = withdrawalAmount * withdrawalsPerMonth;
-      corpus -= withdrawal;
-      totalWithdrawn += withdrawal;
+      const w = withdrawalAmount * withdrawalsPerMonth;
+      corpus -= w;
+      totalWithdrawn += w;
       if (corpus <= 0) {
         corpus = 0;
         break;
       }
     }
 
-    document.getElementById("res-invested").textContent =
-      formatINR(totalWithdrawn);
-    document.getElementById("res-gain").textContent =
-      formatINR(totalWithdrawn);
-    document.getElementById("res-value").textContent =
-      formatINR(corpus);
+    document.getElementById("res-invested").textContent = formatINR(totalWithdrawn);
+    document.getElementById("res-gain").textContent     = formatINR(totalWithdrawn);
+    document.getElementById("res-value").textContent    = formatINR(corpus);
 
     stages.result.classList.remove("hidden");
     return;
   }
 
-  /* ---------- RESULT OUTPUT (LUMPSUM & SIP) ---------- */
+  /* ---------- RESULT OUTPUT ---------- */
   document.getElementById("res-invested").textContent = formatINR(invested);
-  document.getElementById("res-value").textContent = formatINR(value);
-  document.getElementById("res-gain").textContent = formatINR(value - invested);
+  document.getElementById("res-gain").textContent     = formatINR(value - invested);
+  document.getElementById("res-value").textContent    = formatINR(value);
 
   stages.result.classList.remove("hidden");
 });
 </script>
 
-
+  
 </body>
 </html>
