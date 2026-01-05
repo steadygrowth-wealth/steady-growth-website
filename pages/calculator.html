@@ -184,10 +184,15 @@
 
 <!-- ========================= SCRIPT ========================= -->
 <script>
-/* ---------- UTIL ---------- */
-const formatINR = n => new Intl.NumberFormat("en-IN").format(Math.round(n));
+/* =========================
+   UTIL
+========================= */
+const formatINR = n =>
+  new Intl.NumberFormat("en-IN").format(Math.round(n));
 
-/* ---------- STAGES ---------- */
+/* =========================
+   STAGE REFERENCES (EXPLICIT)
+========================= */
 const stages = {
   lumpsum: document.getElementById("stage-lumpsum"),
   sipMode: document.getElementById("stage-sip-mode"),
@@ -200,113 +205,210 @@ const stages = {
   result: document.getElementById("stage-result")
 };
 
-
-function hideAll() {
-  Object.values(stages).forEach(s => s.classList.add("hidden"));
+function hideAllStages() {
+  Object.values(stages).forEach(el => el.classList.add("hidden"));
 }
 
-/* ---------- TIME SLIDER ---------- */
+/* =========================
+   TIME HORIZON SLIDER (GLOBAL)
+========================= */
 const timeSlider = document.getElementById("time-horizon");
 const timeLabel  = document.getElementById("time-horizon-label");
 
-function updateTime() {
-  const m = +timeSlider.value;
-  const y = Math.floor(m / 12);
-  const mo = m % 12;
-  timeLabel.textContent = `${y} Years ${mo} Months`;
-}
-timeSlider.addEventListener("input", updateTime);
-updateTime();
+function updateTimeLabel() {
+  const totalMonths = +timeSlider.value;
+  const years  = Math.floor(totalMonths / 12);
+  const months = totalMonths % 12;
 
-/* ---------- APPROACH ---------- */
-document.querySelectorAll('input[name="approach"]').forEach(r => {
-  r.addEventListener("change", () => {
-    hideAll();
+  timeLabel.textContent =
+    `${years} Year${years !== 1 ? "s" : ""} ` +
+    `${months} Month${months !== 1 ? "s" : ""}`;
+}
+
+timeSlider.addEventListener("input", updateTimeLabel);
+updateTimeLabel();
+
+/* =========================
+   STEP 1: INVESTMENT APPROACH
+========================= */
+document.querySelectorAll('input[name="approach"]').forEach(radio => {
+  radio.addEventListener("change", () => {
+    hideAllStages();
+
     stages.time.classList.remove("hidden");
     stages.action.classList.remove("hidden");
 
-    if (r.value === "lumpsum") stages.lumpsum.classList.remove("hidden");
-    if (r.value === "sip") stages.sipMode.classList.remove("hidden");
-    if (r.value === "swp") stages.swp.classList.remove("hidden");
+    // Reset SIP-specific radios
+    document.querySelectorAll('input[name="sipMode"]').forEach(r => r.checked = false);
+    document.querySelectorAll('input[name="topupType"]').forEach(r => r.checked = false);
+
+    if (radio.value === "lumpsum") stages.lumpsum.classList.remove("hidden");
+    if (radio.value === "sip")     stages.sipMode.classList.remove("hidden");
+    if (radio.value === "swp")     stages.swp.classList.remove("hidden");
   });
 });
 
-/* ---------- SIP MODE ---------- */
-document.querySelectorAll('input[name="sipMode"]').forEach(r => {
-  r.addEventListener("change", () => {
+/* =========================
+   STEP 2: SIP MODE
+========================= */
+document.querySelectorAll('input[name="sipMode"]').forEach(radio => {
+  radio.addEventListener("change", () => {
     stages.sipCommon.classList.remove("hidden");
-    r.value === "withTopup"
-      ? stages.topupType.classList.remove("hidden")
-      : stages.topupType.classList.add("hidden");
+
+    if (radio.value === "withTopup") {
+      stages.topupType.classList.remove("hidden");
+    } else {
+      stages.topupType.classList.add("hidden");
+      stages.topupValue.classList.add("hidden");
+    }
   });
 });
 
-/* ---------- SLIDER LABELS ---------- */
-["lump","sip","swp"].forEach(p => {
-  const s = document.getElementById(`${p}-return`);
-  const l = document.getElementById(`${p}-return-val`);
-  if (s && l) {
-    s.oninput = () => l.textContent = `${(+s.value).toFixed(1)}%`;
-    s.oninput();
+/* =========================
+   STEP 3: TOP-UP TYPE
+========================= */
+document.querySelectorAll('input[name="topupType"]').forEach(radio => {
+  radio.addEventListener("change", () => {
+    stages.topupValue.classList.remove("hidden");
+  });
+});
+
+/* =========================
+   RETURN SLIDERS LABELS
+========================= */
+["lump", "sip", "swp"].forEach(prefix => {
+  const slider = document.getElementById(`${prefix}-return`);
+  const label  = document.getElementById(`${prefix}-return-val`);
+
+  if (slider && label) {
+    const update = () => {
+      label.textContent = `${(+slider.value).toFixed(1)}%`;
+    };
+    slider.addEventListener("input", update);
+    update();
   }
 });
 
-/* ---------- CALCULATE ---------- */
-calculateBtn.onclick = () => {
-  const mode = document.querySelector('input[name="approach"]:checked')?.value;
-  if (!mode) return;
+/* =========================
+   CALCULATE
+========================= */
+document.getElementById("calculateBtn").addEventListener("click", () => {
 
-  const months = +timeSlider.value;
-  const years = months / 12;
+  const approach = document.querySelector('input[name="approach"]:checked')?.value;
+  if (!approach) return;
 
-  let invested = 0, value = 0;
+  const totalMonths = +timeSlider.value;
+  const years = totalMonths / 12;
 
-  if (mode === "lumpsum") {
-    const P = +lump_amount.value;
-    const r = +lump_return.value / 100;
+  let invested = 0;
+  let value = 0;
+
+  /* ---------- LUMPSUM ---------- */
+  if (approach === "lumpsum") {
+    const P = +document.getElementById("lump-amount").value;
+    const r = +document.getElementById("lump-return").value / 100;
+
     invested = P;
     value = P * Math.pow(1 + r, years);
   }
 
-  if (mode === "sip") {
-    const sipAmt = +sip_amount.value;
-    const r = +sip_return.value / 100;
-    const freq = { monthly:12, weekly:52, quarterly:4, yearly:1 }[sip_frequency.value];
-    const n = Math.round(freq * years);
-    const rp = r / freq;
-    let amt = sipAmt;
+  /* ---------- SIP ---------- */
+  if (approach === "sip") {
 
-    for (let i=1;i<=n;i++){
-      invested += amt;
-      value = value * (1 + rp) + amt;
+    const sipMode = document.querySelector('input[name="sipMode"]:checked');
+    if (!sipMode) {
+      alert("Please select SIP Type");
+      return;
+    }
+
+    let sipAmount = +document.getElementById("sip-amount").value;
+    const annualRate = +document.getElementById("sip-return").value / 100;
+
+    const freqMap = {
+      daily: 250,
+      weekly: 52,
+      biweekly: 26,
+      monthly: 12,
+      quarterly: 4,
+      halfyearly: 2,
+      yearly: 1
+    };
+
+    const freq = freqMap[document.getElementById("sip-frequency").value];
+    const totalInstallments = Math.round(freq * years);
+    const ratePerInstallment = annualRate / freq;
+
+    const topupType  = document.querySelector('input[name="topupType"]:checked')?.value;
+    const topupValue = +document.getElementById("topup-value").value;
+
+    invested = 0;
+    value = 0;
+
+    for (let i = 1; i <= totalInstallments; i++) {
+      invested += sipAmount;
+      value = value * (1 + ratePerInstallment) + sipAmount;
+
+      if (
+        sipMode.value === "withTopup" &&
+        i % freq === 0 &&
+        topupValue > 0
+      ) {
+        sipAmount =
+          topupType === "flat"
+            ? sipAmount + topupValue
+            : sipAmount * (1 + topupValue / 100);
+      }
     }
   }
 
-  if (mode === "swp") {
-    let corpus = +swp_amount.value;
-    const r = +swp_return.value / 100 / 12;
-    const w = +swp_withdraw.value;
-    let withdrawn = 0;
+  /* ---------- SWP ---------- */
+  if (approach === "swp") {
 
-    for (let i=1;i<=months;i++){
-      corpus *= (1 + r);
-      corpus -= w;
-      withdrawn += w;
-      if (corpus <= 0) { corpus = 0; break; }
+    let corpus = +document.getElementById("swp-amount").value;
+    const annualRate = +document.getElementById("swp-return").value / 100;
+    const withdrawalAmount = +document.getElementById("swp-withdraw").value;
+
+    const freqMap = {
+      weekly: 52 / 12,
+      biweekly: 26 / 12,
+      monthly: 1,
+      quarterly: 1 / 3,
+      halfyearly: 1 / 6,
+      yearly: 1 / 12
+    };
+
+    const withdrawalsPerMonth =
+      freqMap[document.getElementById("swp-frequency").value];
+
+    const monthlyRate = annualRate / 12;
+    let totalWithdrawn = 0;
+
+    for (let m = 1; m <= totalMonths; m++) {
+      corpus *= (1 + monthlyRate);
+      const withdrawal = withdrawalAmount * withdrawalsPerMonth;
+      corpus -= withdrawal;
+      totalWithdrawn += withdrawal;
+      if (corpus <= 0) {
+        corpus = 0;
+        break;
+      }
     }
 
-    res_invested.textContent = formatINR(withdrawn);
-    res_gain.textContent = formatINR(withdrawn);
-    res_value.textContent = formatINR(corpus);
+    document.getElementById("res-invested").textContent = formatINR(totalWithdrawn);
+    document.getElementById("res-gain").textContent     = formatINR(totalWithdrawn);
+    document.getElementById("res-value").textContent    = formatINR(corpus);
+
     stages.result.classList.remove("hidden");
     return;
   }
 
-  res_invested.textContent = formatINR(invested);
-  res_gain.textContent = formatINR(value - invested);
-  res_value.textContent = formatINR(value);
+  /* ---------- RESULT OUTPUT (LUMPSUM & SIP) ---------- */
+  document.getElementById("res-invested").textContent = formatINR(invested);
+  document.getElementById("res-gain").textContent     = formatINR(value - invested);
+  document.getElementById("res-value").textContent    = formatINR(value);
+
   stages.result.classList.remove("hidden");
-};
+});
 </script>
 
 </body>
