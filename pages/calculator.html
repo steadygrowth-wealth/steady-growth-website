@@ -189,16 +189,17 @@ const formatINR = n => new Intl.NumberFormat("en-IN").format(Math.round(n));
 
 /* ---------- STAGES ---------- */
 const stages = {
-  lumpsum: stage_lumpsum,
-  sipMode: stage_sip_mode,
-  sipCommon: stage_sip_common,
-  topupType: stage_topup_type,
-  topupValue: stage_topup_value,
-  swp: stage_swp,
-  time: stage_time,
-  action: calc_action,
-  result: stage_result
+  lumpsum: document.getElementById("stage-lumpsum"),
+  sipMode: document.getElementById("stage-sip-mode"),
+  sipCommon: document.getElementById("stage-sip-common"),
+  topupType: document.getElementById("stage-topup-type"),
+  topupValue: document.getElementById("stage-topup-value"),
+  swp: document.getElementById("stage-swp"),
+  time: document.getElementById("stage-time"),
+  action: document.getElementById("calc-action"),
+  result: document.getElementById("stage-result")
 };
+
 
 function hideAll() {
   Object.values(stages).forEach(s => s.classList.add("hidden"));
