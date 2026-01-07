@@ -341,6 +341,15 @@ document.getElementById("calculateBtn").addEventListener("click", () => {
     const topupType  = document.querySelector('input[name="topupType"]:checked')?.value;
     const topupValue = +document.getElementById("topup-value").value;
 
+    if (
+        sipMode.value === "withTopup" &&
+        !topupType
+      ) {
+        alert("Please select Top-Up Type");
+        return;
+      }
+
+
     invested = 0;
     value = 0;
 
