@@ -335,7 +335,11 @@ document.getElementById("calculateBtn").addEventListener("click", () => {
     };
 
     const freq = freqMap[document.getElementById("sip-frequency").value];
-    const totalInstallments = Math.round(freq * years);
+    const totalInstallments =
+      document.getElementById("sip-frequency").value === "monthly"
+        ? totalMonths
+        : Math.floor(freq * years);
+
     const ratePerInstallment = annualRate / freq;
 
     const topupType  = document.querySelector('input[name="topupType"]:checked')?.value;
