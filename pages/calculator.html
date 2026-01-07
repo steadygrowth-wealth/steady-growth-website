@@ -340,10 +340,16 @@ document.getElementById("calculateBtn").addEventListener("click", () => {
     };
 
     const freq = freqMap[document.getElementById("sip-frequency").value];
-    const totalInstallments =
-      document.getElementById("sip-frequency").value === "monthly"
-        ? totalMonths
-        : Math.floor(freq * years);
+    
+    let totalInstallments;
+    const frequency = document.getElementById("sip-frequency").value;
+    
+    if (frequency === "monthly") {
+      totalInstallments = totalMonths;
+    } else {
+      totalInstallments = Math.floor(freq * totalMonths / 12);
+    }
+
 
     const ratePerInstallment = annualRate / freq;
 
