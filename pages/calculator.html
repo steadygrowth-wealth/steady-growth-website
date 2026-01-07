@@ -420,6 +420,12 @@ document.getElementById("calculateBtn").addEventListener("click", () => {
     const annualRate = +document.getElementById("swp-return").value / 100;
     const withdrawalAmount = +document.getElementById("swp-withdraw").value;
 
+    if (corpus <= 0 || withdrawalAmount <= 0) {
+      alert("Corpus and withdrawal must be greater than zero");
+      return;
+    }
+
+
     const freqMap = {
       weekly: 52 / 12,
       biweekly: 26 / 12,
@@ -431,6 +437,11 @@ document.getElementById("calculateBtn").addEventListener("click", () => {
 
     const withdrawalsPerMonth =
       freqMap[document.getElementById("swp-frequency").value];
+
+    if (withdrawalAmount * withdrawalsPerMonth * 12 > corpus) {
+      console.warn("High withdrawal rate — corpus may exhaust early");
+    }
+
 
     const monthlyRate = annualRate / 12;
     let totalWithdrawn = 0;
