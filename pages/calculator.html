@@ -371,12 +371,15 @@ document.getElementById("calculateBtn").addEventListener("click", () => {
     for (let i = 1; i <= totalInstallments; i++) {
 
       // Apply top-up at the START of each year (except first year)
+      const installmentsPerYear = freq;
       if (
-      sipMode.value === "withTopup" &&
-      i > 1 &&
-      (i - 1) % freq === 0 &&
-      topupValue > 0
-    )
+        sipMode.value === "withTopup" &&
+        i > 1 &&
+        Math.floor((i - 1) / installmentsPerYear) !==
+        Math.floor((i - 2) / installmentsPerYear) &&
+        topupValue > 0
+      )
+
      {
         sipAmount =
           topupType === "flat"
