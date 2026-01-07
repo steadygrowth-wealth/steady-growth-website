@@ -306,6 +306,11 @@ document.getElementById("calculateBtn").addEventListener("click", () => {
   /* ---------- LUMPSUM ---------- */
   if (approach === "lumpsum") {
     const P = +document.getElementById("lump-amount").value;
+    if (P <= 0) {
+      alert("Investment amount must be greater than zero");
+      return;
+    }
+
     const r = +document.getElementById("lump-return").value / 100;
 
     invested = P;
