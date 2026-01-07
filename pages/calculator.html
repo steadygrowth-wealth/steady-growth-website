@@ -415,65 +415,74 @@ document.getElementById("calculateBtn").addEventListener("click", () => {
   }
 
   /* ---------- SWP ---------- */
-  if (approach === "swp") {
-
-    let corpus = +document.getElementById("swp-amount").value;
-    const annualRate = +document.getElementById("swp-return").value / 100;
-    const withdrawalAmount = +document.getElementById("swp-withdraw").value;
-
-    if (corpus <= 0 || withdrawalAmount <= 0) {
-      alert("Corpus and withdrawal must be greater than zero");
+    if (approach === "swp") {
+    
+      let corpus = +document.getElementById("swp-amount").value;
+      const annualRate = +document.getElementById("swp-return").value / 100;
+      const withdrawalAmount = +document.getElementById("swp-withdraw").value;
+    
+      if (corpus <= 0 || withdrawalAmount <= 0) {
+        alert("Corpus and withdrawal must be greater than zero");
+        return;
+      }
+    
+      const freqMap = {
+        weekly: 52 / 12,
+        biweekly: 26 / 12,
+        monthly: 1,
+        quarterly: 1 / 3,
+        halfyearly: 1 / 6,
+        yearly: 1 / 12
+      };
+    
+      const withdrawalsPerMonth =
+        freqMap[document.getElementById("swp-frequency").value];
+    
+      const monthlyRate = annualRate / 12;
+    
+      let totalWithdrawn = 0;
+      let monthsSurvived = 0;
+    
+      for (let m = 1; m <= totalMonths; m++) {
+        corpus *= (1 + monthlyRate);
+    
+        const withdrawal = withdrawalAmount * withdrawalsPerMonth;
+        corpus -= withdrawal;
+        totalWithdrawn += withdrawal;
+    
+        if (corpus <= 0) {
+          corpus = 0;
+          break;
+        }
+    
+        monthsSurvived++;
+      }
+    
+      // Convert survival duration
+      const yearsSurvived = Math.floor(monthsSurvived / 12);
+      const remainingMonths = monthsSurvived % 12;
+    
+      // Populate results
+      document.getElementById("swp-res-initial").textContent =
+        formatINR(+document.getElementById("swp-amount").value);
+    
+      document.getElementById("swp-res-withdrawn").textContent =
+        formatINR(totalWithdrawn);
+    
+      document.getElementById("swp-res-remaining").textContent =
+        formatINR(corpus);
+    
+      document.getElementById("swp-res-duration").textContent =
+        `${yearsSurvived} Year${yearsSurvived !== 1 ? "s" : ""} ` +
+        `${remainingMonths} Month${remainingMonths !== 1 ? "s" : ""}`;
+    
+      // Show SWP result, hide others
+      stages.result.classList.add("hidden");
+      document.getElementById("stage-swp-result").classList.remove("hidden");
+    
       return;
     }
 
-
-    const freqMap = {
-      weekly: 52 / 12,
-      biweekly: 26 / 12,
-      monthly: 1,
-      quarterly: 1 / 3,
-      halfyearly: 1 / 6,
-      yearly: 1 / 12
-    };
-
-    const withdrawalsPerMonth =
-      freqMap[document.getElementById("swp-frequency").value];
-
-    if (withdrawalAmount * withdrawalsPerMonth * 12 > corpus) {
-      console.warn("High withdrawal rate — corpus may exhaust early");
-    }
-
-
-    const monthlyRate = annualRate / 12;
-    let totalWithdrawn = 0;
-
-    for (let m = 1; m <= totalMonths; m++) {
-      corpus *= (1 + monthlyRate);
-      const withdrawal = withdrawalAmount * withdrawalsPerMonth;
-      corpus -= withdrawal;
-      totalWithdrawn += withdrawal;
-      if (corpus <= 0) {
-        corpus = 0;
-        break;
-      }
-    }
-
-    document.getElementById("swp-res-initial").textContent =
-      formatINR(+document.getElementById("swp-amount").value);
-    
-    document.getElementById("swp-res-withdrawn").textContent =
-      formatINR(totalWithdrawn);
-    
-    document.getElementById("swp-res-remaining").textContent =
-      formatINR(corpus);
-    
-    // Show SWP result, hide others
-    stages.result.classList.add("hidden");
-    document.getElementById("stage-swp-result").classList.remove("hidden");
-    
-    return;
-
-  }
 
   /* ---------- RESULT OUTPUT (LUMPSUM & SIP) ---------- */
   document.getElementById("res-invested").textContent = formatINR(invested);
