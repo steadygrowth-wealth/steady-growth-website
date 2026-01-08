@@ -192,21 +192,7 @@
       </div>
 
 
-      <div class="calc-disclaimer">
-      <p>
-        <strong>Note:</strong>
-        The calculations shown above are indicative and meant to help you understand
-        how investments may behave over time under different scenarios.
-      </p>
-      <p>
-        Returns from market-linked investments are subject to market risks and are not guaranteed.
-        Actual outcomes may differ due to changes in market conditions and other factors.
-      </p>
-      <p>
-        Please consider seeking professional financial advice before making investment decisions.
-      </p>
-    </div>
-
+      
 
 
     </div>
@@ -511,6 +497,54 @@ document.getElementById("calculateBtn").addEventListener("click", () => {
 });
   })();
 </script>
+
+
+  <footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-disclaimer">
+      <p>
+        <strong>Note:</strong>
+        The calculations shown on this page are indicative and meant to help you
+        understand how investments may behave over time under different scenarios.
+      </p>
+      <p>
+        Returns from market-linked investments are subject to market risks and are not guaranteed.
+        Actual outcomes may differ due to changes in market conditions and other factors.
+      </p>
+      <p>
+        Please consider seeking professional financial advice before making investment decisions.
+      </p>
+    </div>
+  </div>
+</footer>
+
+  .site-footer {
+  margin-top: 80px;
+  padding: 40px 0;
+  background: linear-gradient(180deg, #05070a, #020409);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.footer-inner {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.footer-disclaimer {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: #9aa4b2;
+}
+
+.footer-disclaimer strong {
+  color: #e5e7eb;
+  font-weight: 500;
+}
+
+.footer-disclaimer p {
+  margin-bottom: 10px;
+}
 
 </body>
 </html>
