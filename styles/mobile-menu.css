@@ -10,19 +10,10 @@
 /* ============================================================
    FIX HEADER STACKING CONTEXT
 ============================================================ */
-@media (max-width: 768px) {
-  header {
-    position: sticky !important;
-    top: 0;
-    z-index: 10000 !important;
-  }
+header {
+  position: relative !important; 
+  z-index: 10 !important;
 }
-
-.nav-toggle {
-  position: relative;
-  z-index: 10001;
-}
-
 
 /* ============================================================
    FULLSCREEN MOBILE MENU OVERLAY
@@ -34,8 +25,8 @@
   right: 0 !important;
   bottom: 0 !important;
 
-  width: 100% !important;
-  height: 100% !important;
+  width: 100vw !important;
+  height: 100vh !important;
 
   background: #050816 !important;  /* fully opaque */
   backdrop-filter: blur(18px);
@@ -62,7 +53,7 @@
 /* Disable scrolling */
 body.menu-open {
   overflow: hidden !important;
-  /* height: 100vh !important; */
+  height: 100vh !important;
 }
 
 /* ============================================================
